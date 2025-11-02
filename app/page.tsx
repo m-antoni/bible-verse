@@ -1,14 +1,11 @@
-"use client";
-
-import { Button } from "@material-tailwind/react";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
+  // not using this just redirect the user to /dashbaord
+  redirect('/dashboard');
   return (
-    <main className="p-8">
-      <h1 className="text-3xl font-bold mb-4 text-blue-600">
-        Hello Material Tailwind v3
-      </h1>
-      <Button color="blue">Click Me</Button>
-    </main>
+    <>
+      <h1>....</h1>
+    </>
   );
 }

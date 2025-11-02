@@ -1,3 +1,6 @@
+/* ✅ Argon CSS first */
+@import url('@/public/assets/argon/css/argon-dashboard-tailwind.css?v=1.0.1');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

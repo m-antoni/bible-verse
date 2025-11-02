@@ -1,181 +1,79 @@
-"use client";
+'use client';
 
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
-
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function SignIn() {
   return (
-    <section className="m-8 flex gap-4">
-      <div className="w-full lg:w-3/5 mt-24">
-        <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">
-            Sign In
-          </Typography>
-          <Typography
-            variant="paragraph"
-            color="blue-gray"
-            className="text-lg font-normal"
-          >
-            Enter your email and password to Sign In.
-          </Typography>
-        </div>
-        <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
-          <div className="mb-1 flex flex-col gap-6">
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
-            >
-              Your email
-            </Typography>
-            <Input
-              size="lg"
-              placeholder="name@mail.com"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
-            >
-              Password
-            </Typography>
-            <Input
-              type="password"
-              size="lg"
-              placeholder="********"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
+    <>
+      <main className="mt-0 transition-all duration-200 ease-in-out">
+        <section>
+          <div className="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
+            <div className="container z-1">
+              <div className="flex flex-wrap -mx-3">
+                <div className="flex flex-col w-full max-w-full px-3 mx-auto lg:mx-0 shrink-0 md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12">
+                  <div className="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none lg:py4 dark:bg-gray-950 rounded-2xl bg-clip-border">
+                    <div className="p-6 pb-0 mb-0">
+                      <h4 className="font-bold">Sign In</h4>
+                      <p className="mb-0">Enter your email and password to sign in</p>
+                    </div>
+                    <div className="flex-auto p-6">
+                      <form role="form">
+                        <div className="mb-4">
+                          <input
+                            type="email"
+                            placeholder="Email"
+                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <input
+                            type="password"
+                            placeholder="Password"
+                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
+                          />
+                        </div>
+                        <div className="flex items-center pl-12 mb-0.5 text-left min-h-6">
+                          <input
+                            id="rememberMe"
+                            className="mt-0.5 rounded-10 duration-250 ease-in-out after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-zinc-700/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right"
+                            type="checkbox"
+                          />
+                          <label className="ml-2 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">
+                            Remember me
+                          </label>
+                        </div>
+                        <div className="text-center">
+                          <button
+                            type="button"
+                            className="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25"
+                          >
+                            Sign in
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <div className="border-black/12.5 rounded-b-2xl border-t-0 border-solid p-6 text-center pt-0 px-1 sm:px-6">
+                      <p className="mx-auto mb-6 leading-normal text-sm">
+                        Don't have an account?{' '}
+                        <Link href="/auth/sign-up" className="font-semibold text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-500">
+                          Sign up
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
+                  <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg')] rounded-xl ">
+                    <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
+                    <h4 className="z-20 mt-12 font-bold text-white">"Attention is the new currency"</h4>
+                    <p className="z-20 text-white ">The more effortless the writing looks, the more effort the writer actually put into the process.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <Checkbox
-            label={
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center justify-start font-medium"
-              >
-                I agree the&nbsp;
-                <a
-                  href="#"
-                  className="font-normal text-black transition-colors hover:text-gray-900 underline"
-                >
-                  Terms and Conditions
-                </a>
-              </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-          />
-          <Button className="mt-6" fullWidth>
-            Sign In
-          </Button>
-
-          <div className="flex items-center justify-between gap-2 mt-6">
-            <Checkbox
-              label={
-                <Typography
-                  variant="small"
-                  color="gray"
-                  className="flex items-center justify-start font-medium"
-                >
-                  Subscribe me to newsletter
-                </Typography>
-              }
-              containerProps={{ className: "-ml-2.5" }}
-            />
-            <Typography variant="small" className="font-medium text-gray-900">
-              <a href="#">Forgot Password</a>
-            </Typography>
-          </div>
-          <div className="space-y-4 mt-8">
-            <Button
-              size="lg"
-              color="white"
-              className="flex items-center gap-2 justify-center shadow-md"
-              fullWidth
-            >
-              <svg
-                width="17"
-                height="16"
-                viewBox="0 0 17 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g clipPath="url(#clip0_1156_824)">
-                  <path
-                    d="M16.3442 8.18429C16.3442 7.64047 16.3001 7.09371 16.206 6.55872H8.66016V9.63937H12.9813C12.802 10.6329 12.2258 11.5119 11.3822 12.0704V14.0693H13.9602C15.4741 12.6759 16.3442 10.6182 16.3442 8.18429Z"
-                    fill="#4285F4"
-                  />
-                  <path
-                    d="M8.65974 16.0006C10.8174 16.0006 12.637 15.2922 13.9627 14.0693L11.3847 12.0704C10.6675 12.5584 9.7415 12.8347 8.66268 12.8347C6.5756 12.8347 4.80598 11.4266 4.17104 9.53357H1.51074V11.5942C2.86882 14.2956 5.63494 16.0006 8.65974 16.0006Z"
-                    fill="#34A853"
-                  />
-                  <path
-                    d="M4.16852 9.53356C3.83341 8.53999 3.83341 7.46411 4.16852 6.47054V4.40991H1.51116C0.376489 6.67043 0.376489 9.33367 1.51116 11.5942L4.16852 9.53356Z"
-                    fill="#FBBC04"
-                  />
-                  <path
-                    d="M8.65974 3.16644C9.80029 3.1488 10.9026 3.57798 11.7286 4.36578L14.0127 2.08174C12.5664 0.72367 10.6469 -0.0229773 8.65974 0.000539111C5.63494 0.000539111 2.86882 1.70548 1.51074 4.40987L4.1681 6.4705C4.8001 4.57449 6.57266 3.16644 8.65974 3.16644Z"
-                    fill="#EA4335"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1156_824">
-                    <rect
-                      width="16"
-                      height="16"
-                      fill="white"
-                      transform="translate(0.5)"
-                    />
-                  </clipPath>
-                </defs>
-              </svg>
-              <span>Sign in With Google</span>
-            </Button>
-            <Button
-              size="lg"
-              color="white"
-              className="flex items-center gap-2 justify-center shadow-md"
-              fullWidth
-            >
-              <img
-                src="/assets/img/twitter-logo.svg"
-                height={24}
-                width={24}
-                alt=""
-              />
-              <span>Sign in With Twitter</span>
-            </Button>
-          </div>
-          <Typography
-            variant="paragraph"
-            className="text-center text-blue-gray-500 font-medium mt-4"
-          >
-            Not registered?
-            <Link href="/auth/sign-up" className="text-gray-900 ml-1">
-              Create account
-            </Link>
-          </Typography>
-        </form>
-      </div>
-      <div className="w-2/5 h-full hidden lg:block">
-        <img
-          src="/assets/img/pattern.png"
-          className="h-full w-full object-cover rounded-3xl"
-        />
-      </div>
-    </section>
+        </section>
+      </main>
+    </>
   );
 }
