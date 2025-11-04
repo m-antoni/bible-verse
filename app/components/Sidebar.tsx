@@ -1,5 +1,13 @@
+'use client';
+
 import Link from 'next/link';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import {
+  FaHome,
+  FaEye,
+  FaSearch,
+  FaHeart,
+} from 'react-icons/fa';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -7,11 +15,14 @@ interface SidebarProps {
   sidebarDark: boolean;
 }
 
-export default function Sidebar({
+export default function SideNavbar({
   sidebarOpen,
   toggleSidebar,
   sidebarDark,
 }: SidebarProps) {
+  // get the current url page
+  const pathname = usePathname();
+
   return (
     <aside
       className={`fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-300 border-0 rounded-2xl xl:left-0 xl:translate-x-0 max-w-64 ease-nav-brand z-990 xl:ml-6
@@ -52,12 +63,18 @@ export default function Sidebar({
         <ul className="flex flex-col pl-0 mb-0">
           <li className="mt-0.5 w-full">
             <Link
-              className="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center 
-              whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+              className={
+                pathname === '/dashboard'
+                  ? `py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center 
+              whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors`
+                  : `py-2.7 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center 
+              whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors`
+              }
               href="/dashboard"
             >
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i className="relative top-0 text-sm leading-normal text-blue-500 fa fa-home"></i>
+                {/* <i className="relative top-0 text-sm leading-normal text-blue-500 fa fa-home"></i> */}
+                <FaHome className="relative top-0 text-lg leading-normal text-blue-500" />
               </div>
               <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">
                 Dashboard
@@ -67,11 +84,16 @@ export default function Sidebar({
 
           <li className="mt-0.5 w-full">
             <Link
-              className=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="/dashboard"
+              className={
+                pathname === '/read-bible'
+                  ? `bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+                  : `dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+              }
+              href="/read-bible"
             >
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i className="relative top-0 text-sm leading-normal text-emerald-500 fa fa-eye"></i>
+                {/* <i className="relative top-0 text-sm leading-normal text-emerald-500 fa fa-eye"></i> */}
+                <FaEye className="relative top-0 text-lg leading-normal text-emerald-500 " />
               </div>
               <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">
                 Read Bible
@@ -81,11 +103,16 @@ export default function Sidebar({
 
           <li className="mt-0.5 w-full">
             <a
-              className=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/billing.html"
+              className={
+                pathname === '/search'
+                  ? `bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+                  : `dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+              }
+              href="/search"
             >
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                <i className="relative top-0 text-sm leading-normal text-cyan-500 fa fa-search"></i>
+                {/* <i className="relative top-0 text-sm leading-normal text-cyan-500 fa fa-search"></i> */}
+                <FaSearch className="relative top-0 text-lg leading-normal text-cyan-500" />
               </div>
               <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">
                 Search
@@ -95,14 +122,19 @@ export default function Sidebar({
 
           <li className="mt-0.5 w-full">
             <a
-              className=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/virtual-reality.html"
+              className={
+                pathname === '/favorites'
+                  ? `bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+                  : `dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors`
+              }
+              href="/favorites"
             >
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i className="relative top-0 text-sm leading-normal text-red-500 fa fa-heart"></i>
+                {/* <i className="relative top-0 text-sm leading-normal text-red-500 fa fa-heart"></i> */}
+                <FaHeart className="relative top-0 text-lg leading-normal text-red-500" />
               </div>
               <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">
-                Favorite
+                Favorites
               </span>
             </a>
           </li>

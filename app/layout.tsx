@@ -14,11 +14,11 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
           rel="stylesheet"
         />
-        <Script
+        {/* <Script
           src="https://kit.fontawesome.com/42d5adcbca.js"
           crossOrigin="anonymous"
           strategy="lazyOnload"
-        />
+        /> */}
 
         {/* Nucleo Icons */}
         <link
