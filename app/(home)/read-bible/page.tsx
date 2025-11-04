@@ -1,171 +1,113 @@
+'use client';
+
+import { FaEye, FaHeart } from 'react-icons/fa';
+import { getBibleBooks } from '@/app/lib/services/bibleService';
+import { useEffect, useState } from 'react';
+
 export default function ReadBible() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    async function getBook() {
+      try {
+        const data = await getBibleBooks();
+        // console.log(data);
+        setBooks(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        //
+      }
+    }
+
+    getBook();
+  }, []);
+
+  // console.log(books);
+
   return (
     <>
-      <div className="flex flex-wrap mt-6 -mx-3">
-        <div className="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-12/12 lg:flex-none">
-          <div className="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
-            <div className="p-4 pb-0 mb-0 rounded-t-4">
-              <div className="flex justify-between">
-                <h6 className="mb-2 dark:text-white">
-                  Sales by Country
-                </h6>
-              </div>
+      <div className="flex flex-wrap -mx-3">
+        <div className="flex-none w-full max-w-full px-3">
+          <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+            <div className="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+              <h6 className="dark:text-white">Bible List of Books</h6>
             </div>
-            <div className="overflow-x-auto">
-              <table className="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
-                <tbody>
-                  <tr>
-                    <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                      <div className="flex items-center px-2 py-1">
-                        <div>
-                          <img
-                            src="/assets/argon/img/icons/flags/US.png"
-                            alt="Country flag"
-                          />
-                        </div>
-                        <div className="ml-6">
-                          <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                            Country:
-                          </p>
-                          <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                            United States
-                          </h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Sales:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          2500
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Value:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          $230,900
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="flex-1 text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Bounce:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          29.9%
-                        </h6>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                      <div className="flex items-center px-2 py-1">
-                        <div>
-                          <img
-                            src="/assets/argon/img/icons/flags/DE.png"
-                            alt="Country flag"
-                          />
-                        </div>
-                        <div className="ml-6">
-                          <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                            Country:
-                          </p>
-                          <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                            Germany
-                          </h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Sales:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          3.900
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Value:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          $440,000
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="flex-1 text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Bounce:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          40.22%
-                        </h6>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                      <div className="flex items-center px-2 py-1">
-                        <div>
-                          <img
-                            src="/assets/argon/img/icons/flags/GB.png"
-                            alt="Country flag"
-                          />
-                        </div>
-                        <div className="ml-6">
-                          <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                            Country:
-                          </p>
-                          <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                            Great Britain
-                          </h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Sales:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          1.400
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Value:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          $190,700
-                        </h6>
-                      </div>
-                    </td>
-                    <td className="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                      <div className="flex-1 text-center">
-                        <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
-                          Bounce:
-                        </p>
-                        <h6 className="mb-0 text-sm leading-normal dark:text-white">
-                          23.44%
-                        </h6>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="flex-auto px-0 pt-0 pb-2">
+              <div className="p-0 overflow-x-auto">
+                <table className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
+                  <thead className="align-bottom">
+                    <tr>
+                      <th className="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                        Book Name
+                      </th>
+                      <th className="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                        Version
+                      </th>
+                      <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                        Chapters
+                      </th>
+                      <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                        Actions
+                      </th>
+                      <th className="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {books?.map((book, key) => {
+                      return (
+                        <tr key={key}>
+                          <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                            <div className="flex px-2 py-1">
+                              <div>
+                                <img
+                                  src="/assets/custom/bible.png"
+                                  className="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl"
+                                  alt="user1"
+                                />
+                              </div>
+                              <div className="flex flex-col justify-center">
+                                <h6 className="mb-0 text-sm leading-normal dark:text-white font-semibold">
+                                  {book.name}
+                                </h6>
+                                <p className="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">
+                                  {book.nameLong}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                            <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                              King James Version (KJV)
+                            </p>
+                            {/* <p className="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400"></p> */}
+                          </td>
+                          <td className="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                            <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                              {book.chapters}
+                            </p>
+                          </td>
+
+                          <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                            <a
+                              href="javascript:;"
+                              className="flex justify-items-end text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"
+                            >
+                              {' '}
+                              <span className="px-2 text-lg">
+                                <FaHeart />
+                              </span>
+                              <span className="px-2 text-lg">
+                                <FaEye />
+                              </span>
+                            </a>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
