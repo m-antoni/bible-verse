@@ -1,11 +1,7 @@
 import './globals.css';
 import Script from 'next/script';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -21,20 +17,17 @@ export default function RootLayout({
         /> */}
 
         {/* Nucleo Icons */}
-        <link
+        {/* <link
           href="/assets/argon/css/nucleo-icons.css"
           rel="stylesheet"
         />
         <link
           href="/assets/argon/css/nucleo-svg.css"
           rel="stylesheet"
-        />
+        /> */}
 
         {/* PopperJS (used globally if needed) */}
-        <Script
-          src="https://unpkg.com/@popperjs/core@2"
-          strategy="lazyOnload"
-        />
+        {/* <Script src="https://unpkg.com/@popperjs/core@2" strategy="lazyOnload" /> */}
 
         {/* Argon Global Styles */}
         {/* <link

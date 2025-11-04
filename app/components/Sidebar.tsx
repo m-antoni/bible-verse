@@ -2,12 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  FaHome,
-  FaEye,
-  FaSearch,
-  FaHeart,
-} from 'react-icons/fa';
+import { FaHome, FaEye, FaSearch, FaHeart, FaTimes } from 'react-icons/fa';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -15,11 +10,7 @@ interface SidebarProps {
   sidebarDark: boolean;
 }
 
-export default function SideNavbar({
-  sidebarOpen,
-  toggleSidebar,
-  sidebarDark,
-}: SidebarProps) {
+export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: SidebarProps) {
   // get the current url page
   const pathname = usePathname();
 
@@ -32,11 +23,13 @@ export default function SideNavbar({
       aria-expanded={sidebarOpen}
     >
       <div className="h-19">
-        <i
+        <FaTimes
           onClick={toggleSidebar}
-          className="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 dark:text-white block xl:hidden"
+          className="absolute top-3 right-3 text-xl fill-current text-slate-600 hover:text-slate-800 
+          dark:text-white dark:hover:text-slate-300 cursor-pointer z-[9999] xl:hidden lg:hidden"
           data-sidenav-close
-        ></i>
+        />
+
         <Link
           className="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700"
           href="/dashboard"
@@ -114,9 +107,7 @@ export default function SideNavbar({
                 {/* <i className="relative top-0 text-sm leading-normal text-cyan-500 fa fa-search"></i> */}
                 <FaSearch className="relative top-0 text-lg leading-normal text-cyan-500" />
               </div>
-              <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">
-                Search
-              </span>
+              <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Search</span>
             </a>
           </li>
 

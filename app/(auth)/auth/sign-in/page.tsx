@@ -38,7 +38,10 @@ export default function SignIn() {
                             className="mt-0.5 rounded-10 duration-250 ease-in-out after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-zinc-700/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right"
                             type="checkbox"
                           />
-                          <label className="ml-2 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">
+                          <label
+                            className="ml-2 font-normal cursor-pointer select-none text-sm text-slate-700"
+                            htmlFor="rememberMe"
+                          >
                             Remember me
                           </label>
                         </div>
@@ -55,7 +58,10 @@ export default function SignIn() {
                     <div className="border-black/12.5 rounded-b-2xl border-t-0 border-solid p-6 text-center pt-0 px-1 sm:px-6">
                       <p className="mx-auto mb-6 leading-normal text-sm">
                         Don't have an account?{' '}
-                        <Link href="/auth/sign-up" className="font-semibold text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-500">
+                        <Link
+                          href="/auth/sign-up"
+                          className="font-semibold text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-500"
+                        >
                           Sign up
                         </Link>
                       </p>
@@ -65,8 +71,13 @@ export default function SignIn() {
                 <div className="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
                   <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg')] rounded-xl ">
                     <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
-                    <h4 className="z-20 mt-12 font-bold text-white">"Attention is the new currency"</h4>
-                    <p className="z-20 text-white ">The more effortless the writing looks, the more effort the writer actually put into the process.</p>
+                    <h4 className="z-20 mt-12 font-bold text-white">
+                      "Attention is the new currency"
+                    </h4>
+                    <p className="z-20 text-white ">
+                      The more effortless the writing looks, the more effort the writer actually put
+                      into the process.
+                    </p>
                   </div>
                 </div>
               </div>
