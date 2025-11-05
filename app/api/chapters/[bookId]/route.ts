@@ -18,7 +18,7 @@ export async function GET(request: NextRequest, { params }: ChapterProps) {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'api-key': BIBLE_API_KEY,
+        'api-key': `${BIBLE_API_KEY}`,
       },
       next: { revalidate: 3600 }, // cache 1 day
     });
