@@ -5,32 +5,18 @@ import { useState, useEffect } from 'react';
 import SideNavbar from '@/app/components/Sidebar';
 import TopNavbar from '@/app/components/TopNavbar';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [sidebarOpen, setSidebarOpen] =
-    useState(false);
-  const [sidebarDark, setSidebarDark] =
-    useState(true);
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarDark, setSidebarDark] = useState(true);
 
-  const toggleSidebar = () =>
-    setSidebarOpen(!sidebarOpen);
-  const toggleSidebarTheme = () =>
-    setSidebarDark(!sidebarDark);
+  const toggleSidebar = (): void => setSidebarOpen(!sidebarOpen);
+  const toggleSidebarTheme = (): void => setSidebarDark(!sidebarDark);
 
   return (
     <>
       {/* Dashboard-specific scripts */}
-      <Script
-        src="/assets/argon/js/plugins/perfect-scrollbar.min.js"
-        strategy="lazyOnload"
-      />
-      <Script
-        src="/assets/argon/js/plugins/chartjs.min.js"
-        strategy="lazyOnload"
-      />
+      <Script src="/assets/argon/js/plugins/perfect-scrollbar.min.js" strategy="lazyOnload" />
+      <Script src="/assets/argon/js/plugins/chartjs.min.js" strategy="lazyOnload" />
       {/* <Script
         src="/assets/argon/js/argon-dashboard-tailwind.js?v=1.0.1"
         strategy="lazyOnload"
@@ -53,9 +39,7 @@ export default function DashboardLayout({
             {/* <!-- TopNavbar --> */}
             <TopNavbar
               toggleSidebar={toggleSidebar}
-              toggleSidebarTheme={
-                toggleSidebarTheme
-              }
+              toggleSidebarTheme={toggleSidebarTheme}
               sidebarDark={sidebarDark}
             />
             {/* <!-- end TopNavbar --> */}

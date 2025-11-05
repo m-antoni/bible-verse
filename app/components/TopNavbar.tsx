@@ -1,23 +1,23 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import {
-  FaMoon,
-  FaSun,
-  FaUser,
-} from 'react-icons/fa';
+import { FaMoon, FaSun, FaUser } from 'react-icons/fa';
+
+type TopNavbarProps = {
+  sidebarDark: boolean;
+  toggleSidebar: () => void;
+  toggleSidebarTheme: () => void;
+};
 
 export default function TopNavbar({
   toggleSidebar,
-  toggleSidebarTheme,
   sidebarDark,
-}) {
+  toggleSidebarTheme,
+}: TopNavbarProps) {
   // render the current url title
   const pathname = usePathname();
 
-  const currentPathName = (
-    url: string,
-  ): string => {
+  const currentPathName = (url: string): string => {
     switch (url) {
       case '/dashboard':
         return 'Dashboard';
@@ -54,9 +54,7 @@ export default function TopNavbar({
                 Dashboard
               </li> */}
           </ol>
-          <h6 className="mb-0 font-bold text-white capitalize">
-            {currentPathName(pathname)}
-          </h6>
+          <h6 className="mb-0 font-bold text-white capitalize">{currentPathName(pathname)}</h6>
         </nav>
 
         <div className="flex items-center mt-2 grow sm:mt-0 md:mr-0 lg:flex lg:basis-auto">
@@ -88,9 +86,7 @@ export default function TopNavbar({
               >
                 {/* <i className="fa fa-user "></i> */}
                 <FaUser className="sm:mr-2 sm:inline" />
-                <span className="hidden sm:inline">
-                  Michael
-                </span>
+                <span className="hidden sm:inline">Michael</span>
               </a>
             </li>
             <li className="flex items-center pl-4 xl:hidden">

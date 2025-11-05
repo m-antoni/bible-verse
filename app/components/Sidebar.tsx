@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaHome, FaEye, FaSearch, FaHeart, FaTimes } from 'react-icons/fa';
 
-interface SidebarProps {
+type SidebarProps = {
   sidebarOpen: boolean;
   toggleSidebar: () => void;
   sidebarDark: boolean;
-}
+};
 
 export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: SidebarProps) {
   // get the current url page
