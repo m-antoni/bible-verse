@@ -1,6 +1,11 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
 import { NextResponse } from 'next/server';
 
+// const headers: HeadersInit = {
+//   accept: 'application/json',
+//   ...(BIBLE_API_KEY ? { 'api-key': BIBLE_API_KEY } : {}),
+// };
+
 // Next API: /api/books
 // Bible API = https://bible-api-endpoint/[bibleId]/books
 export async function GET() {
@@ -9,7 +14,7 @@ export async function GET() {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'api-key': BIBLE_API_KEY,
+        'api-key': BIBLE_API_KEY as string,
       },
       next: { revalidate: 3600 }, // cache 1 day
     });

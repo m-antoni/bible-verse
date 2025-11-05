@@ -5,9 +5,19 @@ import { getBibleBooks } from '@/app/lib/services/bibleService';
 import { lsFilterBooks, lsSearch } from '@/app/lib/helpers/localStorage';
 import { useEffect, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
+import Image from 'next/image';
+
+type Book = {
+  id: number;
+  abbreviation: string;
+  bibleId: string;
+  name: string;
+  nameLong: string;
+  chapters: number;
+};
 
 export default function ReadBible() {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   // handle filter
@@ -127,7 +137,7 @@ export default function ReadBible() {
       <div className="flex-none w-full max-w-full px-3">
         <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
           <div className="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6 className="dark:text-white">Bible List of Books</h6>
+            <h6 className="dark:text-white">Bible Books</h6>
           </div>
           <div className="flex-auto px-0 pt-0 pb-2  min-h-[200px]">
             <div className="p-0 overflow-x-auto">
@@ -141,16 +151,16 @@ export default function ReadBible() {
                     <tr>
                       <th
                         className="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse 
-                      shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                      shadow-none dark:border-white/40 dark:text-e text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
                       >
                         Book Name
                       </th>
                       <th
-                        className="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse
+                        className=" px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse
                        shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap
-                      text-slate-400 opacity-70 lg:block md:hidden hidden"
+                      text-slate-400 opacity-70"
                       >
-                        Version
+                        <div className="hidden md:table-cell lg:table-cell">Version</div>
                       </th>
                       <th
                         className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse
@@ -175,10 +185,12 @@ export default function ReadBible() {
                           <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent whitespace-normal break-words">
                             <div className="flex px-2 py-1">
                               <div>
-                                <img
+                                <Image
                                   src="/assets/custom/bible.png"
                                   className="xl:block sm:hidden hidden inline-flex items-center justify-center mr-2 text-white transition-all duration-200 ease-in-out h-9 w-9 "
-                                  alt="user1"
+                                  alt="image"
+                                  width={1}
+                                  height={1}
                                 />
                               </div>
                               <div className="flex flex-col justify-center">
@@ -191,14 +203,12 @@ export default function ReadBible() {
                               </div>
                             </div>
                           </td>
-                          <td
-                            className="p-2 align-middle bg-transparent border-b dark:border-white/40 
-                            whitespace-nowrap shadow-transparent lg:block md:hidden hidden"
-                          >
-                            <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
-                              King James Version (KJV)
-                            </p>
-                            {/* <p className="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400"></p> */}
+                          <td className="p-2 text-sm leading-normal text-left align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                            <div className="hidden md:table-cell lg:table-cell">
+                              <p className="m-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                                King James Version (KJV)
+                              </p>
+                            </div>
                           </td>
                           <td className="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                             <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
