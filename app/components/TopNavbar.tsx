@@ -18,11 +18,13 @@ export default function TopNavbar({
   const pathname = usePathname();
 
   const currentPathName = (url: string): string => {
+    if (url.startsWith('/read-bible')) {
+      return 'Read Bible';
+    }
+
     switch (url) {
       case '/dashboard':
         return 'Dashboard';
-      case '/read-bible':
-        return 'Read Bible';
       case '/search':
         return 'Search';
       default:

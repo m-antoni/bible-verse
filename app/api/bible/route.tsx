@@ -1,7 +1,7 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
 import { NextResponse } from 'next/server';
 
-// Next API: /api/books
+// Next API: /api/bible
 // Bible API = https://bible-api-endpoint/[bibleId]
 export async function GET() {
   try {

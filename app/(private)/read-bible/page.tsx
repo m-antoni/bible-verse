@@ -1,11 +1,12 @@
 'use client';
 
-import { FaEye, FaHeart } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import { getBibleBooks } from '@/app/lib/services/bibleService';
 import { lsFilterBooks, lsSearch } from '@/app/lib/helpers/localStorage';
 import { useEffect, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Book = {
   id: number;
@@ -18,50 +19,53 @@ type Book = {
 
 export default function ReadBible() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [allBooks, setAllBooks] = useState<Book[]>([]); // keep all books here
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  // handle filter
   const [rows, setRows] = useState(10);
   const [open, setOpen] = useState(false);
   const options = [10, 20, 40, 80];
-  // using debounce
 
+  // fetch the books
   useEffect(() => {
-    async function getBook() {
-      try {
-        // setLoading(true);
-        const data = await getBibleBooks();
-        // console.log(data);
-        setBooks(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-        handleSelectFilter(10);
-      }
-    }
+    const lsBooks = lsFilterBooks();
 
-    getBook();
+    if (lsBooks?.length) {
+      setAllBooks(lsBooks); // store all books
+      setBooks(lsBooks.slice(0, 10)); // show first 10 initially
+      setLoading(false);
+    } else {
+      // Fallback API Call
+      (async () => {
+        try {
+          const data = await getBibleBooks();
+          setAllBooks(data);
+          setBooks(data.slice(0, 10));
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
   }, []);
 
-  // Debounce input
+  // Search use debounce 500 milliseconds
   useEffect(() => {
     const timer = setTimeout(() => {
       const lsBooks = lsSearch(search);
-      setBooks(lsBooks);
+      setAllBooks(lsBooks); // update full search result
+      setBooks(lsBooks.slice(0, rows)); // apply current row limit
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, rows]);
 
-  // handle books filter
+  // handle the filter show list
   const handleSelectFilter = (opt: number) => {
     setRows(opt);
     setOpen(false);
-    // get filter values from Local Storage
-    const lsBooks = lsFilterBooks();
-    const filtered = lsBooks.slice(0, opt);
-    setBooks(filtered);
+    setBooks(allBooks.slice(0, opt)); // show the selected number of rows
   };
 
   // Spinner
@@ -71,18 +75,19 @@ export default function ReadBible() {
     <div className="flex flex-wrap -mx-3">
       <div className="flex-none w-full max-w-full px-3 -mb-2">
         <div className="relative min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-          <div className="flex rounded-lg ease ">
+          <div className="flex rounded-lg ease">
             <input
               onChange={(e) => setSearch(e.target.value)}
               value={search}
               type="text"
-              className="pl-3 text-sm focus:shadow-primary-outline ease w-1/100 min-w-0 flex-auto rounded-lg border 
-                    border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white py-2 pr-3 text-gray-700 
-                    placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow mx-5 my-5"
+              className="pl-3 text-sm ease w-1/100 min-w-0 flex-auto rounded-lg border 
+          border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white py-2 pr-3 text-gray-700 
+          placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow 
+          mx-5 my-5 shadow-md"
               placeholder="Search here..."
             />
 
-            <div className="text-left pr-5 py-5">
+            <div className="text-left pr-5 py-5 relative">
               <button
                 onClick={() => setOpen(!open)}
                 disabled={search.length ? true : false}
@@ -90,9 +95,9 @@ export default function ReadBible() {
                 className={
                   search.length
                     ? `inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-200 bg-white border 
-                border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none`
+      border-gray-300 rounded-md shadow-md focus:outline-none`
                     : `inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-700 bg-white border 
-                border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none`
+      border-gray-300 rounded-md shadow-md focus:outline-none`
                 }
               >
                 Show: {rows}
@@ -116,7 +121,10 @@ export default function ReadBible() {
 
               {/* Dropdown Menu */}
               {open && (
-                <div className="absolute right-0 z-10 w-32 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
+                <div
+                  className="absolute right-0 z-10 w-32 mt-2 origin-top-right bg-white border border-gray-200 
+        divide-y divide-gray-100 rounded-md shadow-md"
+                >
                   {options.map((opt) => (
                     <button
                       key={opt}
@@ -217,17 +225,17 @@ export default function ReadBible() {
                           </td>
 
                           <td className="p-2 align-right text-center bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                            <a
-                              href="javascript:;"
-                              className="flex justify-center text-xs font-semibold dark:text-white dark:opacity-80 text-slate-400"
+                            <Link
+                              href={`/read-bible/${book.id}`}
+                              className="inline-flex items-center justify-center px-3 py-1 text-xs font-semibold 
+                              text-slate-700 rounded-md border border-slate-300 
+                              hover:bg-slate-700 hover:text-white hover:border-slate-700 
+                              dark:border-slate-600 dark:hover:bg-slate-800 dark:hover:border-slate-800 dark:text-white 
+                              transition-all duration-200 shadow-sm hover:shadow-md"
                             >
-                              <span className="px-2 text-lg">
-                                <FaHeart />
-                              </span>
-                              <span className="px-2 text-lg">
-                                <FaEye />
-                              </span>
-                            </a>
+                              <FaEye className="mr-2" />
+                              Read
+                            </Link>
                           </td>
                         </tr>
                       );

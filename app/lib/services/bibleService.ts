@@ -1,6 +1,7 @@
 import { lsGetBooks, lsStoreBooks } from '@/app/lib/helpers/localStorage';
 
-// Next API: /api/books
+// Next API: /api/bible
+// Bible API = https://bible-api-endpoint/[bibleId]
 export async function getBible() {
   try {
     const res = await fetch('/api/bible');
@@ -16,6 +17,7 @@ export async function getBible() {
 }
 
 // Next API: /api/books
+// Bible API = https://bible-api-endpoint/[bibleId]/books
 export async function getBibleBooks() {
   // Check local cache first
   const cached = lsGetBooks();
@@ -56,6 +58,7 @@ export async function getBibleBooks() {
 }
 
 // Next API: /api/chapters/[bookId]
+// Bible API: https://bible-api-endpoint/[bibleId]/books/[booksId]/chapters
 export async function getBookChapters(bookId: string) {
   try {
     const res = await fetch(`/api/chapters/${bookId}`, { cache: 'no-store' }); // no caching in browser
