@@ -1,14 +1,23 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
-import { NextResponse } from 'next/server';
+import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-/*
-  Next API: /api/books
-  Bible API: https://bible-api/[bibleId]/books
-  Desc: Fetch the list of books 
+type ChapterProps = {
+  params: Promise<{ bookId: string }>;
+};
+
+/* 
+  Next API: /api/books/[bookId]
+  Bible API: https://bible-api/[bibleId]/books/[booksId]/chapters
+  Desc: Fetch the chapters of a book
 */
-export async function GET() {
+export async function GET(request: NextRequest, { params }: ChapterProps) {
   try {
-    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/books`, {
+    const { bookId } = await params;
+
+    console.log('BOOK_ID', bookId);
+
+    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/books/${bookId}/chapters`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
@@ -26,6 +35,7 @@ export async function GET() {
     }
 
     const data = await response.json();
+
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);

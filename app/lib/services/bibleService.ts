@@ -1,7 +1,10 @@
 import { lsGetBooks, lsStoreBooks } from '@/app/lib/helpers/localStorage';
 
-// Next API: /api/bible
-// Bible API = https://bible-api-endpoint/[bibleId]
+/* 
+  Next API: /api/bible
+  Bible API: https://bible-api/[bibleId]
+  Desc: Fetch the bible details base on bible id 
+*/
 export async function getBible() {
   try {
     const res = await fetch('/api/bible');
@@ -16,8 +19,11 @@ export async function getBible() {
   }
 }
 
-// Next API: /api/books
-// Bible API = https://bible-api-endpoint/[bibleId]/books
+/*
+  Next API: /api/books
+  Bible API: https://bible-api/[bibleId]/books
+  Desc: Fetch the list of books 
+*/
 export async function getBibleBooks() {
   // Check local cache first
   const cached = lsGetBooks();
@@ -34,7 +40,10 @@ export async function getBibleBooks() {
 
     const { data } = await res.json();
 
-    // get the chapters per books but using Promise.all()
+    /* 
+      Call: getBookChapters(bookId)
+      get the chapters per books but using Promise.all()
+    */
     let booksWithChapters;
     if (data.length) {
       booksWithChapters = await Promise.all(
@@ -42,7 +51,7 @@ export async function getBibleBooks() {
           // API call 80x in a loop
           const bookChapters = await getBookChapters(book.id);
           // restructure the object
-          return { ...book, chapters: bookChapters.length };
+          return { ...book, chapters: bookChapters.length, chapter_01: bookChapters[1].id };
         }),
       );
     }
@@ -57,11 +66,14 @@ export async function getBibleBooks() {
   }
 }
 
-// Next API: /api/chapters/[bookId]
-// Bible API: https://bible-api-endpoint/[bibleId]/books/[booksId]/chapters
+/* 
+  Next API: /api/books/[bookId]
+  Bible API: https://bible-api/[bibleId]/books/[booksId]/chapters
+  Desc: Fetch the chapters of a book
+*/
 export async function getBookChapters(bookId: string) {
   try {
-    const res = await fetch(`/api/chapters/${bookId}`, { cache: 'no-store' }); // no caching in browser
+    const res = await fetch(`/api/books/${bookId}`, { cache: 'no-store' }); // no caching in browser
 
     if (!res.ok) {
       throw new Error(`Failed to fetch book chapters: ${res.statusText}`);
@@ -72,6 +84,28 @@ export async function getBookChapters(bookId: string) {
     return data;
   } catch (error) {
     console.error('Error fetching book chapters: ', error);
+    throw error;
+  }
+}
+
+/* 
+    Next API: /api/books/[bookId]/chapters/[chapterId]
+    Bible API: https://bible-api/[bibleId]/chapters/[chapterId]
+    Desc: Fetch chapter of a book eq. chapter 1 of Genesis
+*/
+export async function getBookChapter(bookId: string, chapterId: string) {
+  try {
+    const res = await fetch(`/api/books/${bookId}/chapters/${chapterId}`);
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch chapter of book`);
+    }
+
+    const { data } = await res.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching bible books: ', error);
     throw error;
   }
 }

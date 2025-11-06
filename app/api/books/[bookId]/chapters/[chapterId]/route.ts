@@ -1,23 +1,23 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
-import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 type ChapterProps = {
-  params: Promise<{ bookId: string }>;
+  params: Promise<{ bookId: string; chapterId: string }>;
 };
 
-// Next API: /api/chapters/[bookId]
-// Bible API: https://bible-api-endpoint/[bibleId]/books/[booksId]/chapters
+/* 
+    Next API: /api/books/[bookId]/chapters/[chapterId]
+    Bible API: https://bible-api/[bibleId]/chapters/[chapterId]
+    Desc: Fetch chapter of a book eq. chapter 1 of Genesis
+*/
 export async function GET(request: NextRequest, { params }: ChapterProps) {
   try {
-    const { bookId } = await params;
+    const { bookId, chapterId } = await params;
 
-    console.log('BOOK_ID', bookId);
-
-    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/books/${bookId}/chapters`, {
+    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/chapters/${chapterId}`, {
       method: 'GET',
       headers: {
-        accept: 'application/json',
+        Accept: 'application/json',
         'api-key': `${BIBLE_API_KEY}`,
       },
       next: { revalidate: 3600 }, // cache 1 day
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest, { params }: ChapterProps) {
 
     const data = await response.json();
 
-    return NextResponse.json(data);
+    return Response.json(data);
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

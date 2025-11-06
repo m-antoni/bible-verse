@@ -1,41 +1,98 @@
 'use client';
 
-import Spinner from '@/app/components/Spinner';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import {
+  FaBook,
+  FaEye,
   FaArrowAltCircleLeft,
   FaArrowAltCircleRight,
   FaBookmark,
   FaCheck,
   FaHeart,
 } from 'react-icons/fa';
-import { FaBookAtlas, FaFloppyDisk } from 'react-icons/fa6';
+import { getBibleBooks, getBookChapters } from '@/app/lib/services/bibleService';
+import { lsFilterBooks, lsSearch } from '@/app/lib/helpers/localStorage';
+import { useEffect, useState } from 'react';
+import Spinner from '@/app/components/Spinner';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
-export default function BookRead() {
+type Book = {
+  id: number;
+  bibleId: string;
+  bookId: string;
+  number: string;
+  reference: string;
+};
+
+export default function ReadBible() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [allBooks, setAllBooks] = useState<Book[]>([]); // keep all books here
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [rows, setRows] = useState(10);
   const [open, setOpen] = useState(false);
+
   const [chapter, setChapter] = useState('01');
   const chapters = ['01', '02', '03', '04', '05'];
 
+  const params = useParams();
+  const bookId = params.bookId as string;
+
+  // fetch the books
+  useEffect(() => {
+    const lsBooks = lsFilterBooks();
+
+    if (lsBooks?.length) {
+      setAllBooks(lsBooks); // store all books
+      setBooks(lsBooks.slice(0, 10)); // show first 10 initially
+      setLoading(false);
+    } else {
+      // Fallback API Call
+      (async () => {
+        try {
+          const data = await getBookChapters(bookId);
+          console.log(data);
+          setAllBooks(data);
+          setBooks(data.slice(0, 10));
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
+  }, []);
+
+  // handle the filter show list
+  const handleSelectFilter = (opt: number) => {
+    // setRows(opt);
+    // setOpen(false);
+    // setBooks(allBooks.slice(0, opt)); // show the selected number of rows
+  };
+
   // handle books chapter
-  const handleSelect = (ch) => {
+  const handleSelect = (ch: string) => {
     setChapter(ch);
     setOpen(false);
   };
+
   // Spinner
-  //   if (loading) return <Spinner />;
+  if (loading) return <Spinner />;
+
   return (
     <div className="flex flex-wrap -mx-3">
-      {/* main end wrap */}
       <div className="relative w-full mx-auto">
-        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between flex-auto min-w-0 p-4 mx-6 overflow-visible break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl rounded-2xl bg-clip-border">
+        <div
+          className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between flex-auto min-w-0
+         p-4 mx-6 overflow-visible break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl
+          rounded-2xl bg-clip-border"
+        >
           {/* Left Section — Image & Title */}
           <div className="flex items-center space-x-3 mb-4 sm:mb-0">
             <div
               className="relative inline-flex items-center justify-center text-white transition-all
-        duration-200 ease-in-out text-base h-19 w-19 rounded-xl"
+              duration-200 ease-in-out text-base h-19 w-19 rounded-xl"
             >
               <Image
                 src="/assets/custom/bible-01.png"
@@ -59,200 +116,110 @@ export default function BookRead() {
             <button
               onClick={() => setOpen(!open)}
               type="button"
-              className="inline-flex justify-between items-center w-full sm:w-40 px-5 py-3 text-sm font-medium text-gray-700 bg-white border 
-        border-gray-300 rounded-lg shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+              className=" w-full px-4 py-3 text-xs font-bold text-slate-700 text-slate-700 rounded-md border border-slate-300 
+                hover:bg-slate-700 hover:text-white hover:border-slate-700 
+                dark:border-slate-600 dark:hover:bg-slate-800 dark:hover:border-slate-800 dark:text-white 
+                transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Chapter: {chapter}
-              <svg
-                className={`w-4 h-4 ml-2 text-gray-500 transition-transform ${
-                  open ? 'rotate-180' : 'rotate-0'
-                }`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+              MOVE TO NEXT BOOK
             </button>
-
-            {/* Dropdown Menu */}
-            {open && (
-              <div
-                className="absolute right-0 z-50 w-full sm:w-40 mt-2 origin-top-right bg-white border border-gray-200 
-              divide-y divide-gray-100 rounded-md shadow-lg overflow-hidden"
-              >
-                {chapters.map((ch) => (
-                  <button
-                    key={ch}
-                    onClick={() => handleSelect(ch)}
-                    className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 transition-colors duration-150 ${
-                      chapter === ch ? 'font-semibold text-blue-500 bg-blue-50' : 'text-gray-700'
-                    }`}
-                  >
-                    Chapter {ch}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </div>
-
-      <div className="w-full p-6 mx-auto">
-        <div className="flex flex-wrap -mx-3">
-          <div className="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0">
-            <div className="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-              <div className="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0 -mb-5">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                  {/* Text */}
-                  <p className="mb-2 sm:mb-0 dark:text-white/80 text-left">Chapter 01</p>
-
-                  {/* Buttons */}
-                  <div className="flex justify-end w-full sm:w-auto gap-2">
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center w-8 h-8 text-red-500 
-                        border border-red-500 rounded-full bg-transparent
-                        hover:bg-red-500 hover:text-white transition-all duration-200 shadow-sm
-                        active:scale-50"
-                    >
-                      <FaHeart />
-                    </button>
-
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center w-8 h-8 text-slate-700 
-                        border border-slate-700 rounded-full bg-transparent 
-                        hover:bg-slate-700 hover:text-white transition-all duration-200 shadow-sm
-                        active:scale-50"
-                    >
-                      <FaBookmark />
-                    </button>
-                  </div>
+      {/* SECOND CARD */}
+      <div className="flex-none w-full max-w-full px-6 mt-3">
+        <div className="relative flex flex-col bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl">
+          {/* <div className="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+            <h6 className="dark:text-white">Bible Books</h6>
+          </div> */}
+          <div className="flex-auto px-0 pt-0 pb-2 min-h-[200px] mt-3">
+            <div className="p-0 overflow-x-auto">
+              {search.length && books.length === 0 ? (
+                <div className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500 ">
+                  <div className="text-center px-5 py-10 font-semibold">~ NO SEARCH FOUND ~</div>
                 </div>
-              </div>
+              ) : (
+                <>
+                  <table className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
+                    <thead className="align-bottom">
+                      <tr>
+                        <th
+                          className="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse 
+                      shadow-none dark:border-white/40 dark:text-e text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                        >
+                          Chapter Title
+                        </th>
+                        <th
+                          className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse
+                       shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                        >
+                          Verses
+                        </th>
+                        <th
+                          className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse
+                       shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                        >
+                          Action
+                        </th>
+                        {/* <th className="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse
+                       border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th> */}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {books?.map((book, key) => {
+                        return (
+                          <tr key={key}>
+                            <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent whitespace-normal break-words">
+                              <div className="flex px-2 py-1">
+                                <div>
+                                  <Image
+                                    src="/assets/custom/chapter.png"
+                                    className="xl:block sm:hidden hidden inline-flex items-center justify-center mr-2 text-white transition-all duration-200 ease-in-out h-9 w-9 "
+                                    alt="image"
+                                    width={1}
+                                    height={1}
+                                  />
+                                </div>
+                                <div className="flex flex-col justify-center">
+                                  <h6 className="mb-0 text-sm leading-normal dark:text-white font-semibold">
+                                    {book.reference}
+                                  </h6>
+                                  {/* <p className="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400 whitespace-normal break-words max-w-[40ch]">
+                                    {book.nameLong}
+                                  </p> */}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                              <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                                {/* {book.chapters} */}
+                              </p>
+                            </td>
 
-              <div className="p-6">
-                <hr
-                  className="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent 
-                dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent "
-                />
-                <div>
-                  <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex
-                    sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-                    convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla
-                  </p>
-
-                  <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex
-                    sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-                    convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla
-                  </p>
-
-                  <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex
-                    sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-                    convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla
-                  </p>
-
-                  <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex
-                    sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-                  </p>
-
-                  <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex
-                    sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-                    convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla
-                  </p>
-                </div>
-
-                <hr
-                  className="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent 
-                dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent "
-                />
-
-                <div className="flex justify-between content-center -mb-4">
-                  <button
-                    type="button"
-                    className="flex mr-2 inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
-                    transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem 
-                    hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                  >
-                    <FaArrowAltCircleLeft className="text-lg" />
-                    <span className="ml-2">Prev </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="flex inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
-                    transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem 
-                    hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                  >
-                    <span className="mr-2">Next </span>
-                    <FaArrowAltCircleRight className="text-lg" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* "" */}
-
-          {/* Noted section */}
-          <div className="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
-            <div
-              className="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 
-            dark:shadow-dark-xl rounded-2xl bg-clip-border"
-            >
-              <Image
-                className="w-full rounded-t-2xl"
-                src="/assets/custom/note-section.jpg"
-                alt="notes"
-                // fill={true}
-                width={500}
-                height={500}
-              />
-
-              <div className="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4">
-                <div className="mb-4">
-                  <label
-                    htmlFor="address"
-                    className="flex py-3 text-lgf text-slate-700 dark:text-white/80 mr-0"
-                  >
-                    Notes:
-                  </label>
-                  <textarea
-                    name="address"
-                    className="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none 
-                    rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none 
-                    transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none h-48"
-                    placeholder="Enter your notes..."
-                  ></textarea>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="px-4 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 
-                    rounded-lg shadow-md cursor-pointer text-xs bg-slate-700 lg:block tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                  >
-                    <div className="flex">
-                      {/* <FaFloppyDisk className="text-lg" /> */}
-                      <span className="">Save Note</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
+                            <td className="p-2 align-right text-center bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                              <Link
+                                href={`/read-bible/${bookId}/chapter/${book.id}`}
+                                className="inline-flex items-center justify-center px-3 py-1 text-xs font-semibold 
+                              text-slate-700 rounded-md border border-slate-300 
+                              hover:bg-slate-700 hover:text-white hover:border-slate-700 
+                              dark:border-slate-600 dark:hover:bg-slate-800 dark:hover:border-slate-800 dark:text-white 
+                              transition-all duration-200 shadow-sm hover:shadow-md"
+                              >
+                                <FaEye className="mr-2" />
+                                Read
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {/* main end wrap */}
     </div>
   );
 }

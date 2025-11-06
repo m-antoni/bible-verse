@@ -1,6 +1,6 @@
 'use client';
 
-import { FaEye } from 'react-icons/fa';
+import { FaBook, FaEye } from 'react-icons/fa';
 import { getBibleBooks } from '@/app/lib/services/bibleService';
 import { lsFilterBooks, lsSearch } from '@/app/lib/helpers/localStorage';
 import { useEffect, useState } from 'react';
@@ -15,6 +15,7 @@ type Book = {
   name: string;
   nameLong: string;
   chapters: number;
+  chapter_01: string;
 };
 
 export default function ReadBible() {
@@ -72,7 +73,7 @@ export default function ReadBible() {
   if (loading) return <Spinner />;
 
   return (
-    <div className="flex flex-wrap -mx-3">
+    <div className="flex flex-wrap">
       <div className="flex-none w-full max-w-full px-3 -mb-2">
         <div className="relative min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
           <div className="flex rounded-lg ease">
@@ -154,94 +155,55 @@ export default function ReadBible() {
                   <div className="text-center px-5 py-10 font-semibold">~ NO SEARCH FOUND ~</div>
                 </div>
               ) : (
-                <table className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
-                  <thead className="align-bottom">
-                    <tr>
-                      <th
-                        className="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse 
-                      shadow-none dark:border-white/40 dark:text-e text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                <>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+                    {books.map((book) => (
+                      <div
+                        key={book.id}
+                        className="bg-white dark:bg-slate-850 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-200 relative"
                       >
-                        Book Name
-                      </th>
-                      <th
-                        className=" px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse
-                       shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap
-                      text-slate-400 opacity-70"
-                      >
-                        <div className="hidden md:table-cell lg:table-cell">Version</div>
-                      </th>
-                      <th
-                        className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse
-                       shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                      >
-                        Chapters
-                      </th>
-                      <th
-                        className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse
-                       shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                      >
-                        Actions
-                      </th>
-                      {/* <th className="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse
-                       border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th> */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {books?.map((book, key) => {
-                      return (
-                        <tr key={key}>
-                          <td className="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent whitespace-normal break-words">
-                            <div className="flex px-2 py-1">
-                              <div>
-                                <Image
-                                  src="/assets/custom/bible.png"
-                                  className="xl:block sm:hidden hidden inline-flex items-center justify-center mr-2 text-white transition-all duration-200 ease-in-out h-9 w-9 "
-                                  alt="image"
-                                  width={1}
-                                  height={1}
-                                />
-                              </div>
-                              <div className="flex flex-col justify-center">
-                                <h6 className="mb-0 text-sm leading-normal dark:text-white font-semibold">
-                                  {book.name}
-                                </h6>
-                                <p className="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400 whitespace-normal break-words max-w-[40ch]">
-                                  {book.nameLong}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="p-2 text-sm leading-normal text-left align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                            <div className="hidden md:table-cell lg:table-cell">
-                              <p className="m-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
-                                King James Version (KJV)
-                              </p>
-                            </div>
-                          </td>
-                          <td className="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                            <p className="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
-                              {book.chapters}
-                            </p>
-                          </td>
+                        {/* Image at the top */}
+                        <div className="relative w-full h-36 sm:h-44">
+                          <Image
+                            src="/assets/custom/note-section.jpg"
+                            alt={book.name}
+                            fill
+                            className="object-cover"
+                          />
 
-                          <td className="p-2 align-right text-center bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
+                          {/* Action buttons overlay */}
+                          <div className="absolute top-2 right-2 flex space-x-2">
+                            {/* Link only on eye icon */}
                             <Link
-                              href={`/read-bible/${book.id}`}
-                              className="inline-flex items-center justify-center px-3 py-1 text-xs font-semibold 
-                              text-slate-700 rounded-md border border-slate-300 
-                              hover:bg-slate-700 hover:text-white hover:border-slate-700 
-                              dark:border-slate-600 dark:hover:bg-slate-800 dark:hover:border-slate-800 dark:text-white 
-                              transition-all duration-200 shadow-sm hover:shadow-md"
+                              href={`/read-bible/${book.abbreviation}`}
+                              className="inline-flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full shadow hover:bg-blue-600 transition-colors duration-200"
                             >
-                              <FaEye className="mr-2" />
-                              Read
+                              <FaEye className="text-sm" />
                             </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+
+                            {/* Bookmark button */}
+                            <button className="inline-flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full shadow hover:bg-red-600 transition-colors duration-200">
+                              <FaBook className="text-sm" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Text content below */}
+                        <div className="p-4 flex flex-col justify-between h-32">
+                          <h3 className="text-sm font-semibold dark:text-white -mb-1">
+                            {book.name}
+                          </h3>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                            {book.nameLong}
+                          </p>
+                          <span className="mt-2 text-xs font-semibold text-slate-700">
+                            {book.chapters} Chapters
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>

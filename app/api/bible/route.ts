@@ -1,8 +1,11 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
 import { NextResponse } from 'next/server';
 
-// Next API: /api/bible
-// Bible API = https://bible-api-endpoint/[bibleId]
+/* 
+  Next API: /api/bible
+  Bible API: https://bible-api/[bibleId]
+  Desc: Fetch the bible details base on bible id 
+*/
 export async function GET() {
   try {
     const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}`, {
