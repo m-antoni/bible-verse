@@ -2,7 +2,7 @@
 
 import { FaBook, FaEye } from 'react-icons/fa';
 import { getBibleBooks } from '@/app/lib/services/bibleService';
-import { lsGetBooks, lsSearch } from '@/app/lib/helpers/localStorage';
+import { getFromLocalStorage, searchFromLocalStorage } from '@/app/lib/helpers';
 import { useEffect, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
 import Image from 'next/image';
@@ -20,11 +20,11 @@ export default function ReadBible() {
 
   // fetch the books
   useEffect(() => {
-    const lsBooks = lsGetBooks();
+    const getFromLS = getFromLocalStorage<Book[]>('bible-books');
 
-    if (lsBooks?.length) {
-      setAllBooks(lsBooks); // store all books
-      setBooks(lsBooks.slice(0, 10)); // show first 10 initially
+    if (getFromLS?.length) {
+      setAllBooks(getFromLS); // store all books
+      setBooks(getFromLS.slice(0, 10)); // show first 10 initially
       setLoading(false);
     } else {
       // Fallback API Call
@@ -45,9 +45,9 @@ export default function ReadBible() {
   // Search use debounce 500 milliseconds
   useEffect(() => {
     const timer = setTimeout(() => {
-      const lsBooks = lsSearch(search);
-      setAllBooks(lsBooks); // update full search result
-      setBooks(lsBooks.slice(0, rows)); // apply current row limit
+      const getFromLS = searchFromLocalStorage(search, 'bible-books');
+      setAllBooks(getFromLS); // update full search result
+      setBooks(getFromLS.slice(0, rows)); // apply current row limit
     }, 500);
 
     return () => clearTimeout(timer);

@@ -14,8 +14,15 @@ import {
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { getBookChapter } from '@/app/lib/services/bibleService';
-import { useParams } from 'next/navigation';
-import { copyrightToHtml, verseToHtml } from '@/app/lib/helpers/transformText';
+import { useParams, usePathname } from 'next/navigation';
+import {
+  copyrightToHtml,
+  excludeIntroPage,
+  getRandomIntroText,
+  verseToHtml,
+} from '@/app/lib/helpers';
+import { getFromLocalStorage } from '@/app/lib/helpers/localStorage';
+import { BookChapterAndDetails } from '@/app/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ChapterState = {
@@ -35,37 +42,49 @@ export default function BookRead() {
   const [dropdown_value, setD_Chapter] = useState(1);
   const [chapterOptions, setDropdownOptions] = useState<number[]>([]);
 
-  // fetch the chapter of the book
-  useEffect(() => {
-    const fetchBookChapter = async () => {
-      try {
-        const BOOK_ID = bookId as string;
-        const CHAPTER_ID = chapterId as string;
+  // get the url parts
+  const pathname = usePathname();
+  const urlParts = pathname.split('/').filter(Boolean);
 
+  // Check if items exist in localStorage otherwise fall back to an API call.
+  // This ensures that on refresh, data is loaded from localStorage first.
+  useEffect(() => {
+    const BOOK_ID = bookId as string;
+    const CHAPTER_ID = chapterId as string;
+    const getFromLS = getFromLocalStorage<BookChapterAndDetails>('book-chapter');
+
+    if (getFromLS && Object.keys(getFromLS).length && getFromLS.data.id === CHAPTER_ID) {
+      // console.log(getFromLS);
+      setChapter({
+        book_chapter_data: [getFromLS.data],
+        book_chapter_details: getFromLS.details,
+      });
+
+      // create an array base on the total chapters set to dropdown
+      const arr = Array.from({ length: getFromLS.details.total_chapter }, (_, i) => i + 1);
+      setDropdownOptions(arr);
+      setLoading(false);
+    } else {
+      // Fallback API Call
+      (async () => {
         const data = await getBookChapter(BOOK_ID, CHAPTER_ID);
-        console.log('DATA', data); // I get the data here
         setChapter({
           book_chapter_data: [data.data],
           book_chapter_details: data.details,
         });
+
+        // create an array base on the total chapters
         const arr = Array.from({ length: data.details.total_chapter }, (_, i) => i + 1);
         setDropdownOptions(arr);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-        console.log(chapter); // but this becomes still undefined
-      }
-    };
-
-    fetchBookChapter();
+        try {
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
   }, [bookId, chapterId]);
-
-  // handle books chapter
-  const handleSelectChapter = (ch: number) => {
-    setD_Chapter(ch);
-    setOpen(false);
-  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -81,6 +100,12 @@ export default function BookRead() {
   // Handle selection
   const onSelect = (chapter: number) => {
     handleSelectChapter(chapter);
+    setOpen(false);
+  };
+
+  // handle books chapter
+  const handleSelectChapter = (ch: number) => {
+    setD_Chapter(ch);
     setOpen(false);
   };
 
@@ -239,7 +264,12 @@ export default function BookRead() {
                     />
 
                     <div className="mt-5">
-                      <h3>Total Verse: {ch.verseCount}</h3>
+                      {ch.number !== 'intro' ? (
+                        <h3>Total Verse: {ch.verseCount}</h3>
+                      ) : (
+                        <div className="text-lg text-slate-700 py-10">{getRandomIntroText()}</div>
+                      )}
+
                       <div
                         className="text-sm text-slate-700 mt-4"
                         dangerouslySetInnerHTML={{
@@ -257,23 +287,30 @@ export default function BookRead() {
 
                     <div className="flex justify-between content-center -mb-4">
                       {/* PREV BUTTON */}
-                      {ch.number !== 'intro' ? (
-                        <button
-                          type="button"
-                          className="flex mr-2 inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
+                      {ch.number !== 'intro' && ch.id !== 'GEN.1' ? (
+                        <Link
+                          href={excludeIntroPage(
+                            `/${urlParts[0]}/${bookId}/${urlParts[2]}/${ch.previous.id}`,
+                            'prev',
+                          )}
+                        >
+                          <button
+                            type="button"
+                            className="flex mr-2 inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
                         transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem 
                         hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                        >
-                          <FaArrowAltCircleLeft className="text-lg" />
-                          <span className="ml-2">Prev </span>
-                        </button>
+                          >
+                            <FaArrowAltCircleLeft className="text-lg" />
+                            <span className="ml-2">Prev </span>
+                          </button>
+                        </Link>
                       ) : (
                         <button
                           disabled
                           type="button"
                           className="flex mr-2 items-center px-3 py-2 mb-4 font-bold leading-normal text-center text-gray-400 
-                     bg-gray-100 border-0 rounded-lg shadow-sm cursor-not-allowed text-xs tracking-tight-rem 
-                     transition-all duration-200 ease-in hover:line-through"
+                              bg-gray-100 border-0 rounded-lg shadow-sm cursor-not-allowed text-xs tracking-tight-rem 
+                              transition-all duration-200 ease-in hover:line-through"
                         >
                           <FaArrowAltCircleLeft className="text-lg" />
                           <span className="ml-2">Prev</span>
@@ -281,15 +318,22 @@ export default function BookRead() {
                       )}
 
                       {/* NEXT BUTTON */}
-                      <button
-                        type="button"
-                        className="flex inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
+                      <Link
+                        href={excludeIntroPage(
+                          `/${urlParts[0]}/${bookId}/${urlParts[2]}/${ch.next.id}`,
+                          'next',
+                        )}
+                      >
+                        <button
+                          type="button"
+                          className="flex inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
                         transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem 
                         hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                      >
-                        <span className="mr-2">Next </span>
-                        <FaArrowAltCircleRight className="text-lg" />
-                      </button>
+                        >
+                          <span className="mr-2">Next </span>
+                          <FaArrowAltCircleRight className="text-lg" />
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

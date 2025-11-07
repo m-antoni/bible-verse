@@ -1,4 +1,4 @@
-import { lsGetBooks, lsStoreBooks } from '@/app/lib/helpers/localStorage';
+import { getFromLocalStorage, storeToLocalStorage } from '@/app/lib/helpers/localStorage';
 import { Book } from '@/app/types';
 
 /* 
@@ -40,9 +40,9 @@ export async function getBible() {
   Bible API: https://bible-api/[bibleId]/books
   Desc: Fetch the list of books 
 */
-export async function getBibleBooks() {
+export async function getBibleBooks(): Promise<Book[]> {
   // Check local cache first
-  const cached = lsGetBooks();
+  const cached = getFromLocalStorage<Book[]>('bible-books');
   if (cached) {
     return cached;
   }
@@ -72,7 +72,7 @@ export async function getBibleBooks() {
     );
 
     // Store to localStorage for caching
-    lsStoreBooks(booksWithChapters);
+    storeToLocalStorage(booksWithChapters, 'bible-books');
 
     return booksWithChapters;
   } catch (error) {
@@ -148,9 +148,16 @@ export async function getBookChapter(bookId: string, chapterId: string) {
       getBookDetails(bookId),
     ]);
 
-    const details = { ...bookDetails, total_chapter: chapters.length };
+    const excludeIntro = chapters.length - 1; // exclude the intro page
+    const details = { ...bookDetails, total_chapter: excludeIntro };
 
-    return { data: data?.data, details };
+    // structure output data
+    const returnData = { data: data?.data, details };
+
+    // store to localstorage for caching
+    storeToLocalStorage(returnData, 'book-chapter');
+
+    return returnData;
   } catch (error) {
     console.error('Error fetching bible books: ', error);
     throw error;

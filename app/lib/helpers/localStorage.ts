@@ -1,28 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Book } from '@/app/types';
 
-// store the books to localstorage
-export const lsStoreBooks = (books: Partial<Book>[] | undefined) => {
+// store book's chapter to localstorage
+export const storeToLocalStorage = <T>(item: T, itemName: string): void => {
   if (typeof window === 'undefined') return; // guard for server
-  localStorage.setItem('bible_books', JSON.stringify(books));
+  localStorage.setItem(itemName, JSON.stringify(item));
 };
 
-// get the books from localstorage
-export const lsGetBooks = () => {
-  if (typeof window === 'undefined') return null; // guard for server
-  const bibleBooks = localStorage.getItem('bible_books');
-  return bibleBooks ? JSON.parse(bibleBooks) : null;
+// get item from localstorage
+export const getFromLocalStorage = <T>(itemName: string): T | null => {
+  if (typeof window === 'undefined') return null;
+  const item = localStorage.getItem(itemName);
+  if (!item) return null;
+  try {
+    return JSON.parse(item) as T;
+  } catch {
+    return null;
+  }
 };
 
 // search query through the localstorage
-export const lsSearch = (text: string) => {
-  const books = lsGetBooks();
-  if (!Array.isArray(books)) return []; // handle null or invalid data
-  const found = books.filter(
-    (book: { name: string; nameLong: string; chapters: { toString: () => string | string[] } }) =>
-      book.name.toLowerCase().includes(text.toLowerCase()) ||
-      book.nameLong.toLowerCase().includes(text.toLowerCase()) ||
-      book.chapters.toString().includes(text),
-  );
+export const searchFromLocalStorage = (text: string, lsName: string): any[] => {
+  const items = getFromLocalStorage<any[]>(lsName);
+  if (!items) return [];
 
-  return found;
+  if (lsName === 'bible-books') {
+    return items.filter((book: any) => {
+      return (
+        (book.name?.toLowerCase().includes(text.toLowerCase()) ?? false) ||
+        (book.nameLong?.toLowerCase().includes(text.toLowerCase()) ?? false) ||
+        (book.chapters?.toString().includes(text) ?? false)
+      );
+    });
+  }
+
+  return [];
 };
