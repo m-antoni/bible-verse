@@ -1,4 +1,20 @@
 import { lsGetBooks, lsStoreBooks } from '@/app/lib/helpers/localStorage';
+import { Book } from '@/app/types';
+
+/* 
+  Report the usage to API.Bible (if token exists)
+  API Docs: https://docs.api.bible/guides/fair-use/
+  Desc: allowing me to use the API for tracking, function purpose is to send and forget
+*/
+const sendFumsToken = async (fumsToken: string) => {
+  if (fumsToken) {
+    await fetch(`https://fums.api.bible/f3?t=${fumsToken}`, {
+      method: 'GET',
+      mode: 'no-cors',
+    });
+    // console.log('fums_token', fumsTokenResponse);
+  }
+};
 
 /* 
   Next API: /api/bible
@@ -44,17 +60,16 @@ export async function getBibleBooks() {
       Call: getBookChapters(bookId)
       get the chapters per books but using Promise.all()
     */
-    let booksWithChapters;
-    if (data.length) {
-      booksWithChapters = await Promise.all(
-        data.map(async (book: { id: string }) => {
-          // API call 80x in a loop
-          const bookChapters = await getBookChapters(book.id);
-          // restructure the object
-          return { ...book, chapters: bookChapters.length, chapter_01: bookChapters[1].id };
-        }),
-      );
-    }
+    const booksWithChapters = await Promise.all(
+      data.map(async (book: Book) => {
+        const bookChapters = await getBookChapters(book.id);
+        return {
+          ...book,
+          chapters: bookChapters.length,
+          chapter_01: bookChapters[1]?.id || null, // safe indexing
+        };
+      }),
+    );
 
     // Store to localStorage for caching
     lsStoreBooks(booksWithChapters);
@@ -89,6 +104,28 @@ export async function getBookChapters(bookId: string) {
 }
 
 /* 
+  Next API: /api/books/[bookId]/details
+  Bible API: https://bible-api/[bibleId]/books/[bookId]
+  Desc: Fetch the book details
+*/
+export async function getBookDetails(bookId: string) {
+  try {
+    const res = await fetch(`/api/books/${bookId}/details`);
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch chapter of book`);
+    }
+
+    const { data } = await res.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching bible books: ', error);
+    throw error;
+  }
+}
+
+/* 
     Next API: /api/books/[bookId]/chapters/[chapterId]
     Bible API: https://bible-api/[bibleId]/chapters/[chapterId]
     Desc: Fetch chapter of a book eq. chapter 1 of Genesis
@@ -100,10 +137,20 @@ export async function getBookChapter(bookId: string, chapterId: string) {
     if (!res.ok) {
       throw new Error(`Failed to fetch chapter of book`);
     }
+    const data = await res.json();
 
-    const { data } = await res.json();
+    // send fumsToken
+    await sendFumsToken(data?.meta?.fumsToken);
 
-    return data;
+    // get the book details and total chapters
+    const [chapters, bookDetails] = await Promise.all([
+      getBookChapters(bookId),
+      getBookDetails(bookId),
+    ]);
+
+    const details = { ...bookDetails, total_chapter: chapters.length };
+
+    return { data: data?.data, details };
   } catch (error) {
     console.error('Error fetching bible books: ', error);
     throw error;

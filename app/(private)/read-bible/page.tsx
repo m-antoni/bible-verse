@@ -2,21 +2,12 @@
 
 import { FaBook, FaEye } from 'react-icons/fa';
 import { getBibleBooks } from '@/app/lib/services/bibleService';
-import { lsFilterBooks, lsSearch } from '@/app/lib/helpers/localStorage';
+import { lsGetBooks, lsSearch } from '@/app/lib/helpers/localStorage';
 import { useEffect, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
 import Image from 'next/image';
 import Link from 'next/link';
-
-type Book = {
-  id: number;
-  abbreviation: string;
-  bibleId: string;
-  name: string;
-  nameLong: string;
-  chapters: number;
-  chapter_01: string;
-};
+import { Book } from '@/app/types';
 
 export default function ReadBible() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -29,7 +20,7 @@ export default function ReadBible() {
 
   // fetch the books
   useEffect(() => {
-    const lsBooks = lsFilterBooks();
+    const lsBooks = lsGetBooks();
 
     if (lsBooks?.length) {
       setAllBooks(lsBooks); // store all books
@@ -74,7 +65,7 @@ export default function ReadBible() {
 
   return (
     <div className="flex flex-wrap">
-      <div className="flex-none w-full max-w-full px-3 -mb-2">
+      <div className="flex-none w-full max-w-full -mb-2">
         <div className="relative min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
           <div className="flex rounded-lg ease">
             <input
@@ -143,7 +134,7 @@ export default function ReadBible() {
           </div>
         </div>
       </div>
-      <div className="flex-none w-full max-w-full px-3">
+      <div className="flex-none w-full max-w-full">
         <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
           <div className="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <h6 className="dark:text-white">Bible Books</h6>
@@ -175,7 +166,7 @@ export default function ReadBible() {
                           <div className="absolute top-2 right-2 flex space-x-2">
                             {/* Link only on eye icon */}
                             <Link
-                              href={`/read-bible/${book.abbreviation}`}
+                              href={`/read-bible/${book.id}/chapter/${book.chapter_01}`}
                               className="inline-flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full shadow hover:bg-blue-600 transition-colors duration-200"
                             >
                               <FaEye className="text-sm" />

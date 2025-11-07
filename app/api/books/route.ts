@@ -1,4 +1,4 @@
-import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/api/constants';
+import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/types';
 import { NextResponse } from 'next/server';
 
 /*

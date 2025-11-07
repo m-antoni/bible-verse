@@ -1,20 +1,20 @@
 import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/types';
 import { NextRequest, NextResponse } from 'next/server';
 
-type ChapterProps = {
+type BookDetailsProps = {
   params: Promise<{ bookId: string }>;
 };
 
 /* 
-  Next API: /api/books/[bookId]
-  Bible API: https://bible-api/[bibleId]/books/[bookId]/chapters
-  Desc: Fetch the chapters of a book
+  Next API: /api/books/[bookId]/details
+  Bible API: https://bible-api/[bibleId]/books/[bookId]
+  Desc: Fetch the book details
 */
-export async function GET(request: NextRequest, { params }: ChapterProps) {
+export async function GET(request: NextRequest, { params }: BookDetailsProps) {
   try {
     const { bookId } = await params;
 
-    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/books/${bookId}/chapters`, {
+    const response = await fetch(`${BIBLE_API_ENDPOINT}/${BIBLE_API_ID}/books/${bookId}`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
