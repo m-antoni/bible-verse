@@ -103,7 +103,7 @@ export default function BookRead() {
         duration-200 ease-in-out text-base h-19 w-19 rounded-xl"
             >
               <Image
-                src="/assets/custom/bible-01.png"
+                src="/assets/custom/book_chapter.png"
                 alt="profile_image"
                 className="w-full shadow-1xl rounded-xl -ml-3"
                 width={500}
