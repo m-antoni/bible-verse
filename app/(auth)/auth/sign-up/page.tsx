@@ -6,17 +6,17 @@ export default function SignUp() {
   return (
     <>
       {/* <!-- Navbar --> */}
-
       <main className="mt-0 transition-all duration-200 ease-in-out">
         <section className="min-h-screen">
-          <div className="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg')]">
-            <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-zinc-800 to-zinc-700 opacity-60"></span>
+          <div className="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl bg-[url('/assets/custom/sign-up-01.jpg')]">
+            <span className="absolute top-0 left-0 w-full h-full bg-center bg-gradient-to-tl bg-cover from-zinc-800 to-zinc-700 opacity-60"></span>
             <div className="container z-10">
               <div className="flex flex-wrap justify-center -mx-3">
                 <div className="w-full max-w-full px-3 mx-auto mt-0 text-center lg:flex-0 shrink-0 lg:w-5/12">
                   <h1 className="mt-12 mb-2 text-white">Welcome!</h1>
                   <p className="text-white">
-                    Use these awesome forms to login or create new account in your project for free.
+                    Blessed are those who seek understanding. May this chapter prepare your soul and
+                    strengthen your walk with the Lord.
                   </p>
                 </div>
               </div>
@@ -24,10 +24,10 @@ export default function SignUp() {
           </div>
           <div className="container">
             <div className="flex flex-wrap -mx-3 -mt-48 md:-mt-56 lg:-mt-48">
-              <div className="w-full max-w-full px-3 mx-auto mt-0 md:flex-0 shrink-0 md:w-7/12 lg:w-5/12 xl:w-4/12">
+              <div className="w-full max-w-full px-3 mx-auto mt-0 md:flex-0 shrink-0 md:w-7/12 lg:w-5/12 xl:w-4/12 ">
                 <div className="relative z-0 flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border">
                   <div className="p-6 mb-0 text-center bg-white border-b-0 rounded-t-2xl">
-                    <h5>Register with</h5>
+                    <h5>Bible Verse App 1.0</h5>
                   </div>
                   <div className="flex flex-wrap px-3 -mx-3 sm:px-6 xl:px-12">
                     <div className="w-3/12 max-w-full px-1 ml-auto flex-0">
@@ -150,24 +150,7 @@ export default function SignUp() {
                           aria-describedby="password-addon"
                         />
                       </div>
-                      <div className="min-h-6 pl-7 mb-0.5 block">
-                        <input
-                          className="w-4.8 h-4.8 ease -ml-7 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 bg-white bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100"
-                          type="checkbox"
-                          value=""
-                          checked
-                        />
-                        <label
-                          className="mb-2 ml-1 font-normal cursor-pointer text-sm text-slate-700"
-                          htmlFor="flexCheckDefault"
-                        >
-                          {' '}
-                          I agree the{' '}
-                          <a href="javascript:;" className="font-bold text-slate-700">
-                            Terms and Conditions
-                          </a>{' '}
-                        </label>
-                      </div>
+
                       <div className="text-center">
                         <button
                           type="button"

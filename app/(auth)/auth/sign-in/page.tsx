@@ -22,17 +22,21 @@ export default function SignIn() {
                           <input
                             type="email"
                             placeholder="Email"
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
+                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm 
+                            leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding 
+                            p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
                           />
                         </div>
                         <div className="mb-4">
                           <input
                             type="password"
                             placeholder="Password"
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
+                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm 
+                            leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding
+                             p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
                           />
                         </div>
-                        <div className="flex items-center pl-12 mb-0.5 text-left min-h-6">
+                        {/* <div className="flex items-center pl-12 mb-0.5 text-left min-h-6">
                           <input
                             id="rememberMe"
                             className="mt-0.5 rounded-10 duration-250 ease-in-out after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-zinc-700/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right"
@@ -44,11 +48,14 @@ export default function SignIn() {
                           >
                             Remember me
                           </label>
-                        </div>
-                        <div className="text-center">
+                        </div> */}
+                        <div className="text-center -mt-2">
                           <button
                             type="button"
-                            className="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25"
+                            className="inline-block w-full px-5 py-4 mt-6 mb-2 font-bold text-center text-white align-middle transition-all bg-transparent 
+                            border-0 rounded-lg cursor-pointe active:opacity-85 hover:-translate-y-px hover:shadow-xs leading-normal text-sm ease-in 
+                            tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl
+                              from-zinc-800 to-zinc-700 hover:border-slate-700 hover:bg-slate-700 hover:text-white"
                           >
                             Sign in
                           </button>
@@ -60,7 +67,7 @@ export default function SignIn() {
                         Don't have an account?{' '}
                         <Link
                           href="/auth/sign-up"
-                          className="font-semibold text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-500"
+                          className="font-semibold bg-clip-text text-slate-700"
                         >
                           Sign up
                         </Link>
@@ -69,14 +76,13 @@ export default function SignIn() {
                   </div>
                 </div>
                 <div className="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
-                  <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg')] rounded-xl ">
-                    <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
-                    <h4 className="z-20 mt-12 font-bold text-white">
-                      "Attention is the new currency"
-                    </h4>
+                  <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('/assets/custom/sign-in-01.jpg')] rounded-xl ">
+                    <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-700 to-violet-200 opacity-40"></span>
+                    {/* <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-700 to-violet-200 opacity-60"></span> */}
+                    <h4 className="z-20 mt-12 font-bold text-white">"Welcome!"</h4>
                     <p className="z-20 text-white ">
-                      The more effortless the writing looks, the more effort the writer actually put
-                      into the process.
+                      Blessed are those who seek understanding. May this chapter prepare your soul
+                      and strengthen your walk with the Lord.
                     </p>
                   </div>
                 </div>

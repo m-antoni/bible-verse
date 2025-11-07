@@ -112,6 +112,11 @@ export default function BookRead() {
     setOpen(false);
   };
 
+  // handle save note
+  const handleSaveNote = () => {
+    console.log('RUN SAVES');
+  };
+
   // Spinner;
   if (loading) return <Spinner />;
 
@@ -317,22 +322,35 @@ export default function BookRead() {
                       )}
 
                       {/* NEXT BUTTON */}
-                      <Link
-                        href={excludeIntroPage(
-                          `/${urlParts[0]}/${bookId}/${urlParts[2]}/${ch.next.id}`,
-                          'next',
-                        )}
-                      >
-                        <button
-                          type="button"
-                          className="flex inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
+                      {ch.next ? (
+                        <Link
+                          href={excludeIntroPage(
+                            `/${urlParts[0]}/${bookId}/${urlParts[2]}/${ch.next.id}`,
+                            'next',
+                          )}
+                        >
+                          <button
+                            type="button"
+                            className="flex inline-block px-3 py-2 mb-4 font-bold leading-normal text-center text-white
                         transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem 
                         hover:shadow-xs hover:-translate-y-px active:opacity-85"
+                          >
+                            <span className="mr-2">Next </span>
+                            <FaArrowAltCircleRight className="text-lg" />
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          disabled
+                          type="button"
+                          className="flex mr-2 items-center px-3 py-2 mb-4 font-bold leading-normal text-center text-gray-400 
+                              bg-gray-100 border-0 rounded-lg shadow-sm cursor-not-allowed text-xs tracking-tight-rem 
+                              transition-all duration-200 ease-in hover:line-through"
                         >
                           <span className="mr-2">Next </span>
                           <FaArrowAltCircleRight className="text-lg" />
                         </button>
-                      </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -373,6 +391,7 @@ export default function BookRead() {
                 </div>
                 <div className="flex justify-end">
                   <button
+                    onClick={handleSaveNote}
                     type="button"
                     className="px-4 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 
                     rounded-lg shadow-md cursor-pointer text-xs bg-slate-700 lg:block tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"

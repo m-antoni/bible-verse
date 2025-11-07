@@ -1,5 +1,5 @@
 import { BookChapterAndDetails } from '@/app/types';
-import { getFromLocalStorage, storeToLocalStorage } from './localStorage';
+import { getFromLocalStorage, removeFromLocalStorage, storeToLocalStorage } from './localStorage';
 
 // update the link if has intro
 export const excludeIntroPage = (url: string, type: string = ''): string => {
@@ -39,6 +39,7 @@ export const excludeIntroPage = (url: string, type: string = ''): string => {
     }
   }
 
+  removeFromLocalStorage('prev-ch'); // cleanup LS
   return url;
 };
 

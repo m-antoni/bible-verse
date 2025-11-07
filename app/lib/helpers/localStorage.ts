@@ -36,3 +36,15 @@ export const searchFromLocalStorage = (text: string, lsName: string): any[] => {
 
   return [];
 };
+
+// remove single item in localstorage
+export const removeFromLocalStorage = (key: string): void => {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(key);
+};
+
+// removing all items in localstorage
+export const clearLocalStorage = (): void => {
+  if (typeof window === 'undefined') return;
+  localStorage.clear();
+};
