@@ -9,22 +9,20 @@ import {
   FaArrowAltCircleRight,
   FaArrowCircleLeft,
   FaBookmark,
-  FaCheck,
   FaHeart,
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { getBookChapter } from '@/app/lib/services/bibleService';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import {
   copyrightToHtml,
+  dropDownSelectChapter,
   excludeIntroPage,
-  getRandomIntroText,
   verseToHtml,
 } from '@/app/lib/helpers';
 import { getFromLocalStorage } from '@/app/lib/helpers/localStorage';
 import { BookChapterAndDetails } from '@/app/types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ChapterState = {
   book_chapter_data: any[]; // or better, define a proper type
   book_chapter_details: any;
@@ -39,12 +37,13 @@ export default function BookRead() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [dropdown_value, setD_Chapter] = useState(1);
-  const [chapterOptions, setDropdownOptions] = useState<number[]>([]);
+  const [dropdownValue, setDropdownValue] = useState(1);
+  const [dropdownOptions, setDropdownOptions] = useState<number[]>([]);
 
   // get the url parts
   const pathname = usePathname();
   const urlParts = pathname.split('/').filter(Boolean);
+  const router = useRouter();
 
   // Check if items exist in localStorage otherwise fall back to an API call.
   // This ensures that on refresh, data is loaded from localStorage first.
@@ -64,19 +63,21 @@ export default function BookRead() {
       const arr = Array.from({ length: getFromLS.details.total_chapter }, (_, i) => i + 1);
       setDropdownOptions(arr);
       setLoading(false);
+      setDropdownValue(Number(getFromLS.data.number));
     } else {
       // Fallback API Call
       (async () => {
-        const data = await getBookChapter(BOOK_ID, CHAPTER_ID);
-        setChapter({
-          book_chapter_data: [data.data],
-          book_chapter_details: data.details,
-        });
-
-        // create an array base on the total chapters
-        const arr = Array.from({ length: data.details.total_chapter }, (_, i) => i + 1);
-        setDropdownOptions(arr);
         try {
+          const data = await getBookChapter(BOOK_ID, CHAPTER_ID);
+          setChapter({
+            book_chapter_data: [data.data],
+            book_chapter_details: data.details,
+          });
+
+          // create an array base on the total chapters
+          const arr = Array.from({ length: data.details.total_chapter }, (_, i) => i + 1);
+          setDropdownOptions(arr);
+          setDropdownValue(Number(data.data.number));
         } catch (error) {
           console.log(error);
         } finally {
@@ -105,7 +106,9 @@ export default function BookRead() {
 
   // handle books chapter
   const handleSelectChapter = (ch: number) => {
-    setD_Chapter(ch);
+    const redirectUrl = dropDownSelectChapter(urlParts, ch);
+    router.push(redirectUrl);
+    setDropdownValue(ch);
     setOpen(false);
   };
 
@@ -152,7 +155,7 @@ export default function BookRead() {
               className="inline-flex justify-between items-center w-full sm:w-48 px-5 py-3 text-sm font-medium text-gray-700 bg-white border 
         border-gray-300 rounded-lg shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200"
             >
-              Chapter: {dropdown_value}
+              Chapter: {dropdownValue}
               <svg
                 className={`w-4 h-4 ml-2 text-gray-500 transition-transform ${
                   open ? 'rotate-180' : 'rotate-0'
@@ -178,12 +181,12 @@ export default function BookRead() {
           divide-y divide-gray-100 rounded-md shadow-lg overflow-y-auto max-h-60 sm:max-h-72 
           scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
               >
-                {chapterOptions.map((ch) => (
+                {dropdownOptions.map((ch) => (
                   <button
                     key={ch}
                     onClick={() => onSelect(ch)}
                     className={`w-full px-4 py-2 text-left text-sm sm:text-base hover:bg-gray-100 transition-colors duration-150 ${
-                      dropdown_value === ch
+                      dropdownValue === ch
                         ? 'font-semibold text-blue-600 bg-blue-50'
                         : 'text-gray-700'
                     }`}
@@ -264,11 +267,7 @@ export default function BookRead() {
                     />
 
                     <div className="mt-5">
-                      {ch.number !== 'intro' ? (
-                        <h3>Total Verse: {ch.verseCount}</h3>
-                      ) : (
-                        <div className="text-lg text-slate-700 py-10">{getRandomIntroText()}</div>
-                      )}
+                      <h3>Total Verse: {ch.verseCount}</h3>
 
                       <div
                         className="text-sm text-slate-700 mt-4"

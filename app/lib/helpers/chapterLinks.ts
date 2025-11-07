@@ -41,3 +41,13 @@ export const excludeIntroPage = (url: string, type: string = ''): string => {
 
   return url;
 };
+
+// dropdown chapter navigation
+export const dropDownSelectChapter = (urlParts: string[], selected: number): string => {
+  const last = urlParts[3].split('.'); // ['EXO.2']
+  urlParts[3] = last[0] + '.' + selected; // replacing intro =>  1
+
+  const redirectUrl = '/' + urlParts.join('/');
+  // console.log(urlParts, selected);
+  return redirectUrl;
+};

@@ -1,3 +1,3 @@
 export * from './localStorage';
-export * from './transformLinks';
+export * from './chapterLinks';
 export * from './transformText';

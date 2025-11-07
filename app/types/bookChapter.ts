@@ -6,6 +6,7 @@ export type BookChapter = {
   copyright: string;
   verseCount: 31;
   content: string;
+  number: string;
   next: {
     id: string;
     number: string;
