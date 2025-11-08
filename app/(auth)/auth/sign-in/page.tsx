@@ -5,92 +5,145 @@ import Link from 'next/link';
 export default function SignIn() {
   return (
     <>
-      <main className="mt-0 transition-all duration-200 ease-in-out">
-        <section>
-          <div className="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
-            <div className="container z-1">
-              <div className="flex flex-wrap -mx-3">
-                <div className="flex flex-col w-full max-w-full px-3 mx-auto lg:mx-0 shrink-0 md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12">
-                  <div className="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none lg:py4 dark:bg-gray-950 rounded-2xl bg-clip-border">
-                    <div className="p-6 pb-0 mb-0">
-                      <h4 className="font-bold">Sign In</h4>
-                      <p className="mb-0">Enter your email and password to sign in</p>
-                    </div>
-                    <div className="flex-auto p-6">
-                      <form role="form">
-                        <div className="mb-4">
-                          <input
-                            type="email"
-                            placeholder="Email"
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm 
-                            leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding 
-                            p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                          />
-                        </div>
-                        <div className="mb-4">
-                          <input
-                            type="password"
-                            placeholder="Password"
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm 
-                            leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding
-                             p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                          />
-                        </div>
-                        {/* <div className="flex items-center pl-12 mb-0.5 text-left min-h-6">
-                          <input
-                            id="rememberMe"
-                            className="mt-0.5 rounded-10 duration-250 ease-in-out after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-zinc-700/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right"
-                            type="checkbox"
-                          />
-                          <label
-                            className="ml-2 font-normal cursor-pointer select-none text-sm text-slate-700"
-                            htmlFor="rememberMe"
-                          >
-                            Remember me
-                          </label>
-                        </div> */}
-                        <div className="text-center -mt-2">
-                          <button
-                            type="button"
-                            className="inline-block w-full px-5 py-4 mt-6 mb-2 font-bold text-center text-white align-middle transition-all bg-transparent 
-                            border-0 rounded-lg cursor-pointe active:opacity-85 hover:-translate-y-px hover:shadow-xs leading-normal text-sm ease-in 
-                            tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl
-                              from-zinc-800 to-zinc-700 hover:border-slate-700 hover:bg-slate-700 hover:text-white"
-                          >
-                            Sign in
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="border-black/12.5 rounded-b-2xl border-t-0 border-solid p-6 text-center pt-0 px-1 sm:px-6">
-                      <p className="mx-auto mb-6 leading-normal text-sm">
-                        Don't have an account?{' '}
-                        <Link
-                          href="/auth/sign-up"
-                          className="font-semibold bg-clip-text text-slate-700"
-                        >
-                          Sign up
-                        </Link>
-                      </p>
-                    </div>
+      {/* <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 bg-[url('/assets/custom/bible-03.jpg')] overflow-hidden bg-cover"> */}
+      <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+          <div
+            // className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
+            className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
+          ></div>
+          <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+            <div className="max-w-md mx-auto">
+              <div>
+                <h1 className="text-2xl font-semibold text-center">BibleVerse 1.0</h1>
+              </div>
+              <div className="divide-y divide-gray-200 -mr-1 -ml-1">
+                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <div className="relative">
+                    {/* form is hidden for browsers autofill text */}
+                    <input
+                      type="text"
+                      name="fakeuser"
+                      autoComplete="off"
+                      style={{ display: 'none' }}
+                    />
+                    <input
+                      type="password"
+                      name="fakepass"
+                      autoComplete="new-password"
+                      style={{ display: 'none' }}
+                    />
+                    {/* end of form is hidden for browsers autofill text */}
+
+                    <input
+                      autoComplete="off"
+                      id="email"
+                      name="email"
+                      type="text"
+                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                      placeholder="Email address"
+                    />
+                    <label
+                      htmlFor="email"
+                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >
+                      Email Address
+                    </label>
                   </div>
-                </div>
-                <div className="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
-                  <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('/assets/custom/sign-in-01.jpg')] rounded-xl ">
-                    <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-700 to-violet-200 opacity-40"></span>
-                    {/* <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-700 to-violet-200 opacity-60"></span> */}
-                    <h4 className="z-20 mt-12 font-bold text-white">"Welcome!"</h4>
-                    <p className="z-20 text-white ">
-                      Blessed are those who seek understanding. May this chapter prepare your soul
-                      and strengthen your walk with the Lord.
-                    </p>
+                  <div className="relative">
+                    <input
+                      autoComplete="off"
+                      id="password"
+                      name="password"
+                      type="password"
+                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                      placeholder="Password"
+                    />
+                    <label
+                      htmlFor="password"
+                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >
+                      Password
+                    </label>
+                  </div>
+                  <div className="relative">
+                    <button className="bg-slate-700 text-white rounded-md py-2 w-full mt-3">
+                      Sign In
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div className="w-full flex justify-center -mt-3 ">
+              <button
+                className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md
+               py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none 
+               focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 w-full"
+              >
+                <svg
+                  className="h-6 w-6 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  data-xmlns="http://www.w3.org/1999/xlink"
+                  width="800px"
+                  height="800px"
+                  viewBox="-0.5 0 48 48"
+                  version="1.1"
+                >
+                  {' '}
+                  <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs>{' '}
+                  <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                    {' '}
+                    <g id="Color-" transform="translate(-401.000000, -860.000000)">
+                      {' '}
+                      <g id="Google" transform="translate(401.000000, 860.000000)">
+                        {' '}
+                        <path
+                          d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24"
+                          id="Fill-1"
+                          fill="#FBBC05"
+                        >
+                          {' '}
+                        </path>{' '}
+                        <path
+                          d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333"
+                          id="Fill-2"
+                          fill="#EB4335"
+                        >
+                          {' '}
+                        </path>{' '}
+                        <path
+                          d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667"
+                          id="Fill-3"
+                          fill="#34A853"
+                        >
+                          {' '}
+                        </path>{' '}
+                        <path
+                          d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24"
+                          id="Fill-4"
+                          fill="#4285F4"
+                        >
+                          {' '}
+                        </path>{' '}
+                      </g>{' '}
+                    </g>{' '}
+                  </g>{' '}
+                </svg>
+                <span>Continue with Google</span>
+              </button>
+            </div>
+            <div className="text-center pt-0 px-1 sm:px-6 mt-4">
+              <p className="mx-auto mb-6 leading-normal text-sm">
+                Don&apos;t have an account?{' '}
+                <Link href="/auth/sign-up" className="font-semibold bg-clip-text text-cyan-600">
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </>
   );
 }

@@ -3,7 +3,7 @@
 import { FaBook, FaEye } from 'react-icons/fa';
 import { getBibleBooks } from '@/app/lib/services/bibleService';
 import { getFromLocalStorage, searchFromLocalStorage } from '@/app/lib/helpers';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +17,7 @@ export default function ReadBible() {
   const [rows, setRows] = useState(10);
   const [open, setOpen] = useState(false);
   const options = [10, 20, 40, 80];
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // fetch the books
   useEffect(() => {
@@ -60,6 +61,17 @@ export default function ReadBible() {
     setBooks(allBooks.slice(0, opt)); // show the selected number of rows
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Spinner
   if (loading) return <Spinner />;
 
@@ -82,7 +94,8 @@ export default function ReadBible() {
               placeholder="Search here..."
             />
 
-            <div className="text-left pr-5 py-5 relative">
+            {/* Right Section — Dropdown */}
+            <div ref={dropdownRef} className="text-left pr-5 py-5 relative">
               <button
                 onClick={() => setOpen(!open)}
                 disabled={search.length ? true : false}

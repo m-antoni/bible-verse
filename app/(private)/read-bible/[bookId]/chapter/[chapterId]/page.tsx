@@ -9,6 +9,8 @@ import {
   FaArrowAltCircleRight,
   FaArrowCircleLeft,
   FaBookmark,
+  FaCheckCircle,
+  FaCheckDouble,
   FaHeart,
 } from 'react-icons/fa';
 import Image from 'next/image';
@@ -22,6 +24,9 @@ import {
 } from '@/app/lib/helpers';
 import { getFromLocalStorage } from '@/app/lib/helpers/localStorage';
 import { BookChapterAndDetails } from '@/app/types';
+import { ToastContainer, toast } from 'react-toastify/unstyled';
+import 'react-toastify/ReactToastify.css';
+import { Flip } from 'react-toastify';
 
 type ChapterState = {
   book_chapter_data: any[]; // or better, define a proper type
@@ -115,6 +120,13 @@ export default function BookRead() {
   // handle save note
   const handleSaveNote = () => {
     console.log('RUN SAVES');
+  };
+
+  const handleAddFavorite = () => {
+    toast('Added to your favorites.', {
+      toastId: '01',
+      icon: <FaCheckCircle className="text-xl text-green-500" />,
+    });
   };
 
   // Spinner;
@@ -234,8 +246,21 @@ export default function BookRead() {
                             hover:bg-red-500 text-white transition-all duration-200 shadow-sm
                             active:scale-90"
                         >
-                          <FaHeart />
+                          <FaHeart onClick={handleAddFavorite} />
                         </button>
+                        <ToastContainer
+                          position="top-right"
+                          autoClose={2000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          rtl={false}
+                          transition={Flip}
+                          // theme="dark"
+                          closeOnClick
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover
+                        />
 
                         <button
                           type="button"
