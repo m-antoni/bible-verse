@@ -157,7 +157,7 @@ export default function BookRead() {
             <button
               onClick={() => setOpen(!open)}
               type="button"
-              className="inline-flex justify-between items-center w-full sm:w-48 px-5 py-3 text-sm font-medium text-gray-700 bg-white border 
+              className="inline-flex justify-between items-center w-full sm:w-40 px-5 py-3 text-sm font-medium text-gray-700 bg-white border 
         border-gray-300 rounded-lg shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200"
             >
               Chapter: {dropdownValue}
@@ -182,7 +182,7 @@ export default function BookRead() {
             {/* Dropdown Menu */}
             {open && (
               <div
-                className="absolute right-0 z-50 w-full sm:w-48 mt-2 origin-top-right bg-white border border-gray-200 
+                className="absolute right-0 z-50 w-full sm:w-40 mt-2 origin-top-right bg-white border border-gray-200 
           divide-y divide-gray-100 rounded-md shadow-lg overflow-y-auto max-h-60 sm:max-h-72 
           scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
               >
@@ -366,7 +366,7 @@ export default function BookRead() {
             >
               <Image
                 className="w-full rounded-t-2xl"
-                src="/assets/custom/note-section.jpg"
+                src="/assets/custom/note.jpg"
                 alt="notes"
                 // fill={true}
                 width={500}

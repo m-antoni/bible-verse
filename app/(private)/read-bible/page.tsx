@@ -66,8 +66,11 @@ export default function ReadBible() {
   return (
     <div className="flex flex-wrap">
       <div className="flex-none w-full max-w-full -mb-2">
-        <div className="relative min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-          <div className="flex rounded-lg ease">
+        <div
+          className="relative min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl 
+        dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border"
+        >
+          <div className="flex rounded-lg ease py-3">
             <input
               onChange={(e) => setSearch(e.target.value)}
               value={search}
@@ -86,10 +89,10 @@ export default function ReadBible() {
                 type="button"
                 className={
                   search.length
-                    ? `inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-200 bg-white border 
-      border-gray-300 rounded-md shadow-md focus:outline-none`
+                    ? `inline-flex justify-between w-32 px-4 py-3 text-sm font-medium text-gray-200 bg-white border 
+                    border-gray-300 rounded-md shadow-md focus:outline-none`
                     : `inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-700 bg-white border 
-      border-gray-300 rounded-md shadow-md focus:outline-none`
+                    border-gray-300 rounded-md shadow-md focus:outline-none`
                 }
               >
                 Show: {rows}
@@ -114,7 +117,7 @@ export default function ReadBible() {
               {/* Dropdown Menu */}
               {open && (
                 <div
-                  className="absolute right-0 z-10 w-32 mt-2 origin-top-right bg-white border border-gray-200 
+                  className="absolute right-0 z-10 w-34 mr-5 mt-2 origin-top-right bg-white border border-gray-200 
         divide-y divide-gray-100 rounded-md shadow-md"
                 >
                   {options.map((opt) => (
@@ -139,7 +142,7 @@ export default function ReadBible() {
           <div className="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <h6 className="dark:text-white">Bible Books</h6>
           </div>
-          <div className="flex-auto px-0 pt-0 pb-2  min-h-[200px]">
+          <div className="flex-auto px-0 pt-0 pb-8  min-h-[250px]">
             <div className="p-0 overflow-x-auto">
               {search.length && books.length === 0 ? (
                 <div className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500 ">
@@ -156,7 +159,7 @@ export default function ReadBible() {
                         {/* Image at the top */}
                         <div className="relative w-full h-36 sm:h-44">
                           <Image
-                            src="/assets/custom/note-section.jpg"
+                            src="/assets/custom/bible-03.jpg"
                             alt={book.name}
                             fill
                             className="object-cover"
@@ -167,14 +170,18 @@ export default function ReadBible() {
                             {/* Link only on eye icon */}
                             <Link
                               href={`/read-bible/${book.id}/chapter/${book.chapter_01}`}
-                              className="inline-flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full shadow hover:bg-blue-600 transition-colors duration-200"
+                              className="inline-flex items-center justify-center w-8 h-8 text-white bg-blue-600 
+                              rounded-full shadow hover:bg-blue-600 transition-colors duration-200"
                             >
                               <FaEye className="text-sm" />
                             </Link>
 
                             {/* Bookmark button */}
-                            <button className="inline-flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full shadow hover:bg-red-600 transition-colors duration-200">
-                              <FaBook className="text-sm" />
+                            <button
+                              className="inline-flex items-center justify-center w-8 h-8 text-white bg-purple-600 
+                              rounded-full shadow hover:bg-purple-600 transition-colors duration-200"
+                            >
+                              <FaBook className="text-sm " />
                             </button>
                           </div>
                         </div>

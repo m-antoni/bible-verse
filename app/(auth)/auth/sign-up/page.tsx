@@ -8,8 +8,9 @@ export default function SignUp() {
       {/* <!-- Navbar --> */}
       <main className="mt-0 transition-all duration-200 ease-in-out">
         <section className="min-h-screen">
-          <div className="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl bg-[url('/assets/custom/sign-up-01.jpg')]">
-            <span className="absolute top-0 left-0 w-full h-full bg-center bg-gradient-to-tl bg-cover from-zinc-800 to-zinc-700 opacity-60"></span>
+          <div className="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl bg-[url('/assets/custom/bible-03.jpg')]">
+            <span className="absolute top-0 left-0 w-full h-full bg-center bg-gradient-to-tl bg-cover from-zinc-800 to-zinc-700 opacity-20"></span>
+            {/* <span className="absolute top-0 left-0 w-full h-full bg-center bg-gradient-to-tl bg-cover from-zinc-800 to-zinc-700 opacity-60"></span> */}
             <div className="container z-10">
               <div className="flex flex-wrap justify-center -mx-3">
                 <div className="w-full max-w-full px-3 mx-auto mt-0 text-center lg:flex-0 shrink-0 lg:w-5/12">
