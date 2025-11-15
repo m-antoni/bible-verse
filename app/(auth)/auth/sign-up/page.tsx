@@ -1,46 +1,63 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify/unstyled';
-import 'react-toastify/ReactToastify.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { authService } from '@/app/lib/services/authService';
+import { ToastContainer, toast } from 'react-toastify/unstyled';
+import 'react-toastify/ReactToastify.css';
+import { CSSProperties } from 'react';
+import { PuffLoader } from 'react-spinners';
+import SignUpForm from '@/app/components/SignUpFom';
+
 export default function SignUp() {
   const [form, setForm] = useState({ fullName: '', email: '', password: '' });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleOnSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // handle form error
+
+    // input validations
     if (form.fullName === '' || form.email === '' || form.password === '') {
       toast.error('Please input all the fields.', {
         toastId: '01',
         icon: <FaTimes className="text-xl text-red-500" />,
       });
+
+      return;
     }
 
-    try {
-      const res = await authService.signUp(form.fullName, form.email, form.password);
+    setLoading(true);
 
-      toast('Check your email confirmation link.', {
-        toastId: '01',
-        icon: <FaCheck className="text-xl text-green-500" />,
-      });
-      console.log(res);
-      setForm({ fullName: '', email: '', password: '' });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'An unknown error occurred.';
-      console.log(message);
-      toast.error(message, {
-        toastId: '01',
+    const result = await authService.signUp(form);
+
+    console.log(result);
+
+    if (result && !result.success) {
+      toast.error(`Confirmation sent to your email.`, {
+        toastId: '02',
         icon: <FaTimes className="text-xl text-red-500" />,
       });
+      setLoading(false);
+    }
+
+    if (result && result.success) {
+      toast.success(`Confirmation sent to your email.`, {
+        toastId: '02',
+        icon: <FaCheck className="text-xl text-green-500" />,
+      });
+      setLoading(false);
     }
   };
 
   // form onchange
-  const onChange = (e: { target: { name: string; value: string } }) => {
+  const handleOnChange = (e: { target: { name: string; value: string } }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const override: CSSProperties = {
+    display: 'block',
+    margin: '0 auto',
+    borderColor: 'red',
   };
 
   return (
@@ -53,169 +70,23 @@ export default function SignUp() {
             className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
           ></div>
           <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-            <div className="max-w-md mx-auto ">
-              <div>
-                <h1 className="text-xl text-center -mb-4">
-                  Welcome to <span className="font-semibold">BibleVerse 1.0</span>
-                </h1>
+            {loading ? (
+              <div className="flex-grow flex items-center justify-center h-64 px-10 mx-10">
+                <PuffLoader cssOverride={override} color="#2196F3" size={90} />
+                <div className="pb-5"></div>
               </div>
-              <div className="divide-y divide-gray-200 -mr-1 -ml-1">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  {/* form is hidden for browsers autofill text */}
-                  <input
-                    type="text"
-                    name="fakeuser"
-                    autoComplete="off"
-                    style={{ display: 'none' }}
-                  />
-                  <input
-                    type="password"
-                    name="fakepass"
-                    autoComplete="new-password"
-                    style={{ display: 'none' }}
-                  />
-                  {/* end of form is hidden for browsers autofill text */}
-                  <form onSubmit={handleSubmit}>
-                    <div className="relative mt-4">
-                      <input
-                        onChange={onChange}
-                        autoComplete="off"
-                        id="fullname"
-                        name="fullName"
-                        type="text"
-                        value={form.fullName}
-                        className="peer placeholder-transparent h-10 w-full border-b-2 
-                        border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                        placeholder="Full Name"
-                      />
-                      <label
-                        htmlFor="fullname"
-                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                      >
-                        Full Name
-                      </label>
-                    </div>
-                    <div className="relative mt-4">
-                      <input
-                        onChange={onChange}
-                        autoComplete="off"
-                        id="email"
-                        name="email"
-                        value={form.email}
-                        type="text"
-                        className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 
-                        focus:outline-none focus:borer-rose-600"
-                        placeholder="Email address"
-                      />
-                      <label
-                        htmlFor="email"
-                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base 
-                        peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                      >
-                        Email Address
-                      </label>
-                    </div>
-                    <div className="relative mt-4">
-                      <input
-                        onChange={onChange}
-                        autoComplete="off"
-                        id="password"
-                        name="password"
-                        value={form.password}
-                        type="password"
-                        className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 
-                        text-gray-900 focus:outline-none focus:borer-rose-600"
-                        placeholder="Password"
-                      />
-                      <label
-                        htmlFor="password"
-                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base 
-                        peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                      >
-                        Password
-                      </label>
-                    </div>
-                    <div className="relative">
-                      <button className="bg-slate-700 text-white rounded-md py-2 w-full mt-3">
-                        Sign Up
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full flex justify-center -mt-3 ">
-              <button
-                className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md
-               py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none 
-               focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 w-full"
-              >
-                <svg
-                  className="h-6 w-6 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  data-xmlns="http://www.w3.org/1999/xlink"
-                  width="800px"
-                  height="800px"
-                  viewBox="-0.5 0 48 48"
-                  version="1.1"
-                >
-                  {' '}
-                  <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs>{' '}
-                  <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                    {' '}
-                    <g id="Color-" transform="translate(-401.000000, -860.000000)">
-                      {' '}
-                      <g id="Google" transform="translate(401.000000, 860.000000)">
-                        {' '}
-                        <path
-                          d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24"
-                          id="Fill-1"
-                          fill="#FBBC05"
-                        >
-                          {' '}
-                        </path>{' '}
-                        <path
-                          d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333"
-                          id="Fill-2"
-                          fill="#EB4335"
-                        >
-                          {' '}
-                        </path>{' '}
-                        <path
-                          d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667"
-                          id="Fill-3"
-                          fill="#34A853"
-                        >
-                          {' '}
-                        </path>{' '}
-                        <path
-                          d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24"
-                          id="Fill-4"
-                          fill="#4285F4"
-                        >
-                          {' '}
-                        </path>{' '}
-                      </g>{' '}
-                    </g>{' '}
-                  </g>{' '}
-                </svg>
-                <span>Sign up with Google</span>
-              </button>
-            </div>
-            <div className="text-center pt-0 px-1 sm:px-3 mt-4">
-              <p className="mx-auto mb-6 leading-normal text-sm">
-                Already have an account?{' '}
-                <Link href="/auth/sign-in" className="font-semibold bg-clip-text text-cyan-600">
-                  Sign In
-                </Link>
-              </p>
-            </div>
+            ) : (
+              <SignUpForm
+                form={form}
+                handleOnSubmit={handleOnSubmit}
+                handleOnChange={handleOnChange}
+              />
+            )}
           </div>
         </div>
         <ToastContainer
-          position="top-right"
-          autoClose={2000}
+          position="top-center"
+          // autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
           rtl={false}

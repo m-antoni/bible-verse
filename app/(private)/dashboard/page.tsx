@@ -4,29 +4,6 @@ import { supabase } from '@/app/lib/supabase/client';
 import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
-  const [session, setSession] = useState(null);
-
-  useEffect(() => {
-    const getInitialSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data);
-    };
-    getInitialSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event);
-      console.log(session);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
   return (
     <>
       <div className="w-full mx-auto">

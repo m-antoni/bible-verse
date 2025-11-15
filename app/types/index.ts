@@ -3,3 +3,4 @@ export * from './envs';
 export * from './book';
 export * from './bookChapter';
 export * from './bookChapterWithDetails';
+export * from './authForm';
