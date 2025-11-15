@@ -1,4 +1,32 @@
+'use client';
+
+import { supabase } from '@/app/lib/supabase/client';
+import { useEffect, useState } from 'react';
+
 export default function Dashboard() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    const getInitialSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data);
+    };
+    getInitialSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event);
+      console.log(session);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <>
       <div className="w-full mx-auto">
@@ -122,17 +150,13 @@ export default function Dashboard() {
           <div className="w-full max-w-full px-3 mt-6 md:w-7/12 md:flex-none">
             <div className="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div className="p-6 px-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
-                <h6 className="mb-0 dark:text-white">
-                  Start Reading
-                </h6>
+                <h6 className="mb-0 dark:text-white">Start Reading</h6>
               </div>
               <div className="flex-auto p-4 pt-6">
                 <ul className="flex flex-col pl-0 mb-0 rounded-lg">
                   <li className="relative flex p-6 mb-2 border-0 rounded-t-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
                     <div className="flex flex-col">
-                      <h6 className="mb-4 text-sm leading-normal dark:text-white">
-                        Oliver Liam
-                      </h6>
+                      <h6 className="mb-4 text-sm leading-normal dark:text-white">Oliver Liam</h6>
                       <span className="mb-2 text-xs leading-tight dark:text-white/80">
                         Company Name:
                         <span className="font-semibold text-slate-700 dark:text-white sm:ml-2">
@@ -164,19 +188,14 @@ export default function Dashboard() {
                         className="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700"
                         href="javascript:;"
                       >
-                        <i
-                          className="mr-2 fas fa-pencil-alt text-slate-700"
-                          aria-hidden="true"
-                        ></i>
+                        <i className="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>
                         Edit
                       </a>
                     </div>
                   </li>
                   <li className="relative flex p-6 mt-4 mb-2 border-0 rounded-xl bg-gray-50 dark:bg-slate-850">
                     <div className="flex flex-col">
-                      <h6 className="mb-4 text-sm leading-normal dark:text-white">
-                        Lucas Harper
-                      </h6>
+                      <h6 className="mb-4 text-sm leading-normal dark:text-white">Lucas Harper</h6>
                       <span className="mb-2 text-xs leading-tight dark:text-white/80">
                         Company Name:
                         <span className="font-semibold text-slate-700 dark:text-white sm:ml-2">
@@ -208,19 +227,14 @@ export default function Dashboard() {
                         className="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700"
                         href="javascript:;"
                       >
-                        <i
-                          className="mr-2 fas fa-pencil-alt text-slate-700"
-                          aria-hidden="true"
-                        ></i>
+                        <i className="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>
                         Edit
                       </a>
                     </div>
                   </li>
                   <li className="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
                     <div className="flex flex-col">
-                      <h6 className="mb-4 text-sm leading-normal dark:text-white">
-                        Ethan James
-                      </h6>
+                      <h6 className="mb-4 text-sm leading-normal dark:text-white">Ethan James</h6>
                       <span className="mb-2 text-xs leading-tight dark:text-white/80">
                         Company Name:
                         <span className="font-semibold text-slate-700 dark:text-white sm:ml-2">
@@ -252,10 +266,7 @@ export default function Dashboard() {
                         className="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700"
                         href="javascript:;"
                       >
-                        <i
-                          className="mr-2 fa fa-heart text-red-500"
-                          aria-hidden="true"
-                        ></i>
+                        <i className="mr-2 fa fa-heart text-red-500" aria-hidden="true"></i>
                       </a>
                     </div>
                   </li>
@@ -268,15 +279,11 @@ export default function Dashboard() {
               <div className="p-6 px-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
                 <div className="flex flex-wrap -mx-3">
                   <div className="max-w-full px-3 md:w-1/2 md:flex-none">
-                    <h6 className="mb-0 dark:text-white">
-                      Read History
-                    </h6>
+                    <h6 className="mb-0 dark:text-white">Read History</h6>
                   </div>
                   <div className="flex items-center justify-end max-w-full px-3 dark:text-white/80 md:w-1/2 md:flex-none">
                     <i className="mr-2 far fa-calendar-alt"></i>
-                    <small>
-                      23 - 30 March 2020
-                    </small>
+                    <small>23 - 30 March 2020</small>
                   </div>
                 </div>
               </div>
@@ -296,8 +303,7 @@ export default function Dashboard() {
                           Genesis 1:20
                         </h6>
                         <span className="text-xs leading-tight dark:text-white/80">
-                          27 March 2020, at 12:30
-                          PM
+                          27 March 2020, at 12:30 PM
                         </span>
                       </div>
                     </div>
@@ -314,8 +320,7 @@ export default function Dashboard() {
                           Deuteronomy 10:20
                         </h6>
                         <span className="text-xs leading-tight dark:text-white/80">
-                          27 March 2020, at 12:30
-                          PM
+                          27 March 2020, at 12:30 PM
                         </span>
                       </div>
                     </div>
@@ -338,8 +343,7 @@ export default function Dashboard() {
                           Luke 2:20
                         </h6>
                         <span className="text-xs leading-tight dark:text-white/80">
-                          26 March 2020, at 13:45
-                          PM
+                          26 March 2020, at 13:45 PM
                         </span>
                       </div>
                     </div>
@@ -351,8 +355,7 @@ export default function Dashboard() {
                           Genesis 4:12
                         </h6>
                         <span className="text-xs leading-tight dark:text-white/80">
-                          26 March 2020, at 12:30
-                          PM
+                          26 March 2020, at 12:30 PM
                         </span>
                       </div>
                     </div>
@@ -365,8 +368,7 @@ export default function Dashboard() {
                           Song 20:1
                         </h6>
                         <span className="text-xs leading-tight dark:text-white/80">
-                          26 March 2020, at 05:00
-                          AM
+                          26 March 2020, at 05:00 AM
                         </span>
                       </div>
                     </div>

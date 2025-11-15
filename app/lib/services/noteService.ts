@@ -1,4 +1,4 @@
-import * as NotesDb from '@/app/supabase/notes';
+import * as NotesDb from '@/app/lib/supabase/notes';
 
 export async function addUserNote() {
   try {

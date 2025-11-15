@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fa';
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { authService } from '../lib/services/authService';
 
 type SidebarProps = {
   sidebarOpen: boolean;
@@ -39,6 +40,11 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
   // Helper for closing sidebar when a link is clicked
   const handleLinkClick = () => {
     if (sidebarOpen) toggleSidebar();
+  };
+
+  // handle signout
+  const handleSigOut = () => {
+    authService.signOut();
   };
 
   return (
@@ -166,10 +172,11 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
         />
 
         <Link
+          onClick={handleSigOut}
           className="inline-block w-full px-8 py-2 text-xs font-semibold leading-normal text-center 
           text-white align-middle transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md 
           select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px"
-          href="/auth/sign-out"
+          href="#0"
         >
           Sign-out
         </Link>

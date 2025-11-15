@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { useState, useEffect } from 'react';
 import SideNavbar from '@/app/components/Sidebar';
 import TopNavbar from '@/app/components/TopNavbar';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -47,7 +48,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* <!-- cards --> */}
             <div className="w-full px-6 py-6 mx-auto">
               {/* <!-- children  --> */}
-              {children}
+              <ProtectedRoute>{children}</ProtectedRoute>{' '}
+              {/* <!-- Protected Routes for auth  --> */}
             </div>
             {/* <!-- end cards --> */}
           </main>

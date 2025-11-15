@@ -1,8 +1,27 @@
 'use client';
 
+import { signInWithEmailPassword } from '@/app/lib/supabase/auth';
+import { supabase } from '@/app/lib/supabase/client';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function SignIn() {
+  const [form, setForm] = useState({ email: '', password: '' });
+
+  // handle on form
+  const handleOnChange = (e: { target: { name: string; value: string } }) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // handle form submit
+  const handleOnSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    // sing in using supabase
+    const signIn = await signInWithEmailPassword(form.email, form.password);
+    console.log(signIn);
+  };
+
   return (
     <>
       {/* <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 bg-[url('/assets/custom/bible-03.jpg')] overflow-hidden bg-cover"> */}
@@ -18,7 +37,10 @@ export default function SignIn() {
                 <h1 className="text-2xl font-semibold text-center">BibleVerse 1.0</h1>
               </div>
               <div className="divide-y divide-gray-200 -mr-1 -ml-1">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                <form
+                  onSubmit={handleOnSubmit}
+                  className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7"
+                >
                   <div className="relative">
                     {/* form is hidden for browsers autofill text */}
                     <input
@@ -36,7 +58,9 @@ export default function SignIn() {
                     {/* end of form is hidden for browsers autofill text */}
 
                     <input
+                      onChange={handleOnChange}
                       autoComplete="off"
+                      value={form.email}
                       id="email"
                       name="email"
                       type="text"
@@ -52,7 +76,9 @@ export default function SignIn() {
                   </div>
                   <div className="relative">
                     <input
+                      onChange={handleOnChange}
                       autoComplete="off"
+                      value={form.password}
                       id="password"
                       name="password"
                       type="password"
@@ -71,7 +97,7 @@ export default function SignIn() {
                       Sign In
                     </button>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
 

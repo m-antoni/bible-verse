@@ -1,8 +1,48 @@
 'use client';
 
 import Link from 'next/link';
-
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify/unstyled';
+import 'react-toastify/ReactToastify.css';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import { authService } from '@/app/lib/services/authService';
 export default function SignUp() {
+  const [form, setForm] = useState({ fullName: '', email: '', password: '' });
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    // handle form error
+    if (form.fullName === '' || form.email === '' || form.password === '') {
+      toast.error('Please input all the fields.', {
+        toastId: '01',
+        icon: <FaTimes className="text-xl text-red-500" />,
+      });
+    }
+
+    try {
+      const res = await authService.signUp(form.fullName, form.email, form.password);
+
+      toast('Check your email confirmation link.', {
+        toastId: '01',
+        icon: <FaCheck className="text-xl text-green-500" />,
+      });
+      console.log(res);
+      setForm({ fullName: '', email: '', password: '' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred.';
+      console.log(message);
+      toast.error(message, {
+        toastId: '01',
+        icon: <FaTimes className="text-xl text-red-500" />,
+      });
+    }
+  };
+
+  // form onchange
+  const onChange = (e: { target: { name: string; value: string } }) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       {/* <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 bg-[url('/assets/custom/bible-03.jpg')] overflow-hidden bg-cover"> */}
@@ -35,60 +75,72 @@ export default function SignUp() {
                     style={{ display: 'none' }}
                   />
                   {/* end of form is hidden for browsers autofill text */}
-
-                  <div className="relative">
-                    <input
-                      autoComplete="off"
-                      id="fullname"
-                      name="fullname"
-                      type="text"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Full Name"
-                    />
-                    <label
-                      htmlFor="fullname"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      Full Name
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      autoComplete="off"
-                      id="email"
-                      name="email"
-                      type="text"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Email address"
-                    />
-                    <label
-                      htmlFor="email"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      Email Address
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      autoComplete="off"
-                      id="password"
-                      name="password"
-                      type="password"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Password"
-                    />
-                    <label
-                      htmlFor="password"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      Password
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <button className="bg-slate-700 text-white rounded-md py-2 w-full mt-3">
-                      Sign Up
-                    </button>
-                  </div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="relative mt-4">
+                      <input
+                        onChange={onChange}
+                        autoComplete="off"
+                        id="fullname"
+                        name="fullName"
+                        type="text"
+                        value={form.fullName}
+                        className="peer placeholder-transparent h-10 w-full border-b-2 
+                        border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                        placeholder="Full Name"
+                      />
+                      <label
+                        htmlFor="fullname"
+                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                      >
+                        Full Name
+                      </label>
+                    </div>
+                    <div className="relative mt-4">
+                      <input
+                        onChange={onChange}
+                        autoComplete="off"
+                        id="email"
+                        name="email"
+                        value={form.email}
+                        type="text"
+                        className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 
+                        focus:outline-none focus:borer-rose-600"
+                        placeholder="Email address"
+                      />
+                      <label
+                        htmlFor="email"
+                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base 
+                        peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                      >
+                        Email Address
+                      </label>
+                    </div>
+                    <div className="relative mt-4">
+                      <input
+                        onChange={onChange}
+                        autoComplete="off"
+                        id="password"
+                        name="password"
+                        value={form.password}
+                        type="password"
+                        className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 
+                        text-gray-900 focus:outline-none focus:borer-rose-600"
+                        placeholder="Password"
+                      />
+                      <label
+                        htmlFor="password"
+                        className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base 
+                        peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                      >
+                        Password
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <button className="bg-slate-700 text-white rounded-md py-2 w-full mt-3">
+                        Sign Up
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -161,6 +213,18 @@ export default function SignUp() {
             </div>
           </div>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          rtl={false}
+          // theme="dark"
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </>
   );
