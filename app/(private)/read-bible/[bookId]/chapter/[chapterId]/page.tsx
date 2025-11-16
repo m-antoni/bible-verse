@@ -10,7 +10,6 @@ import {
   FaArrowCircleLeft,
   FaBookmark,
   FaCheckCircle,
-  FaCheckDouble,
   FaHeart,
 } from 'react-icons/fa';
 import Image from 'next/image';
@@ -27,6 +26,7 @@ import { BookChapterAndDetails } from '@/app/types';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { Flip } from 'react-toastify';
+import NotesForm from '@/app/components/NotesForm';
 
 type ChapterState = {
   book_chapter_data: any[]; // or better, define a proper type
@@ -49,6 +49,11 @@ export default function BookRead() {
   const pathname = usePathname();
   const urlParts = pathname.split('/').filter(Boolean);
   const router = useRouter();
+
+  const bibleChapter = {
+    book_id: bookId,
+    book_chapter_id: chapterId,
+  };
 
   // Check if items exist in localStorage otherwise fall back to an API call.
   // This ensures that on refresh, data is loaded from localStorage first.
@@ -115,11 +120,6 @@ export default function BookRead() {
     router.push(redirectUrl);
     setDropdownValue(ch);
     setOpen(false);
-  };
-
-  // handle save note
-  const handleSaveNote = () => {
-    console.log('RUN SAVES');
   };
 
   const handleAddFavorite = () => {
@@ -248,19 +248,6 @@ export default function BookRead() {
                         >
                           <FaHeart onClick={handleAddFavorite} />
                         </button>
-                        <ToastContainer
-                          position="top-right"
-                          autoClose={2000}
-                          hideProgressBar={false}
-                          newestOnTop={false}
-                          rtl={false}
-                          transition={Flip}
-                          // theme="dark"
-                          closeOnClick
-                          pauseOnFocusLoss
-                          draggable
-                          pauseOnHover
-                        />
 
                         <button
                           type="button"
@@ -381,58 +368,29 @@ export default function BookRead() {
                 </div>
               </div>
             ))}
-          {/* "" */}
 
-          {/* Noted section */}
+          {/* Note section */}
           <div className="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
-            <div
-              className="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 
-            dark:shadow-dark-xl rounded-2xl bg-clip-border"
-            >
-              <Image
-                className="w-full rounded-t-2xl"
-                src="/assets/custom/note.jpg"
-                alt="notes"
-                // fill={true}
-                width={500}
-                height={500}
-              />
-
-              <div className="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4">
-                <div className="mb-4">
-                  <label
-                    htmlFor="address"
-                    className="flex py-3 text-lgf text-slate-700 dark:text-white/80 mr-0"
-                  >
-                    Notes:
-                  </label>
-                  <textarea
-                    name="address"
-                    className="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none 
-                    rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none 
-                    transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none h-48"
-                    placeholder="Enter your notes..."
-                  ></textarea>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleSaveNote}
-                    type="button"
-                    className="px-4 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 
-                    rounded-lg shadow-md cursor-pointer text-xs bg-slate-700 lg:block tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"
-                  >
-                    <div className="flex">
-                      {/* <FaFloppyDisk className="text-lg" /> */}
-                      <span className="">Save Note</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <NotesForm bibleChapter={bibleChapter} />
           </div>
+          {/* Note end section */}
         </div>
       </div>
       {/* main end wrap */}
+
+      <ToastContainer
+        position="top-right"
+        // autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        rtl={false}
+        // transition={Flip}
+        // theme="dark"
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

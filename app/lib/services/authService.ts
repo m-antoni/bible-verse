@@ -72,7 +72,7 @@ export const authService = {
         return { success: false, message: error.message };
       }
 
-      return data;
+      return { success: true, data };
     } catch (error) {
       if (error instanceof Error) {
         console.error('Getting Session failed:', error);

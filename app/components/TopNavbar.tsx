@@ -1,7 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FaMoon, FaSun, FaUser } from 'react-icons/fa';
+import { supabase } from '@/app/lib/supabase/client';
+import { Session } from '@supabase/supabase-js';
 
 type TopNavbarProps = {
   sidebarDark: boolean;
@@ -14,8 +17,9 @@ export default function TopNavbar({
   sidebarDark,
   toggleSidebarTheme,
 }: TopNavbarProps) {
-  // render the current url title
-  const pathname = usePathname();
+  const [session, setSession] = useState<Session | null>(null);
+
+  const pathname = usePathname(); // render the current url title
 
   const currentPathName = (url: string): string => {
     if (url.startsWith('/read-bible')) {
@@ -31,6 +35,26 @@ export default function TopNavbar({
         return 'Favorites';
     }
   };
+
+  useEffect(() => {
+    const getInitialSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+    getInitialSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      // console.log(session);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    // console.log(session);
+  }, [session]);
 
   return (
     <nav
@@ -87,8 +111,8 @@ export default function TopNavbar({
                 className="block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand"
               >
                 {/* <i className="fa fa-user "></i> */}
-                <FaUser className="sm:mr-2 sm:inline" />
-                <span className="hidden sm:inline">Michael</span>
+                {/* <FaUser className="sm:mr-2 sm:inline" /> */}
+                <span className="hidden sm:inline">{session?.user?.email}</span>
               </a>
             </li>
             <li className="flex items-center pl-4 xl:hidden">
@@ -120,7 +144,6 @@ export default function TopNavbar({
                 data-dropdown-trigger
                 aria-expanded="false"
               >
-                {/* Sun / Moon icon for sidebar theme */}
                 {sidebarDark ? (
                   <FaSun
                     onClick={toggleSidebarTheme}
