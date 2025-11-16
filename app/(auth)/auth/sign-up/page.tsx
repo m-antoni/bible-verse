@@ -33,7 +33,7 @@ export default function SignUp() {
     console.log(result);
 
     if (result && !result.success) {
-      toast.error(`Confirmation sent to your email.`, {
+      toast.error(`${result.message}`, {
         toastId: '02',
         icon: <FaTimes className="text-xl text-red-500" />,
       });
