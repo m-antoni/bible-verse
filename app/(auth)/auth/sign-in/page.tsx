@@ -8,10 +8,12 @@ import { FaTimes } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
 import SignInForm from '@/app/components/SignInForm';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // handle form submit
   const handleOnSubmit = async (e: { preventDefault: () => void }) => {
@@ -37,6 +39,13 @@ export default function SignIn() {
       });
       setLoading(false);
     }
+
+    if (result && result.success) {
+      // IMPORTANT: refresh the page so the server-side layout reads the cookie
+      router.refresh();
+    }
+
+    console.log(result);
   };
 
   // handle on form

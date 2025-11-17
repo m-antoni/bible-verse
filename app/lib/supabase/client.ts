@@ -1,7 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+'use client';
 
-// Initialize the Supabase client
-export const supabase = createClient(
+import { createBrowserClient } from '@supabase/ssr';
+
+export const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URI!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );

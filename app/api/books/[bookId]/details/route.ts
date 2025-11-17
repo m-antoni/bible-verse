@@ -1,5 +1,10 @@
-import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/types';
 import { NextRequest, NextResponse } from 'next/server';
+import { ENV } from '@/app/constants/env';
+
+//**** ENVS ****/
+const BIBLE_API_ENDPOINT = ENV.BIBLE_API_ENDPOINT;
+const BIBLE_API_KEY = ENV.BIBLE_API_KEY;
+const BIBLE_API_ID = ENV.BIBLE_API_ID;
 
 type BookDetailsProps = {
   params: Promise<{ bookId: string }>;

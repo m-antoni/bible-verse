@@ -1,5 +1,10 @@
-import { BIBLE_API_ENDPOINT, BIBLE_API_KEY, BIBLE_API_ID } from '@/app/types';
+import { ENV } from '@/app/constants/env';
 import { NextResponse } from 'next/server';
+
+//**** ENVS ****/
+const BIBLE_API_ENDPOINT = ENV.BIBLE_API_ENDPOINT;
+const BIBLE_API_KEY = ENV.BIBLE_API_KEY;
+const BIBLE_API_ID = ENV.BIBLE_API_ID;
 
 /* 
   Next API: /api/bible

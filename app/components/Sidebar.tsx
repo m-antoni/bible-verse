@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   FaHome,
   FaEye,
@@ -24,6 +24,7 @@ type SidebarProps = {
 export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: SidebarProps) {
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Close sidebar when clicking outside of it
   useEffect(() => {
@@ -43,8 +44,17 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
   };
 
   // handle signout
-  const handleSigOut = () => {
-    authService.signOut();
+  const handleSigOut = async () => {
+    const result = await authService.signOut();
+
+    if (result && !result.success) {
+      console.log('error occured');
+    }
+
+    if (result && result.success) {
+      router.push('/auth/sign-in');
+      router.refresh(); // ensures SSR layout re-runs and session is cleared
+    }
   };
 
   return (
