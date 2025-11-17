@@ -13,5 +13,5 @@ export default async function DashboardServerLayout({ children }: { children: Re
 
   if (!session) redirect('/auth/sign-in'); // redirect if not logged in
 
-  return <DashboardClientLayout>{children}</DashboardClientLayout>;
+  return <DashboardClientLayout session={session}>{children}</DashboardClientLayout>;
 }

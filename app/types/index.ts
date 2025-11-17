@@ -4,3 +4,4 @@ export * from './bookChapter';
 export * from './bookChapterWithDetails';
 export * from './authForm';
 export * from './notes';
+export * from './bible';
