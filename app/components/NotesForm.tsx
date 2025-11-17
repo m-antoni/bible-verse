@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-import { useState } from 'react';
-import { noteService } from '../lib/services/noteService';
+import { useEffect, useState } from 'react';
+import { addNote, getChapterNote } from '../lib/services/noteService';
 import { ParamValue } from 'next/dist/server/request/params';
 import { noteBookChapterFormTypes } from '../types';
 
@@ -19,10 +19,39 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
   const [disabled, setDisable] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // fetch the chapter book note
+    async function getChapterNoteFunc() {
+      const getChapterFormParams = {
+        book_id: String(bibleChapter.book_id),
+        book_chapter_id: String(bibleChapter.book_chapter_id),
+      };
+
+      const response = await getChapterNote(getChapterFormParams);
+
+      // error occured
+      if (response && !response.success) {
+        toast(`${response.message}`, {
+          toastId: '02',
+          icon: <FaTimes className="text-xl text-red-500" />,
+        });
+        // setLoading(false);
+      }
+
+      // success responseponse
+      if (response && response.success) {
+        setForm({ note: response.data.note });
+        // console.log(response);
+      }
+    }
+
+    // call the function
+    getChapterNoteFunc();
+  }, []);
+
   // handle save note
   const submitNote = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
     setLoading(true);
 
     // form params
@@ -33,26 +62,28 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
     };
 
     // call supabase db
-    const response = await noteService.addNote(notesForm);
+    const response = await addNote(notesForm);
+    // console.log(response);
 
     // error occured
-    if (response && !response.success) {
-      toast(`${response.message}`, {
+    if (!response?.success) {
+      toast.error(`${response?.message}`, {
         toastId: '02',
         icon: <FaTimes className="text-xl text-red-500" />,
       });
       setLoading(false);
     }
 
-    // success responseponse
-    if (response && response.success) {
+    // success response
+    if (response?.success) {
       toast.success(`${response.message}`, {
         toastId: '02',
         icon: <FaCheck className="text-xl text-green-500" />,
       });
+      const noteUpdate = response?.data ? response?.data.note : '';
+      setForm({ note: noteUpdate });
+      setLoading(false);
     }
-    setLoading(false);
-    console.log(response);
   };
 
   // handle on change
@@ -68,13 +99,12 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
     <>
       <div
         className="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 
-            dark:shadow-dark-xl rounded-2xl bg-clip-border"
+        dark:shadow-dark-xl rounded-2xl bg-clip-border"
       >
         <Image
           className="w-full rounded-t-2xl"
           src="/assets/custom/note.jpg"
           alt="notes"
-          // fill={true}
           width={500}
           height={500}
         />
@@ -98,7 +128,7 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
             ></textarea>
           </div>
           <div className="flex justify-end">
-            {disabled ? (
+            {/* {disabled ? (
               <button
                 disabled
                 type="button"
@@ -125,7 +155,23 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
                   <span>Save Note</span>
                 )}
               </button>
-            )}
+            )} */}
+            <button
+              onClick={submitNote}
+              type="button"
+              disabled={loading}
+              className={`px-4 py-2 font-bold leading-normal flex justify-center items-center transition-all ease-in border-0 rounded-lg shadow-md text-xs tracking-tight-rem
+                ${loading ? 'bg-white text-gray-500 cursor-not-allowed border border-gray-300' : 'bg-slate-700 text-white hover:shadow-xs hover:-translate-y-px active:opacity-85'}`}
+            >
+              {loading ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></span>
+                  Saving changes...
+                </>
+              ) : (
+                <span>Save Note</span>
+              )}
+            </button>
           </div>
         </form>
       </div>

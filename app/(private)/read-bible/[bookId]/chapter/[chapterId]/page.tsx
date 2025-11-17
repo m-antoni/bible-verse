@@ -379,7 +379,7 @@ export default function BookRead() {
 
       <ToastContainer
         position="top-right"
-        // autoClose={2000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         rtl={false}

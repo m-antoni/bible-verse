@@ -1,7 +1,7 @@
 export type noteBookChapterFormTypes = {
   book_id: string;
-  book_chapter_id: string | undefined;
-  note: string | undefined;
+  book_chapter_id: string;
+  note: string;
 };
 
 export type noteBookChapterTypes = {
