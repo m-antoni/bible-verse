@@ -16,7 +16,6 @@ type BibleChapterProps = {
 
 export default function NotesForm({ bibleChapter }: BibleChapterProps) {
   const [form, setForm] = useState({ note: '' });
-  const [disabled, setDisable] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -40,14 +39,15 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
 
       // success responseponse
       if (response && response.success) {
-        setForm({ note: response.data.note });
+        const noteUpdate = response?.data ? response?.data.note : '';
+        setForm({ note: noteUpdate });
         // console.log(response);
       }
     }
 
     // call the function
     getChapterNoteFunc();
-  }, []);
+  }, [bibleChapter.book_chapter_id, bibleChapter.book_id]);
 
   // handle save note
   const submitNote = async (e: { preventDefault: () => void }) => {
@@ -90,9 +90,6 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
   const handleOnChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    // button will be disabled if field is empty
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    value && value.trim() !== '' ? setDisable(false) : setDisable(true);
   };
 
   return (
@@ -128,34 +125,6 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
             ></textarea>
           </div>
           <div className="flex justify-end">
-            {/* {disabled ? (
-              <button
-                disabled
-                type="button"
-                className="flex justify-center items-center px-4 py-2 font-bold leading-normal text-center
-                       text-gray-400 bg-white border border-gray-300 rounded-lg shadow-md cursor-not-allowed
-                       text-xs tracking-tight-rem"
-              >
-                <span>Save Note</span>
-              </button>
-            ) : (
-              <button
-                onClick={submitNote}
-                type="button"
-                disabled={loading}
-                className={`px-4 py-2 font-bold leading-normal flex justify-center items-center transition-all ease-in border-0 rounded-lg shadow-md text-xs tracking-tight-rem
-                ${loading ? 'bg-white text-gray-500 cursor-not-allowed border border-gray-300' : 'bg-slate-700 text-white hover:shadow-xs hover:-translate-y-px active:opacity-85'}`}
-              >
-                {loading ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></span>
-                    Saving...
-                  </>
-                ) : (
-                  <span>Save Note</span>
-                )}
-              </button>
-            )} */}
             <button
               onClick={submitNote}
               type="button"
