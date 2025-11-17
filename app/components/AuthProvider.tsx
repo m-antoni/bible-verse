@@ -1,4 +1,3 @@
-// lib/supabase/AuthProvider.tsx
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 import { createServerSupabaseClient } from '@/app/lib/supabase/server';
@@ -11,7 +10,7 @@ export default async function AuthProvider({ children }: AuthProviderProps) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log('AUTH PROVIDER SESSION', session); // should log server session
+  // console.log('AUTH PROVIDER SESSION', session);
 
   // Redirect logged-in users away from auth pages
   if (session) redirect('/dashboard');

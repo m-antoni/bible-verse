@@ -9,7 +9,7 @@ export default async function DashboardServerLayout({ children }: { children: Re
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log('DASHBOARD GROUP', session);
+  // console.log('DASHBOARD GROUP', session);
 
   if (!session) redirect('/auth/sign-in'); // redirect if not logged in
 

@@ -9,7 +9,7 @@ export default async function AuthServerLayout({ children }: { children: ReactNo
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log('AUTH GROUP', session);
+  // console.log('AUTH GROUP', session);
 
   if (session) redirect('/dashboard'); // logged-in users go to dashboard
 

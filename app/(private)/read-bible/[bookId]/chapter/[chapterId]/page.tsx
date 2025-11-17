@@ -25,7 +25,6 @@ import { getFromLocalStorage } from '@/app/lib/helpers/localStorage';
 import { BookChapterAndDetails } from '@/app/types';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
-import { Flip } from 'react-toastify';
 import NotesForm from '@/app/components/NotesForm';
 
 type ChapterState = {

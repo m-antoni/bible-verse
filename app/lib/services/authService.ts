@@ -60,8 +60,6 @@ export const authService = {
         return { success: false, message: 'Failed to sign out due to an unexpected error.' };
       }
     }
-
-    console.log('SIGN OUT TRIGGER');
   },
 
   // Get Session
