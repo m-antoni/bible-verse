@@ -1,5 +1,5 @@
 import { getFromLocalStorage, storeToLocalStorage } from '@/app/lib/helpers/localStorage';
-import { Book } from '@/app/types';
+import { Book, searchQueryType } from '@/app/types';
 
 /* 
   Report the usage to API.Bible (if token exists)
@@ -24,11 +24,15 @@ const sendFumsToken = async (fumsToken: string) => {
 export async function getBible() {
   try {
     const res = await fetch('/api/bible');
+
     if (!res.ok) {
-      throw new Error(`Failed fetching book details: ${res.statusText}`);
+      // throw new Error(`Failed fetching book details: ${res.statusText}`);
+      return { success: false, message: res.statusText, data: null };
     }
 
-    return res.json();
+    const data = await res.json();
+
+    return { success: true, message: res.statusText, data };
   } catch (error) {
     console.error(`Error fetching book details`, error);
     throw error;
@@ -126,7 +130,7 @@ export async function getBookDetails(bookId: string) {
 }
 
 /* 
-    Next API: /api/books/[bookId]/chapters/[chapterId]
+     Next API: /api/books/[bookId]/chapters/[chapterId]
     Bible API: https://bible-api/[bibleId]/chapters/[chapterId]
     Desc: Fetch chapter of a book eq. chapter 1 of Genesis
 */
@@ -161,5 +165,41 @@ export async function getBookChapter(bookId: string, chapterId: string) {
   } catch (error) {
     console.error('Error fetching bible books: ', error);
     throw error;
+  }
+}
+
+/* 
+    Next API: /api/search?query=<TEXT>&limit=<10>&offset=<0>&range=<gen.1,lev.1>
+    Bible API: https://bible-api/[bibleId]/search?query=<TEXT>&limit=<10>&offset=<0>&range=<gen.1,lev.1>
+    Desc: Search by keyword
+*/
+export async function searcKeyword(queryParams: searchQueryType) {
+  try {
+    // search query params
+    const params = {
+      query: queryParams.query, // text eq. "Jesus"
+      limit: queryParams.limit || '10', // shows 10, 50, 100
+      offset: queryParams.offset || '0', // skip 10, 50, 100 etc
+      sort: 'relevance', // default value
+    };
+
+    // formatted url search query with params
+    const url = `query=${params.query}&limit=${params.limit}&offset=${params.offset}&sort=${params.sort}`;
+
+    const res = await fetch(`/api/search?${url}`);
+
+    // error
+    if (!res.ok) {
+      return { success: false, message: res.statusText, data: null };
+    }
+
+    const data = await res.json();
+
+    return { success: true, message: 'success.', data: data.data };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Search error:', error);
+      return { success: false, message: 'Failed to search due to an unexpected error.' };
+    }
   }
 }

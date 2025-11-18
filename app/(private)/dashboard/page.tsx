@@ -6,29 +6,35 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { Bible } from '@/app/types';
+import Spinner from '@/app/components/Spinner';
 
 type Dashboard = {
   bible: Bible[];
-  notes: any[];
-  finished: any[];
+  // notes: any[];
+  // finished: any[];
 };
 
 export default function Dashboard() {
   const { session } = useAuth();
-  const [dashboard, setDashboard] = useState<Dashboard>({ bible: [], notes: [], finished: [] });
+  const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
+  const [loading, setLoading] = useState(false);
 
   // fetch bible details
   useEffect(() => {
     async function fetchBible() {
+      setLoading(true);
       const response = await getBible();
-      setDashboard({ ...dashboard, bible: [response.data] });
+      // console.log(response);
+      setDashboard({ ...dashboard, bible: [response.data.data] });
+      setLoading(false);
     }
 
     fetchBible();
   }, []);
 
-  // console.log(dashboard);
-  // console.log(session);
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -73,37 +79,35 @@ export default function Dashboard() {
                             </Link>
                           </span>
                           {dashboard.bible.map((item, index) => (
-                            <>
-                              <div key={index}>
-                                <div className="mb-2 text-md leading-tight dark:text-white/80">
-                                  Name:
-                                  <span className="text-slate-700 dark:text-white sm:ml-2">
-                                    {item.name}
-                                  </span>
-                                </div>
-                                <div className="mb-2 text-md leading-tight dark:text-white/80">
-                                  Abbrevation:
-                                  <span className="text-slate-700 dark:text-white sm:ml-2">
-                                    {item.abbreviationLocal}
-                                  </span>
-                                </div>
-                                <div className="text-md leading-tight dark:text-white/80">
-                                  Languange:
-                                  <span className="text-slate-700 dark:text-white sm:ml-2">
-                                    {item.language?.name}
-                                  </span>
-                                </div>
-                                <div className="mb-2 -mt-2 text-md leading-tight dark:text-white/80">
-                                  <span className="text-slate-700 dark:text-white sm:ml-2">
-                                    <div
-                                      dangerouslySetInnerHTML={{
-                                        __html: copyrightToHtml(item.copyright),
-                                      }}
-                                    />
-                                  </span>
-                                </div>
+                            <div key={index}>
+                              <div className="mb-2 text-md leading-tight dark:text-white/80">
+                                Name:
+                                <span className="text-slate-700 dark:text-white sm:ml-2">
+                                  {item.name}
+                                </span>
                               </div>
-                            </>
+                              <div className="mb-2 text-md leading-tight dark:text-white/80">
+                                Abbrevation:
+                                <span className="text-slate-700 dark:text-white sm:ml-2">
+                                  {item.abbreviationLocal}
+                                </span>
+                              </div>
+                              <div className="text-md leading-tight dark:text-white/80">
+                                Languange:
+                                <span className="text-slate-700 dark:text-white sm:ml-2">
+                                  {item.language?.name}
+                                </span>
+                              </div>
+                              <div className="mb-2 -mt-2 text-md leading-tight dark:text-white/80">
+                                <span className="text-slate-700 dark:text-white sm:ml-2">
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html: copyrightToHtml(item.copyright),
+                                    }}
+                                  />
+                                </span>
+                              </div>
+                            </div>
                           ))}
                         </>
                       )}
