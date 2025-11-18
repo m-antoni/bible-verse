@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       query: searchParams.get('query'), // text eq. "Jesus"
       limit: searchParams.get('limit') || '10', // shows 10, 50, 100
       offset: searchParams.get('offset') || '0', // skip 10, 50, 100 etc
-      sort: 'relevance', // default value
+      sort: 'canonical', // options: relevance, canonical, reverse-canonical
     };
 
     // formatted url search query with params

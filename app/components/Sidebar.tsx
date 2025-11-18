@@ -143,10 +143,10 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
       {/* Bottom: About Me / Sign-out */}
       <div className="mx-4 mb-4 flex flex-col gap-2">
         <Link
-          href="/"
+          href="/about"
           className="inline-block w-full px-8 py-2 text-xs font-semibold leading-normal text-center text-white capitalize transition-all ease-in rounded-lg shadow-md bg-purple-800 hover:shadow-xs hover:-translate-y-px"
         >
-          About Me
+          About This Project
         </Link>
 
         <hr className="h-px mx-0 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />

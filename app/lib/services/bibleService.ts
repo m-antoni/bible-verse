@@ -180,11 +180,10 @@ export async function searcKeyword(queryParams: searchQueryType) {
       query: queryParams.query, // text eq. "Jesus"
       limit: queryParams.limit || '10', // shows 10, 50, 100
       offset: queryParams.offset || '0', // skip 10, 50, 100 etc
-      sort: 'relevance', // default value
     };
 
     // formatted url search query with params
-    const url = `query=${params.query}&limit=${params.limit}&offset=${params.offset}&sort=${params.sort}`;
+    const url = `query=${params.query}&limit=${params.limit}&offset=${params.offset}`;
 
     const res = await fetch(`/api/search?${url}`);
 

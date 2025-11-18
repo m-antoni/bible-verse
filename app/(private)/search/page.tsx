@@ -36,7 +36,8 @@ export default function Search() {
   // Search use debounce 500 milliseconds
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!search.query) {
+      // This will prevent to trigger the search API
+      if (!search.query || search.query.trim() === '') {
         setSearchData({
           query: '',
           limit: 10,
@@ -48,6 +49,7 @@ export default function Search() {
         return;
       }
 
+      // Self-invoking funtion to call the search API
       (async () => {
         try {
           setLoading(true);
@@ -130,17 +132,9 @@ export default function Search() {
             <div ref={dropdownRef} className="text-left pr-5 py-5 relative">
               <button
                 onClick={() => setOpen(!open)}
-                // disabled={search.length ? true : false}
                 type="button"
                 className="inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-700 bg-white border 
                     border-gray-300 rounded-md shadow-md focus:outline-none"
-                // className={
-                //   search.length
-                //     ? `inline-flex justify-between w-32 px-4 py-3 text-sm font-medium text-gray-200 bg-white border
-                //     border-gray-300 rounded-md shadow-md focus:outline-none`
-                //     : `inline-flex justify-between w-32 px-4 py-2 text-sm font-medium text-gray-700 bg-white border
-                //     border-gray-300 rounded-md shadow-md focus:outline-none`
-                // }
               >
                 Show: {rows}
                 <svg

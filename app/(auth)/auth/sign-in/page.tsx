@@ -64,12 +64,9 @@ export default function SignIn() {
       {/* <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 bg-[url('/assets/custom/bible-03.jpg')] overflow-hidden bg-cover"> */}
       <div className="min-h-screen py-6 flex flex-col justify-center sm:py-1">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-          <div
-            // className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
-            className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
-          ></div>
-          <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-            <div className="max-w-md mx-auto">
+          {/* <div className="relative px-4 py-10 bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.15)]"> */}
+          <div className="relative px-4 py-10 bg-white rounded-3xl shadow-2xl">
+            <div className="max-w-md mx-auto px-10">
               {loading ? (
                 <div className="flex-grow flex items-center justify-center h-64 px-10 mx-10">
                   <PuffLoader cssOverride={override} color="#2196F3" size={90} />
