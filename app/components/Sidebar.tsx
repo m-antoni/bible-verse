@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   FaHome,
   FaEye,
@@ -11,22 +11,25 @@ import {
   FaDoorOpen,
   FaDoorClosed,
 } from 'react-icons/fa';
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { authService } from '../lib/services/authService';
-import { toast } from 'react-toastify/unstyled';
-import 'react-toastify/ReactToastify.css';
+import { useEffect, useRef, useState } from 'react';
 
+// Sidebar Props
 type SidebarProps = {
   sidebarOpen: boolean;
   toggleSidebar: () => void;
   sidebarDark: boolean;
+  openSignOutModal: () => void;
 };
 
-export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: SidebarProps) {
+export default function SideNavbar({
+  sidebarOpen,
+  toggleSidebar,
+  sidebarDark,
+  openSignOutModal,
+}: SidebarProps) {
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   // Close sidebar when clicking outside of it
   useEffect(() => {
@@ -43,25 +46,6 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
   // Helper for closing sidebar when a link is clicked
   const handleLinkClick = () => {
     if (sidebarOpen) toggleSidebar();
-  };
-
-  // handle signout
-  const handleSigOut = async () => {
-    const response = await authService.signOut();
-
-    if (response && !response.success) {
-      toast.error(`${response.message}`, {
-        position: 'top-center',
-        toastId: '02',
-        icon: <FaTimes className="text-xl text-red-500" />,
-      });
-      console.log('Error occured', response.message);
-    }
-
-    if (response && response.success) {
-      router.push('/auth/sign-in');
-      router.refresh(); // ensures SSR layout re-runs and session is cleared
-    }
   };
 
   return (
@@ -113,11 +97,6 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
               icon: <FaSearch className="text-cyan-500 text-lg" />,
               label: 'Search',
             },
-            {
-              href: '/favorites',
-              icon: <FaHeart className="text-red-500 text-lg" />,
-              label: 'Favorites',
-            },
           ].map(({ href, icon, label }) => (
             <li key={href} className="mt-0.5 w-full">
               <Link
@@ -152,7 +131,7 @@ export default function SideNavbar({ sidebarOpen, toggleSidebar, sidebarDark }: 
         <hr className="h-px mx-0 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
 
         <Link
-          onClick={handleSigOut}
+          onClick={openSignOutModal}
           href="#"
           className="inline-block w-full px-8 py-2 text-xs font-semibold leading-normal text-center text-white transition-all ease-in bg-slate-700 border-0 rounded-lg shadow-md select-none hover:shadow-xs hover:-translate-y-px"
         >

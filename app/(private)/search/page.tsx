@@ -217,7 +217,7 @@ export default function Search() {
                         <span className="pt-2 text-sm leading-tight">
                           <Link
                             href={`/read-bible/${verse.bookId}/chapter/${verse.chapterId}`}
-                            className="text-blue-500"
+                            className="inline-block px-2 py-1 bg-slate-700 text-white rounded-md hover:bg-slate-800 transition"
                           >
                             Visit Chapter
                           </Link>
@@ -228,8 +228,12 @@ export default function Search() {
                 </div>
               ))
             ) : (
-              <div className="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500 ">
-                <div className="text-center px-5 py-10 font-semibold">~ NO SEARCH FOUND ~</div>
+              <div className="flex justify-center items-center w-full mb-4">
+                <img
+                  src="/assets/custom/search.gif"
+                  className="w-48 h-48 object-contain mb-20"
+                  alt="Search Animation"
+                />
               </div>
             )}
           </div>

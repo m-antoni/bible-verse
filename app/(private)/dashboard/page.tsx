@@ -1,6 +1,6 @@
 'use client';
 
-import { copyrightToHtml, verseToHtml } from '@/app/lib/helpers';
+import { copyrightToHtml } from '@/app/lib/helpers';
 import { getBible } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

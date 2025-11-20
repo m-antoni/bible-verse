@@ -1,3 +1,4 @@
+import { ENV } from '@/app/constants/env';
 import { supabase } from './client';
 
 // Sign up
@@ -6,7 +7,7 @@ export async function signUpWithEmailPassword(fullName: string, email: string, p
     email,
     password,
     options: {
-      emailRedirectTo: `${window.location.origin}/dashboard`,
+      emailRedirectTo: `${ENV.AUTH_REDIRECT}`,
       data: {
         full_name: fullName,
       },

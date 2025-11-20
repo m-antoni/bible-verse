@@ -7,4 +7,5 @@ export const ENV = {
   // Supabase
   SUPABASE_URI: process.env.NEXT_PUBLIC_SUPABASE_URI!,
   SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  AUTH_REDIRECT: process.env.NEXT_PUBLIC_AUTH_REDIRECT!,
 } as const;
