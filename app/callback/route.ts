@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
   const supabase = await createServerSupabaseClient();
 
-  // ** OAuth flow
+  // ** OAuth Flow
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(`${origin}${next}`);

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { Bible } from '@/app/types';
-import Spinner from '@/app/components/Spinner';
+import { insertUser } from '@/app/lib/services/bibleUserService';
 
 type Dashboard = {
   bible: Bible[];
@@ -25,7 +25,16 @@ export default function Dashboard() {
       setDashboard({ ...dashboard, bible: [response.data.data] });
     }
 
+    // ** This will insert the user data from Google OAuth
+    async function insertGoogleUser() {
+      if (user?.user_metadata?.provider_id) {
+        const response = await insertUser(user);
+        console.log(response);
+      }
+    }
+
     fetchBible();
+    insertGoogleUser();
   }, []);
 
   return (

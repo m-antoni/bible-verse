@@ -6,3 +6,4 @@ export * from './authForm';
 export * from './notes';
 export * from './bible';
 export * from './search';
+export * from './supabaseUser';

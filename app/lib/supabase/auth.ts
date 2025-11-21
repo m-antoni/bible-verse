@@ -1,5 +1,7 @@
 import { ENV } from '@/app/constants/env';
 import { supabase } from './client';
+import { TABLES } from '@/app/constants/table';
+import { SupabaseUser } from '@/app/types';
 
 // ** Sign up
 export async function signUpWithEmailPassword(fullName: string, email: string, password: string) {
@@ -44,4 +46,22 @@ export async function signInWithGoogle() {
 
   //** redirect URL
   return data.url;
+}
+
+// ** Insert User once GoogleOAuth success!
+export async function insertUserFromGoogle(user: SupabaseUser) {
+  // insert into bible_users table
+  const { data, error } = await supabase.from(TABLES.BIBLE_USERS).upsert(
+    {
+      auth_id: user.id,
+      display_name: user.user_metadata.full_name || user.email,
+    },
+    { onConflict: 'auth_id', ignoreDuplicates: true }, // prevents duplicates
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
 }
