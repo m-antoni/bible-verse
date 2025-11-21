@@ -65,7 +65,7 @@ export default function SignIn() {
       <div className="min-h-screen py-6 flex flex-col justify-center sm:py-1">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
           {/* <div className="relative px-4 py-10 bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.15)]"> */}
-          <div className="relative px-4 py-10 bg-white rounded-3xl shadow-2xl">
+          <div className="relative px-4 py-10 bg-white rounded-3xl shadow-2xl -mt-15">
             <div className="max-w-md mx-auto px-10">
               {loading ? (
                 <div className="flex-grow flex items-center justify-center h-64 px-10 mx-10">

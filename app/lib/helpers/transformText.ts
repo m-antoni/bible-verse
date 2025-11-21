@@ -1,4 +1,4 @@
-// use to transform text with html content on it to html render nextjs
+// ** Use to transform text with html content on it to html render nextjs
 export const verseToHtml = (html: string): string => {
   if (!html) return '';
 
@@ -27,7 +27,7 @@ export const verseToHtml = (html: string): string => {
   return `<p class="mb-4 leading-relaxed text-justify text-slate-700">${out}</p>`;
 };
 
-// use to transform the copyright text with links
+// ** Use to transform the copyright text with links
 export const copyrightToHtml = (text: string): string => {
   if (!text) return '';
 
@@ -42,7 +42,7 @@ export const copyrightToHtml = (text: string): string => {
   );
 };
 
-// generate random words at the intro page
+// ** Generate random words at the intro page
 export const getRandomIntroText = (): string => {
   const introTexts: string[] = [
     'Welcome to this book. May your heart be open and your spirit guided as you read. Let these words inspire faith, hope, and wisdom in your journey.',
@@ -55,7 +55,25 @@ export const getRandomIntroText = (): string => {
     'Intro: Let this chapter remind you of God’s mercy, grace, and guidance in all that you do.',
     'May these pages encourage reflection, wisdom, and a deeper connection with the divine.',
     'Welcome! Take a moment to breathe, reflect, and let the Lord’s teachings enrich your soul.',
+    'Discover the Word of God with ease. Search for verses, explore chapters,andnavigate the Bible effortlessly. Perfect for daily reading, study, and reflection',
   ];
   const index = Math.floor(Math.random() * introTexts.length);
   return introTexts[index];
+};
+
+// ** Format the Book add Chapter word
+export const formatBookChapter = (input: string): string => {
+  if (!input || typeof input !== 'string') return input;
+
+  // Split the string into parts
+  const parts = input.trim().split(/\s+/);
+
+  // The last part should be the chapter number
+  const chapter = parts.pop();
+  if (!chapter || isNaN(Number(chapter))) return input;
+
+  // Remaining parts form the book name (multi-word supported)
+  const book = parts.join(' ');
+
+  return `${book} Chapter ${chapter}`;
 };

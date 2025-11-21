@@ -63,7 +63,7 @@ export default function SignUp() {
     <>
       {/* <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 bg-[url('/assets/custom/bible-03.jpg')] overflow-hidden bg-cover"> */}
       <div className="min-h-screen py-6 flex flex-col justify-center sm:py-1">
-        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div className="relative py-3 sm:max-w-xl sm:mx-auto -mt-10">
           <div className="relative px-4 py-10 bg-white rounded-3xl shadow-2xl">
             <div className="max-w-md mx-auto px-10">
               {loading ? (

@@ -19,6 +19,7 @@ import {
   copyrightToHtml,
   dropDownSelectChapter,
   excludeIntroPage,
+  formatBookChapter,
   verseToHtml,
 } from '@/app/lib/helpers';
 import { getFromLocalStorage } from '@/app/lib/helpers/localStorage';
@@ -54,8 +55,8 @@ export default function BookRead() {
     book_chapter_id: chapterId,
   };
 
-  // Check if items exist in localStorage otherwise fall back to an API call.
-  // This ensures that on refresh, data is loaded from localStorage first.
+  // ** Check if items exist in localStorage otherwise fall back to an API call.
+  // ** This ensures that on refresh, data is loaded from localStorage. otherwise we call the API
   useEffect(() => {
     const BOOK_ID = bookId as string;
     const CHAPTER_ID = chapterId as string;
@@ -156,7 +157,9 @@ export default function BookRead() {
             </div>
 
             <div className="h-full">
-              <h5 className="mb-1 dark:text-white">{chapter.book_chapter_details.name}</h5>
+              <h5 className="mb-1 dark:text-white font-semibold">
+                {chapter.book_chapter_details.name}
+              </h5>
               <p className="mb-0 leading-normal dark:text-white dark:opacity-60 text-sm">
                 {chapter.book_chapter_details.nameLong}
               </p>
@@ -237,7 +240,7 @@ export default function BookRead() {
                       </Link>
 
                       {/* Buttons */}
-                      <div className="flex justify-end w-full sm:w-auto gap-2">
+                      {/* <div className="flex justify-end w-full sm:w-auto gap-2">
                         <button
                           type="button"
                           className="relative inline-flex items-center justify-center w-8 h-8 text-red-500 
@@ -257,7 +260,7 @@ export default function BookRead() {
                         >
                           <FaBookmark />
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
@@ -268,7 +271,9 @@ export default function BookRead() {
                     />
 
                     {/* Chapter Title */}
-                    <p className="pb-4 sm:mb-0 dark:text-white/80 text-left">{ch.reference}</p>
+                    <p className="pb-4 sm:mb-0 dark:text-white/80 text-left font-semibold">
+                      {formatBookChapter(ch.reference)}
+                    </p>
 
                     <div>
                       <div

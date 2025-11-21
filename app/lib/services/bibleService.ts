@@ -143,7 +143,7 @@ export async function getBookChapter(bookId: string, chapterId: string) {
     }
     const data = await res.json();
 
-    // send fumsToken
+    // Send fumsToken
     await sendFumsToken(data?.meta?.fumsToken);
 
     // get the book details and total chapters
@@ -173,7 +173,7 @@ export async function getBookChapter(bookId: string, chapterId: string) {
     Bible API: https://bible-api/[bibleId]/search?query=<TEXT>&limit=<10>&offset=<0>&range=<gen.1,lev.1>
     Desc: Search by keyword
 */
-export async function searcKeyword(queryParams: searchQueryType) {
+export async function searchKeyword(queryParams: searchQueryType) {
   try {
     // search query params
     const params = {
@@ -193,6 +193,9 @@ export async function searcKeyword(queryParams: searchQueryType) {
     }
 
     const data = await res.json();
+
+    // Send fumsToken
+    await sendFumsToken(data?.meta?.fumsToken);
 
     return { success: true, message: 'success.', data: data.data };
   } catch (error) {

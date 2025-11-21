@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Book } from '@/app/types';
+// Check if window is available (client-side only)
+const isBrowser = () => typeof window !== 'undefined';
 
-// store book's chapter to localstorage
-export const storeToLocalStorage = <T>(item: T, itemName: string): void => {
-  if (typeof window === 'undefined') return; // guard for server
-  localStorage.setItem(itemName, JSON.stringify(item));
+// ** Store any value to localStorage
+export const storeToLocalStorage = <T>(value: T, key: string): void => {
+  if (!isBrowser()) return;
+
+  localStorage.setItem(key, JSON.stringify(value));
 };
 
-// get item from localstorage
-export const getFromLocalStorage = <T>(itemName: string): T | null => {
-  if (typeof window === 'undefined') return null;
-  const item = localStorage.getItem(itemName);
+// ** Retrieve any typed value from localStorage
+export const getFromLocalStorage = <T>(key: string): T | null => {
+  if (!isBrowser()) return null;
+
+  const item = localStorage.getItem(key);
   if (!item) return null;
+
   try {
     return JSON.parse(item) as T;
   } catch {
@@ -19,16 +23,24 @@ export const getFromLocalStorage = <T>(itemName: string): T | null => {
   }
 };
 
-// search query through the localstorage
-export const searchFromLocalStorage = (text: string, lsName: string): any[] => {
-  const items = getFromLocalStorage<any[]>(lsName);
+// ** Remove an item from localStorage
+export const removeFromLocalStorage = (key: string): void => {
+  if (!isBrowser()) return;
+  localStorage.removeItem(key);
+};
+
+// Search items inside localStorage (specific for bible-books)
+export const searchFromLocalStorage = (text: string, key: string): any[] => {
+  const items = getFromLocalStorage<any[]>(key);
   if (!items) return [];
 
-  if (lsName === 'bible-books') {
-    return items.filter((book: any) => {
+  const lowerText = text.toLowerCase();
+
+  if (key === 'bible-books') {
+    return items.filter((book) => {
       return (
-        (book.name?.toLowerCase().includes(text.toLowerCase()) ?? false) ||
-        (book.nameLong?.toLowerCase().includes(text.toLowerCase()) ?? false) ||
+        (book.name?.toLowerCase().includes(lowerText) ?? false) ||
+        (book.nameLong?.toLowerCase().includes(lowerText) ?? false) ||
         (book.chapters?.toString().includes(text) ?? false)
       );
     });
@@ -37,13 +49,7 @@ export const searchFromLocalStorage = (text: string, lsName: string): any[] => {
   return [];
 };
 
-// remove single item in localstorage
-export const removeFromLocalStorage = (key: string): void => {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(key);
-};
-
-// removing all items in localstorage
+// ** Clearing all items in the localstorage
 export const clearLocalStorage = (): void => {
   if (typeof window === 'undefined') return;
   localStorage.clear();

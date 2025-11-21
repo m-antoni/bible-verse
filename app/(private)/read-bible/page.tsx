@@ -190,12 +190,12 @@ export default function ReadBible() {
                             </Link>
 
                             {/* Bookmark button */}
-                            <button
+                            {/* <button
                               className="inline-flex items-center justify-center w-8 h-8 text-white bg-purple-600 
                               rounded-full shadow hover:bg-purple-600 transition-colors duration-200"
                             >
                               <FaBook className="text-sm " />
-                            </button>
+                            </button> */}
                           </div>
                         </div>
 

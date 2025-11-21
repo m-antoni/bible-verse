@@ -5,6 +5,6 @@ export type Book = {
   name: string;
   nameLong: string;
   // added fields
-  chapters?: number;
-  chapter_01?: string;
+  chapters: number;
+  chapter_01: string;
 };

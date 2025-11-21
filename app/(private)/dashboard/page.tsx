@@ -1,6 +1,6 @@
 'use client';
 
-import { copyrightToHtml } from '@/app/lib/helpers';
+import { copyrightToHtml, getRandomIntroText } from '@/app/lib/helpers';
 import { getBible } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -17,24 +17,16 @@ type Dashboard = {
 export default function Dashboard() {
   const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
-  const [loading, setLoading] = useState(false);
 
   // fetch bible details
   useEffect(() => {
     async function fetchBible() {
-      setLoading(true);
       const response = await getBible();
-      // console.log(response);
       setDashboard({ ...dashboard, bible: [response.data.data] });
-      setLoading(false);
     }
 
     fetchBible();
   }, []);
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <>
@@ -53,9 +45,7 @@ export default function Dashboard() {
                         Welcome to BibleVerse 1.0
                       </h6>
                       <span className="mb-2 text-md leading-tight dark:text-white/80">
-                        Discover the Word of God with ease. Search for verses, explore chapters, and
-                        navigate the Bible effortlessly. Perfect for daily reading, study, and
-                        reflection.
+                        {getRandomIntroText()}
                         <span className="text-slate-700 dark:text-white sm:ml-2"></span>
                       </span>
                     </div>

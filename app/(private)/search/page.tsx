@@ -4,7 +4,7 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { searchQueryType, SearchResponseData } from '@/app/types';
-import { searcKeyword } from '@/app/lib/services/bibleService';
+import { searchKeyword } from '@/app/lib/services/bibleService';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { PuffLoader } from 'react-spinners';
@@ -53,7 +53,7 @@ export default function Search() {
       (async () => {
         try {
           setLoading(true);
-          const res = await searcKeyword(search);
+          const res = await searchKeyword(search);
 
           if (res && !res.success) {
             toast.error(`${res.message}`, {
@@ -106,8 +106,6 @@ export default function Search() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  console.log('searchData', searchData);
 
   return (
     <div className="flex flex-wrap">
