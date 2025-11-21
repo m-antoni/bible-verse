@@ -114,8 +114,7 @@ export default function TopNavbar({
             </li> */}
 
             {/* <!-- notifications --> */}
-            <li className="relative flex items-center pl-2">
-              {/* <p className="hidden transform-dropdown-show"></p> */}
+            {/* <li className="relative flex items-center pl-2">
               <a
                 href="javascript:;"
                 className="block p-0 text-sm text-white transition-all ease-nav-brand"
@@ -134,7 +133,7 @@ export default function TopNavbar({
                   />
                 )}
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

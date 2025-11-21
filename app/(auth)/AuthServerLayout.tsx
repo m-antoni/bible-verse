@@ -11,7 +11,7 @@ export default async function AuthServerLayout({ children }: { children: ReactNo
 
   // console.log('AUTH GROUP', session);
 
-  if (user) redirect('/dashboard'); // logged In users redirected to dashboard
-
+  // ** logged In users redirected to dashboard
+  if (user) redirect('/dashboard');
   return <AuthClientLayout>{children}</AuthClientLayout>;
 }
