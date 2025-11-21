@@ -1,6 +1,5 @@
 'use client';
 
-import { copyrightToHtml, verseToHtml } from '@/app/lib/helpers';
 import { getBible } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -15,7 +14,7 @@ type Dashboard = {
 };
 
 export default function About() {
-  const { session } = useAuth();
+  const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
   const [loading, setLoading] = useState(false);
 

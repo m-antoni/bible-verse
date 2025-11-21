@@ -13,6 +13,7 @@ export default function SignUp() {
   const [form, setForm] = useState({ fullName: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
 
+  // handle submit signup button
   const handleOnSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -29,8 +30,6 @@ export default function SignUp() {
     setLoading(true);
 
     const result = await authService.signUp(form);
-
-    console.log(result);
 
     if (result && !result.success) {
       toast.error(`${result.message}`, {
@@ -49,7 +48,7 @@ export default function SignUp() {
     }
   };
 
-  // form onchange
+  // form on change
   const handleOnChange = (e: { target: { name: string; value: string } }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

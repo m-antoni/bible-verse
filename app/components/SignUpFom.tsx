@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SignUpFormType } from '../types';
+import { authService } from '../lib/services/authService';
 
 type SignUpFormProps = {
   form: SignUpFormType;
@@ -94,9 +95,10 @@ export default function SignUpForm({ form, handleOnSubmit, handleOnChange }: Sig
       </div>
       <div className="w-full flex justify-center -mt-3 ">
         <button
+          onClick={() => authService.signInWithGoogleOAuth()}
           className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md
-   py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none 
-   focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 w-full"
+                    py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none 
+                    focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 w-full"
         >
           <svg
             className="h-6 w-6 mr-2"

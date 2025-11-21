@@ -15,7 +15,7 @@ type Dashboard = {
 };
 
 export default function Dashboard() {
-  const { session } = useAuth();
+  const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
   const [loading, setLoading] = useState(false);
 
@@ -121,25 +121,23 @@ export default function Dashboard() {
                       <span className="mb-2 text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                         Name:
                         <span className="text-slate-700 dark:text-white sm:ml-2">
-                          {session.user.user_metadata.full_name}
+                          {user.user_metadata.full_name}
                         </span>
                       </span>
                       <span className="mb-2 text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                         Email:
-                        <span className="text-blue-700 dark:text-white sm:ml-2">
-                          {session.user.email}
-                        </span>
+                        <span className="text-blue-700 dark:text-white sm:ml-2">{user.email}</span>
                       </span>
                       <span className="mb-2 text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                         Account Created At:
                         <span className="text-slate-700 dark:text-white sm:ml-2">
-                          {new Date(session.user.created_at).toLocaleString()}
+                          {new Date(user.created_at).toLocaleString()}
                         </span>
                       </span>
                       <span className="mb-2 text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                         Your Last Sign-in:
                         <span className="text-slate-700 dark:text-white sm:ml-2">
-                          {new Date(session.user.last_sign_in_at ?? '').toLocaleString()}
+                          {new Date(user.last_sign_in_at ?? '').toLocaleString()}
                         </span>
                       </span>
                     </div>

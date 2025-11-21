@@ -2,16 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  FaHome,
-  FaEye,
-  FaSearch,
-  FaHeart,
-  FaTimes,
-  FaDoorOpen,
-  FaDoorClosed,
-} from 'react-icons/fa';
-import { useEffect, useRef, useState } from 'react';
+import { FaHome, FaEye, FaSearch, FaTimes } from 'react-icons/fa';
+import { useEffect, useRef } from 'react';
 
 // Sidebar Props
 type SidebarProps = {
@@ -27,7 +19,6 @@ export default function SideNavbar({
   sidebarDark,
   openSignOutModal,
 }: SidebarProps) {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { PuffLoader, SyncLoader } from 'react-spinners';
+import { PuffLoader } from 'react-spinners';
 import { CSSProperties } from 'react';
 
 const override: CSSProperties = {

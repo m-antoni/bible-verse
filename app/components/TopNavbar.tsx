@@ -1,10 +1,11 @@
 'use client';
 
+'use client';
+
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { FaMoon, FaSun, FaUser } from 'react-icons/fa';
-import { supabase } from '@/app/lib/supabase/client';
-import { Session } from '@supabase/supabase-js';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { useAuth } from '@/app/context/AuthContext';
+import { use } from 'react';
 
 type TopNavbarProps = {
   sidebarDark: boolean;
@@ -17,15 +18,12 @@ export default function TopNavbar({
   sidebarDark,
   toggleSidebarTheme,
 }: TopNavbarProps) {
-  const [session, setSession] = useState<Session | null>(null);
-
+  const { user } = useAuth(); // get logged-in user from AuthProvider
   const pathname = usePathname(); // render the current url title
 
+  // This function is used to show a friendly name for the current page
   const currentPathName = (url: string): string => {
-    if (url.startsWith('/read-bible')) {
-      return 'Read Bible';
-    }
-
+    if (url.startsWith('/read-bible')) return 'Read Bible';
     switch (url) {
       case '/dashboard':
         return 'Dashboard';
@@ -35,26 +33,6 @@ export default function TopNavbar({
         return 'Favorites';
     }
   };
-
-  useEffect(() => {
-    const getInitialSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-    };
-    getInitialSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      // console.log(session);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    // console.log(session);
-  }, [session]);
 
   return (
     <nav
@@ -112,7 +90,7 @@ export default function TopNavbar({
               >
                 {/* <i className="fa fa-user "></i> */}
                 {/* <FaUser className="sm:mr-2 sm:inline" /> */}
-                <span className="hidden sm:inline">{session?.user?.email}</span>
+                <span className="hidden sm:inline">{user.email}</span>
               </a>
             </li>
             <li className="flex items-center pl-4 xl:hidden">

@@ -45,7 +45,7 @@ export default function SignIn() {
       router.refresh();
     }
 
-    console.log(result);
+    // console.log(result);
   };
 
   // handle on form

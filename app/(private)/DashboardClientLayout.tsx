@@ -4,17 +4,17 @@ import Script from 'next/script';
 import { ReactNode, useState } from 'react';
 import SideNavbar from '@/app/components/Sidebar';
 import TopNavbar from '@/app/components/TopNavbar';
-import { Session } from '@supabase/supabase-js';
 import { AuthProvider } from '@/app/context/AuthContext';
 import ConfirmModal from '@/app/components/ConfirmModal';
 import { authService } from '@/app/lib/services/authService';
 import { useRouter } from 'next/navigation';
+import { User } from '@supabase/supabase-js';
 
 interface DashboardClientLayoutProps {
   children: ReactNode;
-  session: Session; // or type it properly with Supabase User type
+  user: User; // or type it properly with Supabase User type
 }
-export default function DashboardClientLayout({ children, session }: DashboardClientLayoutProps) {
+export default function DashboardClientLayout({ children, user }: DashboardClientLayoutProps) {
   // toggle sidebar open and close
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarDark, setSidebarDark] = useState(true);
@@ -51,7 +51,7 @@ export default function DashboardClientLayout({ children, session }: DashboardCl
 
   return (
     <>
-      <AuthProvider session={session}>
+      <AuthProvider user={user}>
         <Script src="/assets/argon/js/plugins/perfect-scrollbar.min.js" strategy="lazyOnload" />
         <Script src="/assets/argon/js/plugins/chartjs.min.js" strategy="lazyOnload" />
 

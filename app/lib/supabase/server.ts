@@ -1,20 +1,53 @@
-// lib/supabase/server.ts
-import { createServerClient } from '@supabase/ssr';
-import { cookies as nextCookies } from 'next/headers';
+/**
+ * Server-side Supabase client for Next.js 16
+ *
+ * 1. Server-side client:
+ *    - Supabase normally runs in the browser.
+ *    - On the server, we need a client that can read/write cookies for user sessions.
+ *
+ * 2. Cookies adapter:
+ *    - Uses Next.js 16 `cookies()` API to get/set session cookies.
+ *    - Provides `get`, `getAll`, `set`, `remove` methods so Supabase can manage sessions.
+ *
+ * 3. OAuth & email signup:
+ *    - Google OAuth and email magic links need cookies to work correctly.
+ *    - Without this, users may get logged out or see errors like "flow_state_not_found".
+ *
+ * 4. TypeScript casting:
+ *    - Supabase types don’t officially allow `cookies` anymore.
+ *    - We cast to `any` to avoid TypeScript errors, but it works perfectly at runtime.
+ *
+ * 5. Usage:
+ *    - Call `createServerSupabaseClient()` on server routes or layouts to get the Supabase client with cookies.
+ */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { cookies as nextCookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
+
+/**
+ * Next.js 16 compatible Supabase server client
+ * Handles cookies for OAuth and email signup/magic link.
+ * TypeScript casting is used because the official type does not allow 'cookies'.
+ */
 export async function createServerSupabaseClient() {
-  const cookieStore = await nextCookies(); // Await required in Next.js 16
+  const cookieStore = await nextCookies();
+
+  const cookiesAdapter = {
+    get: (name: string) => cookieStore.get(name)?.value ?? null,
+    getAll: () => cookieStore.getAll().map((c) => ({ name: c.name, value: c.value })),
+    set: (name: string, value: string, options?: { path?: string; maxAge?: number }) =>
+      cookieStore.set({ name, value, ...options }),
+    remove: (name: string, options?: { path?: string }) =>
+      cookieStore.set({ name, value: '', ...options, maxAge: 0 }),
+  };
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URI!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        // remove setAll entirely, cannot mutate cookies in server component
-      },
-    },
+      // cast to any to bypass TypeScript restriction
+      cookies: cookiesAdapter,
+    } as any,
   );
 }
