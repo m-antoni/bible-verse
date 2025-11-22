@@ -5,7 +5,6 @@
 import { usePathname } from 'next/navigation';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useAuth } from '@/app/context/AuthContext';
-import { use } from 'react';
 
 type TopNavbarProps = {
   sidebarDark: boolean;

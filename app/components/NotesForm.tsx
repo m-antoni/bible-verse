@@ -18,8 +18,8 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
   const [form, setForm] = useState({ note: '' });
   const [loading, setLoading] = useState(false);
 
+  // ** Fetch the chapter book notes from Supabase
   useEffect(() => {
-    // fetch the chapter book note
     async function getChapterNoteFunc() {
       const getChapterFormParams = {
         book_id: String(bibleChapter.book_id),

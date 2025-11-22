@@ -7,6 +7,9 @@ import { noteBookChapterFormTypes, noteBookChapterTypes } from '@/app/types';
 //*** Global Variables */
 const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
 const USER_SESSION = await authService.getSession();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 
 //*** Add note */
 export async function addNote(formDetails: noteBookChapterFormTypes) {
@@ -35,7 +38,7 @@ export async function addNote(formDetails: noteBookChapterFormTypes) {
 
       // *** Creating new note parameters
       const addNoteParams = {
-        user_id: USER_SESSION?.data?.session?.user.id,
+        auth_id: user?.id,
         bible_id: ENV.BIBLE_API_ID,
         ...formDetails, // { book_id, book_chapter_id, note }
       };
@@ -65,7 +68,7 @@ export async function getChapterNote(formDetails: noteBookChapterTypes) {
   try {
     // select params
     const getChapterParams = {
-      user_id: USER_SESSION?.data?.session?.user?.id,
+      auth_id: user?.id,
       book_id: formDetails.book_id,
       book_chapter_id: formDetails.book_chapter_id,
     };
@@ -74,7 +77,7 @@ export async function getChapterNote(formDetails: noteBookChapterTypes) {
     const { data, error } = await supabase
       .from(BIBLE_NOTES_TABLE)
       .select('*')
-      .eq('user_id', getChapterParams.user_id)
+      .eq('auth_id', getChapterParams.auth_id)
       .eq('book_id', getChapterParams.book_id)
       .eq('book_chapter_id', getChapterParams.book_chapter_id)
       .maybeSingle();
@@ -98,7 +101,7 @@ export async function updateNote(formDetails: noteBookChapterFormTypes) {
   try {
     // update note params
     const updateNoteParams = {
-      user_id: USER_SESSION?.data?.session?.user?.id,
+      auth_id: user?.id,
       book_id: formDetails.book_id,
       book_chapter_id: formDetails.book_chapter_id,
       note: formDetails.note,
@@ -108,7 +111,7 @@ export async function updateNote(formDetails: noteBookChapterFormTypes) {
     const { data, error } = await supabase
       .from(BIBLE_NOTES_TABLE)
       .update({ note: updateNoteParams.note })
-      .eq('user_id', updateNoteParams.user_id)
+      .eq('auth_id', updateNoteParams.auth_id)
       .eq('book_id', updateNoteParams.book_id)
       .eq('book_chapter_id', updateNoteParams.book_chapter_id)
       .select()
@@ -132,7 +135,7 @@ export async function updateNote(formDetails: noteBookChapterFormTypes) {
 export async function deleteNote(formDetails: noteBookChapterTypes) {
   try {
     const deleteParams = {
-      user_id: USER_SESSION?.data?.session?.user?.id,
+      auth_id: user?.id,
       book_id: formDetails.book_id,
       book_chapter_id: formDetails.book_chapter_id,
     };
@@ -141,7 +144,7 @@ export async function deleteNote(formDetails: noteBookChapterTypes) {
     const { error } = await supabase
       .from(BIBLE_NOTES_TABLE)
       .delete()
-      .eq('user_id', deleteParams.user_id)
+      .eq('auth_id', deleteParams.auth_id)
       .eq('book_id', deleteParams.book_id)
       .eq('book_chapter_id', deleteParams.book_chapter_id);
 

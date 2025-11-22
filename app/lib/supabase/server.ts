@@ -25,11 +25,6 @@
 import { cookies as nextCookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 
-/**
- * Next.js 16 compatible Supabase server client
- * Handles cookies for OAuth and email signup/magic link.
- * TypeScript casting is used because the official type does not allow 'cookies'.
- */
 export async function createServerSupabaseClient() {
   const cookieStore = await nextCookies();
 
