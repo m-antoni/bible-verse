@@ -2,7 +2,7 @@ CREATE TABLE public.bible_notes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     auth_id UUID NOT NULL, -- links to bible_users.auth_id
     bible_id VARCHAR REFERENCES public.bible(bible_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    book_id VARCHAR REFERENCES public.bible_books(book_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    book_id VARCHAR REFERENCES public.bible_books(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     book_chapter_id VARCHAR,
     note TEXT,
     created_at TIMESTAMPTZ DEFAULT now(),

@@ -1,7 +1,7 @@
 'use client';
 
 import { FaBook, FaEye } from 'react-icons/fa';
-import { getBibleBooks } from '@/app/lib/services/bibleService';
+import { getBibleBooks, getBibleBooksDB } from '@/app/lib/services/bibleService';
 import { getFromLocalStorage, searchFromLocalStorage } from '@/app/lib/helpers';
 import { useEffect, useRef, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
@@ -28,12 +28,27 @@ export default function ReadBible() {
       setBooks(getFromLS.slice(0, 10)); // show first 10 initially
       setLoading(false);
     } else {
-      // Fallback API Call
+      // ** Fallback call Bible API
+      // (async () => {
+      //   try {
+      //     const data = await getBibleBooks();
+      //     setAllBooks(data);
+      //     setBooks(data.slice(0, 10));
+      //   } catch (error) {
+      //     console.log(error);
+      //   } finally {
+      //     setLoading(false);
+      //   }
+      // })();
+      // ** Improve Fallback with Supabase -> Public Bible API
       (async () => {
         try {
-          const data = await getBibleBooks();
-          setAllBooks(data);
-          setBooks(data.slice(0, 10));
+          const response = await getBibleBooksDB();
+          if (response && response.success && response.data) {
+            console.log(response.data);
+            setAllBooks(response.data);
+            setBooks(response.data.slice(0, 10));
+          }
         } catch (error) {
           console.log(error);
         } finally {
@@ -205,7 +220,7 @@ export default function ReadBible() {
                             {book.name}
                           </h3>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-                            {book.nameLong}
+                            {book.namelong}
                           </p>
                           <span className="mt-2 text-xs font-semibold text-slate-700">
                             {book.chapters} Chapters

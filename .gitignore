@@ -43,3 +43,5 @@ next-env.d.ts
 
 # VSCode Project Structure
 project_structure.md
+.vscode
+.idea

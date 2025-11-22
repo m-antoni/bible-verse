@@ -41,6 +41,7 @@ export const searchFromLocalStorage = (text: string, key: string): any[] => {
       return (
         (book.name?.toLowerCase().includes(lowerText) ?? false) ||
         (book.nameLong?.toLowerCase().includes(lowerText) ?? false) ||
+        (book.namelong?.toLowerCase().includes(lowerText) ?? false) ||
         (book.chapters?.toString().includes(text) ?? false)
       );
     });

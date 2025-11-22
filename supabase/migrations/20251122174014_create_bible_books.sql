@@ -2,11 +2,11 @@
 -- Table: bible_books
 -- =============================
 CREATE TABLE public.bible_books (
-    book_id VARCHAR PRIMARY KEY,                       
+    id VARCHAR PRIMARY KEY,                       
     bible_id VARCHAR NOT NULL REFERENCES public.bible(bible_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     abbreviation VARCHAR,                               
     name VARCHAR,                                      
-    name_long VARCHAR,                                 
+    nameLong VARCHAR,                                 
     chapters INTEGER,                                  
     chapter_01 VARCHAR,                                
     created_at TIMESTAMPTZ DEFAULT now()

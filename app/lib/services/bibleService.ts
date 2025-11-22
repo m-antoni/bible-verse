@@ -1,5 +1,8 @@
 import { getFromLocalStorage, storeToLocalStorage } from '@/app/lib/helpers/localStorage';
 import { Book, searchQueryType } from '@/app/types';
+import { supabase } from '@/app/lib/supabase/client';
+import { TABLES } from '@/app/constants/table';
+import pLimit from 'p-limit';
 
 /* 
   Report the usage to API.Bible (if token exists)
@@ -60,19 +63,32 @@ export async function getBibleBooks(): Promise<Book[]> {
 
     const { data } = await res.json();
 
-    /* 
-      Call: getBookChapters(bookId)
-      get the chapters per books but using Promise.all()
-    */
+    // ** Get the chapters per books but using Promise.all()
+    // const booksWithChapters = await Promise.all(
+    //   data.map(async (book: Book) => {
+    //     const bookChapters = await getBookChapters(book.id);
+    //     return {
+    //       ...book,
+    //       chapters: bookChapters.length,
+    //       chapter_01: bookChapters[1]?.id || null, // safe indexing
+    //     };
+    //   }),
+    // );
+
+    // ** Limit concurrency to 5 for getBookChapters requests to avoid overloading
+    // ** Run up to 7 getBookChapters requests at the same time for better performance
+    const limit = pLimit(7); // Limit 5 concurrent request
     const booksWithChapters = await Promise.all(
-      data.map(async (book: Book) => {
-        const bookChapters = await getBookChapters(book.id);
-        return {
-          ...book,
-          chapters: bookChapters.length,
-          chapter_01: bookChapters[1]?.id || null, // safe indexing
-        };
-      }),
+      data.map((book: { id: string }) =>
+        limit(async () => {
+          const chapters = await getBookChapters(book.id);
+          return {
+            ...book,
+            chapters: chapters.length,
+            chapter_01: chapters[0]?.id || null,
+          };
+        }),
+      ),
     );
 
     // Store to localStorage for caching
@@ -203,5 +219,47 @@ export async function searchKeyword(queryParams: searchQueryType) {
       console.error('Search error:', error);
       return { success: false, message: 'Failed to search due to an unexpected error.' };
     }
+  }
+}
+
+// ** Get Bible Books from SUPABASE
+// ** With Fallback to call the public Bible API
+export async function getBibleBooksDB() {
+  try {
+    // fetch all 80 rows in order
+    const { data, error } = await supabase.from(TABLES.BIBLE_BOOKS).select('*');
+
+    if (error || !data || data.length === 0) {
+      // ** Fallback call the publi Bible API
+      console.warn('Supabase fetch failed or empty, falling back to public API', error);
+
+      const fallbackData = await getBibleBooks();
+      if (fallbackData.length > 0) {
+        storeToLocalStorage(fallbackData, 'bible-books');
+        return { success: true, message: 'ok (fallback)', data: fallbackData };
+      } else {
+        return {
+          success: false,
+          message: `Fetching Bible books failed: ${error?.message || 'No data from fallback'}`,
+        };
+      }
+    }
+
+    // Store to localStorage for caching
+    storeToLocalStorage(data, 'bible-books');
+
+    return { success: true, message: 'ok', data };
+  } catch (error) {
+    console.error('Error fetching book chapters: ', error);
+
+    // ** Try fallback on unexpected errors
+    const fallbackData = await getBibleBooks();
+    if (fallbackData.length > 0) {
+      storeToLocalStorage(fallbackData, 'bible-books');
+
+      return { success: true, message: 'ok (fallback)', data: fallbackData };
+    }
+
+    return { success: false, message: `Unexpected error: ${(error as Error).message}` };
   }
 }
