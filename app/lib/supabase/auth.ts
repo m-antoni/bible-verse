@@ -22,8 +22,10 @@ export async function signInWithEmailPassword(email: string, password: string) {
   return supabase.auth.signInWithPassword({ email, password });
 }
 
-// ** Sign-out is handled through the route handler /api/auth/sign-out/route.ts
-// signOut: async () => {},
+// ** Sign out
+export async function signOut() {
+  return supabase.auth.signOut();
+}
 
 // ** Get Session
 export async function getCurrentSession() {
