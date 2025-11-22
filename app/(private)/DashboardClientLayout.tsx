@@ -1,7 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import SideNavbar from '@/app/components/Sidebar';
 import TopNavbar from '@/app/components/TopNavbar';
 import { AuthProvider } from '@/app/context/AuthContext';
@@ -9,6 +9,7 @@ import ConfirmModal from '@/app/components/ConfirmModal';
 import { authService } from '@/app/lib/services/authService';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
+import { supabase } from '@/app/lib/supabase/client';
 
 interface DashboardClientLayoutProps {
   children: ReactNode;
@@ -26,6 +27,17 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
   const toggleSidebarTheme = () => setSidebarDark(!sidebarDark);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        router.push('/auth/sign-in');
+        router.refresh();
+      }
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, [router]);
 
   // handle signout
   const handleSignOut = async () => {
