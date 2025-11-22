@@ -20,6 +20,7 @@ export interface Bible {
   nameLocal: string;
   abbreviation: string;
   abbreviationLocal: string;
+  abbreviationlocal: string; // from DB
   description: string;
   descriptionLocal: string;
   language: Language;

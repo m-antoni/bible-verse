@@ -3,6 +3,7 @@ import { Book, searchQueryType } from '@/app/types';
 import { supabase } from '@/app/lib/supabase/client';
 import { TABLES } from '@/app/constants/table';
 import pLimit from 'p-limit';
+import { ENV } from '@/app/constants/env';
 
 /* 
   Report the usage to API.Bible (if token exists)
@@ -226,12 +227,12 @@ export async function searchKeyword(queryParams: searchQueryType) {
 // ** With Fallback to call the public Bible API
 export async function getBibleBooksDB() {
   try {
-    // fetch all 80 rows in order
+    // ** call supabase fetch all 80 rows of books in order
     const { data, error } = await supabase.from(TABLES.BIBLE_BOOKS).select('*');
 
     if (error || !data || data.length === 0) {
       // ** Fallback call the publi Bible API
-      console.warn('Supabase fetch failed or empty, falling back to public API', error);
+      console.warn('Supabase fetch failed or empty, falling back to public Bible API', error);
 
       const fallbackData = await getBibleBooks();
       if (fallbackData.length > 0) {
@@ -258,6 +259,57 @@ export async function getBibleBooksDB() {
       storeToLocalStorage(fallbackData, 'bible-books');
 
       return { success: true, message: 'ok (fallback)', data: fallbackData };
+    }
+
+    return { success: false, message: `Unexpected error: ${(error as Error).message}` };
+  }
+}
+
+// ** Get Bible details from SUPABASE
+// ** With Fallback to call the public Bible API
+export async function getBibleDB() {
+  try {
+    // ** call supabase db
+    const { data, error } = await supabase
+      .from(TABLES.BIBLE)
+      .select('*')
+      // .eq('bible_id', `${ENV.BIBLE_API_ID}`) // can't access ENV in server-side in NextJS
+      .eq('bible_id', `de4e12af7f28f599-01`)
+      .single();
+
+    if (error || !data) {
+      // ** Fallback call the publi Bible API
+      console.warn('Supabase fetch failed or empty, falling back to public Bible API', error);
+
+      const { success, data: bibleData } = await getBible();
+
+      // console.log('FALLBACK', success, bibleData);
+      if (success && bibleData.data.name) {
+        // store to local storage
+        storeToLocalStorage(bibleData.data, 'bible');
+        return { success, message: 'ok (fallback)', data: bibleData.data };
+      } else {
+        return {
+          success: false,
+          message: `Fetching Bible books failed: ${error?.message || 'No data from fallback'}`,
+        };
+      }
+    } else {
+      // console.log('SUCCESS', data);
+      // store to local storage
+      storeToLocalStorage(data, 'bible');
+
+      return { success: true, message: 'ok', data };
+    }
+  } catch (error) {
+    console.error('Error fetching bible details: ', error);
+
+    // ** Try fallback on unexpected errors
+    const { success, data: bibleData } = await getBible();
+    if (success) {
+      // store to local storage
+      storeToLocalStorage(bibleData.data, 'bible');
+      return { success, message: 'ok (fallback)', data: bibleData.data };
     }
 
     return { success: false, message: `Unexpected error: ${(error as Error).message}` };

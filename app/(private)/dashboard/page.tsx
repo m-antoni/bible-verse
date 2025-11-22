@@ -1,7 +1,7 @@
 'use client';
 
 import { copyrightToHtml, getRandomIntroText } from '@/app/lib/helpers';
-import { getBible } from '@/app/lib/services/bibleService';
+import { getBibleDB } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
@@ -18,23 +18,20 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
 
-  // fetch bible details
   useEffect(() => {
-    async function fetchBible() {
-      const response = await getBible();
-      setDashboard({ ...dashboard, bible: [response.data.data] });
+    // ** Improvement: Supabase DB and Fallback public Bible API call
+    async function fetchBibleDB() {
+      const response = await getBibleDB();
+      setDashboard({ ...dashboard, bible: [response.data] });
     }
 
     // ** This will insert the user data from Google OAuth
     async function insertGoogleUser() {
-      if (user?.user_metadata?.provider_id) {
-        const response = await insertUser(user);
-        console.log(response);
-      }
+      if (user?.user_metadata?.provider_id) await insertUser(user);
     }
 
-    fetchBible();
     insertGoogleUser();
+    fetchBibleDB();
   }, []);
 
   return (
@@ -88,13 +85,13 @@ export default function Dashboard() {
                               <div className="mb-2 text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                                 Abbrevation:
                                 <span className="text-slate-700 dark:text-white sm:ml-2">
-                                  {item.abbreviationLocal}
+                                  {item.abbreviationLocal ?? item.abbreviationlocal}
                                 </span>
                               </div>
                               <div className="text-sm sm:text-base md:text-lg leading-tight dark:text-white/80">
                                 Languange:
                                 <span className="text-slate-700 dark:text-white sm:ml-2">
-                                  {item.language?.name}
+                                  {item.language?.name ?? item.language}
                                 </span>
                               </div>
                               <div className="mb-2 text-sm sm:text-base md:text-lg mt-2 md:-mt-2 leading-tight dark:text-white/80 ">

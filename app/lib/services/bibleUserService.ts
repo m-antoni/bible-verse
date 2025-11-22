@@ -23,7 +23,7 @@ export async function insertUser(user: any) {
     }
 
     // Successful insert/upsert
-    console.log('User insert successfully:', data.data);
+    // console.log('User insert successfully:', data.data);`
     return data.data;
   } catch (error) {
     console.error('Error Insert User data from google auth: ', error);
