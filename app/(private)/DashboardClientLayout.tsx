@@ -32,16 +32,19 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
     try {
       setLoading(true);
       // ** Sign out supabase auth signout
-      const response = await authService.signOut();
-      if (response && !response.success) {
-        console.log('Error occured', response.message);
-        setLoading(false);
+      const res = await fetch('/api/auth/sign-out', { method: 'POST' });
+      const data = await res.json();
+      // Check for API error
+      if (!data.success) {
+        console.error('Sign out failed:', data.message);
+        return { success: false, message: data.message };
       }
-      if (response && response.success) {
+
+      if (data.success) {
         router.push('/auth/sign-in');
-        router.refresh(); // ensures SSR layout re-runs and session is cleared
-        setLoading(false);
+        router.refresh(); // fallback to totally remove the session cookie
       }
+
       setSignOutModalOpen(false);
     } catch (error) {
       console.log(`Internal Server Error`, error);
