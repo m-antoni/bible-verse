@@ -43,17 +43,17 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
   const handleSignOut = async () => {
     setLoading(true);
     try {
-      const response = await authService.signOut();
-      if (response?.success) {
-        router.push('/auth/sign-in');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Sign out failed:', error.message);
       } else {
-        console.error('Sign out failed:', response?.message);
+        router.push('/auth/sign-in');
       }
     } catch (error) {
       console.error('Unexpected error during sign out:', error);
     } finally {
-      setSignOutModalOpen(false);
       setLoading(false);
+      setSignOutModalOpen(false);
       router.refresh(); // clears cached dashboard
     }
   };

@@ -45,23 +45,6 @@ export const authService = {
     }
   },
 
-  // ** Sign out
-  signOut: async () => {
-    try {
-      const { error } = await auth.signOut();
-      // error
-      if (error) {
-        return { success: false, message: error.message };
-      }
-      return { success: true };
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Sign Out failed:', error);
-        return { success: false, message: 'Failed to sign out due to an unexpected error.' };
-      }
-    }
-  },
-
   // ** Get Session
   getSession: async () => {
     try {
