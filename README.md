@@ -18,6 +18,8 @@ Users can explore books and chapters, search across all verses, and save notes f
 | [Argon Dashboard](https://www.creative-tim.com/product/argon-dashboard-tailwind#) | Tailwind UI dashboard components.            |
 | [API.Bible](https://api.bible/api-reference)                                      | Bible data (books, chapters, verses).        |
 
+<br/>
+
 ### Features
 
 - Supabase Authentication
