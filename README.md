@@ -1,53 +1,64 @@
 # 🙏BibleVerse App
 
-A Bible browsing and note-taking web application built with Next.js , TailwindCSS and Supabase. Users can explore books and chapters, search across all verses, and save personalized notes for each chapter of the book.
+A Bible browsing and reading web application built with **Next.js , TypeScript, TailwindCSS and Supabase as Database and Authentication. with Scripture data by [API.Bible](https://api.bible/api-reference)**
+Users can explore books and chapters, search across all verses, and save notes for each chapter to support depper study.
 
 **Visit Here:** [https://m-antoni-bibleverse.vercel.app](https://m-antoni-bibleverse.vercel.app)
 
 ![image](docs/bible1.png)
 
-## Technology Used
+## Technology
 
-- **NextJS**
-- **Supabase (BaaS)**
-- **Supabase Auth** (Email/Password + Google OAuth)
-- **TailwindCSS**
-- **Bible API** – https://scripture.api.bible/
+| Technology                                                                        | Description                                  |
+| --------------------------------------------------------------------------------- | -------------------------------------------- |
+| Next.js                                                                           | React framework for web apps.                |
+| TypeScript                                                                        | Typed JavaScript for reliability.            |
+| Supabase (BaaS)                                                                   | Backend As A Service with auth and database. |
+| TailwindCSS                                                                       | Utility-first CSS framework.                 |
+| [Argon Dashboard](https://www.creative-tim.com/product/argon-dashboard-tailwind#) | Tailwind UI dashboard components.            |
+| [API.Bible](https://api.bible/api-reference)                                      | Bible data (books, chapters, verses).        |
 
-## Features
+### Features
 
-### Bible Content
-
+- Supabase Authentication
+  - Email Password
+  - Google OAuth
 - View all **Books** and **Chapters**
-- Read chapter Scriptures using the Scripture API
+- Read chapte verses using the API.Bible data
+- Save, update, delete notes per chapter of the book
+- Notes tied to authenticated user with RLS of Supabase
+- Search Page - Search keywords across **All verses**
+- **Developer Utilities**
+  - Supabase RLS Policies for secure, user-scoped data access
+  - Supabase **Migration** included as SQL files for version-controlled schema changes
+  - Supabase **Seeders** to populate initial data and improve navigation experience
+  - `npm run route-list` to view all registered API routes
 
-### Notes System
+<br/>
 
-- Save notes per chapter of the book
-- Update existing notes
-- Delete notes
-- Notes tied to authenticated user
+### Folder Overview
 
-### Search Page
+- `/app/api` — API route handlers for server-side logic and data fetching
+- `/app/(auth)` — Route group for authentication pages (sign-in, sign-up)
+- `/app/(private)` — Route group for protected pages (dashboard, read-bible, search)
+- `/app/components` — Reusable UI components used across the application
+- `/app/constants` — Centralized constants (paths, config values, etc.)
+- `/app/lib/services` — Service layer for business logic and API interactions
+- `/app/lib/supabase` — Supabase utilities: `server.ts`, `client.ts`, `auth.ts`
+- `/app/lib/helpers` — Utility functions and shared helpers
+- `/app/lib/types` — TypeScript type definitions and interfaces
+- `/supabase/migrations` — Database migration SQL files and seeders
+- `/public` — Static assets such as images, icons, and manifest files
 
-- Search keywords across **all verses**
-- Results link directly to the specific chapter
+<br/>
 
-### Supabase Tools
-
-- Supabase **migration** files
-- Supabase **seeders** for improved navigation
-
-### Developer Utilities
-
-- `npm run route-list` to view all registered API routes
-
-## Getting Started
+## Setup Instructions
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/m-antoni/bible-verse.git
+
 cd bible-verse
 ```
 
@@ -96,7 +107,7 @@ This will apply your local migration files directly to your Supabase project.
 npm run route-list
 ```
 
----
+<br/>
 
 ## License
 
