@@ -5,6 +5,8 @@ Users can explore books and chapters, search across all verses, and save notes f
 
 **Visit Here:** [https://m-antoni-bibleverse.vercel.app](https://m-antoni-bibleverse.vercel.app)
 
+**Live Demo:** https://youtu.be/uj23JAGdaKE
+
 ![image](docs/bible1.png)
 
 ## Technology
