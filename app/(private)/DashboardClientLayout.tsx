@@ -10,6 +10,7 @@ import { authService } from '@/app/lib/services/authService';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/app/lib/supabase/client';
+import { signOutAction } from '../lib/actions/auth/signOut';
 
 interface DashboardClientLayoutProps {
   children: ReactNode;
@@ -43,7 +44,7 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
   const handleSignOut = async () => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signOut();
+      const { error } = await signOutAction();
       if (error) {
         console.error('Sign out failed:', error.message);
       } else {
