@@ -43,8 +43,6 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
     setLoading(true);
     try {
       await signOutAction();
-      router.push('/auth/sign-in');
-      router.refresh();
     } catch (err) {
       console.error('Sign out failed', err);
     } finally {

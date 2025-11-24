@@ -2,16 +2,15 @@
 
 import { AuthError } from '@supabase/supabase-js';
 import { createServerSupabaseClient } from '../../supabase/server';
+import { redirect } from 'next/navigation';
 
-export async function signOutAction(): Promise<{ success: boolean; error?: AuthError | null }> {
+export async function signOutAction() {
   const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.auth.signOut();
 
-  if (error) {
-    console.error('Sign out failed', error);
-    throw new Error('Failed to sign out');
-  }
+  if (error) throw new Error(error.message);
 
-  return { success: true };
+  // Redirect AFTER the server action completes
+  redirect('/auth/sign-in');
 }
