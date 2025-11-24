@@ -7,5 +7,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  redirect(user ? '/dashboard' : '/auth/sign-in');
+  // Redirect based on auth status
+  if (user) redirect('/dashboard');
+  else redirect('/auth/sign-in');
 }
