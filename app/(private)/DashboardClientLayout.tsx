@@ -29,16 +29,16 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
 
   const router = useRouter();
 
-  useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') {
-        router.push('/auth/sign-in');
-        router.refresh();
-      }
-    });
+  // useEffect(() => {
+  //   const { data: listener } = supabase.auth.onAuthStateChange((event) => {
+  //     if (event === 'SIGNED_OUT') {
+  //       router.push('/auth/sign-in');
+  //       router.refresh();
+  //     }
+  //   });
 
-    return () => listener.subscription.unsubscribe();
-  }, [router]);
+  //   return () => listener.subscription.unsubscribe();
+  // }, [router]);
 
   // handle signout
   const handleSignOut = async () => {
@@ -46,7 +46,7 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
     try {
       const { error } = await signOutAction();
       if (error) {
-        console.error('Sign out failed:', error.message);
+        console.error(error.message);
       } else {
         router.push('/auth/sign-in');
       }
