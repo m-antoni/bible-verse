@@ -10,7 +10,7 @@ export async function signOutAction(): Promise<{ success: boolean; error?: AuthE
 
   if (error) {
     console.error('Sign out failed', error);
-    throw new Error('Failed to signout');
+    throw new Error('Failed to sign out');
   }
 
   return { success: true };
