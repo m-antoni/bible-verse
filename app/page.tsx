@@ -4,10 +4,10 @@ import { createServerSupabaseClient } from '@/app/lib/supabase/server';
 export default async function Home() {
   const supabase = await createServerSupabaseClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
   // Redirect based on auth status
-  if (user) redirect('/dashboard');
+  if (session?.user) redirect('/dashboard');
   else redirect('/auth/sign-in');
 }

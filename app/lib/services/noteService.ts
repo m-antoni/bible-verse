@@ -6,10 +6,9 @@ import { noteBookChapterFormTypes, noteBookChapterTypes } from '@/app/types';
 
 //*** Global Variables */
 const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
+// Get user session data
 const USER_SESSION = await authService.getSession();
-const {
-  data: { user },
-} = await supabase.auth.getUser();
+const user = USER_SESSION?.data?.session?.user;
 
 //*** Add note */
 export async function addNote(formDetails: noteBookChapterFormTypes) {

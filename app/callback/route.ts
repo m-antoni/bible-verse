@@ -25,13 +25,14 @@ export async function GET(request: Request) {
     }
   }
 
-  // If user already logged in (email confirmation case)
   const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
-  if (user && !userError) {
+  const user = session?.user;
+
+  if (user && !sessionError) {
     return NextResponse.redirect(`${finalOrigin}${next}`);
   }
 

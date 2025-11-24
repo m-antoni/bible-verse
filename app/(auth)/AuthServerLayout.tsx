@@ -5,13 +5,14 @@ import AuthClientLayout from './AuthClientLayout';
 
 export default async function AuthServerLayout({ children }: { children: ReactNode }) {
   const supabase = await createServerSupabaseClient();
+
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
   // console.log('AUTH GROUP', session);
 
   // ** logged In users redirected to dashboard
-  if (user) redirect('/dashboard');
+  if (session?.user) redirect('/dashboard');
   return <AuthClientLayout>{children}</AuthClientLayout>;
 }

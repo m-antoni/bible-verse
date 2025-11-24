@@ -6,16 +6,14 @@ import DashboardClientLayout from './DashboardClientLayout';
 export default async function DashboardServerLayout({ children }: { children: ReactNode }) {
   const supabase = await createServerSupabaseClient(); // server-side, reads cookies
   const {
-    data: { user },
+    data: { session },
     error,
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getSession();
 
-  // console.log('DASHBOARD GROUP', session);
-
-  // ** Redirect if no valid user
-  if (error || !user) {
+  // Redirect if not logged in
+  if (error || !session?.user) {
     redirect('/auth/sign-in');
   }
 
-  return <DashboardClientLayout user={user}>{children}</DashboardClientLayout>;
+  return <DashboardClientLayout user={session.user}>{children}</DashboardClientLayout>;
 }

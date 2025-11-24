@@ -25,11 +25,11 @@ type AuthProviderProps = { children: ReactNode };
 export default async function AuthProvider({ children }: AuthProviderProps) {
   const supabase = await createServerSupabaseClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
   // ** Redirect logged-in users away from auth pages
-  if (user) redirect('/dashboard');
+  if (session?.user) redirect('/dashboard');
 
   return <>{children}</>;
 }
