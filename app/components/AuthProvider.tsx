@@ -18,18 +18,15 @@
 
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
-import { createServerSupabaseClient } from '@/app/lib/supabase/server';
+import { getCurrentUser } from '@/app/lib/actions/auth/getCurrentUser';
 
 type AuthProviderProps = { children: ReactNode };
 
 export default async function AuthProvider({ children }: AuthProviderProps) {
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const user = await getCurrentUser();
 
   // ** Redirect logged-in users away from auth pages
-  if (session?.user) redirect('/dashboard');
+  if (user) redirect('/dashboard');
 
   return <>{children}</>;
 }
