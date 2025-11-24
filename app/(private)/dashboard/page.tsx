@@ -1,12 +1,12 @@
 'use client';
 
 import { copyrightToHtml, getRandomIntroText } from '@/app/lib/helpers';
-import { getBibleDB } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { Bible } from '@/app/types';
-import { insertUser } from '@/app/lib/services/bibleUserService';
+import bibleActions from '@/app/lib/actions/bible';
+import authActions from '@/app/lib/actions/auth';
 
 type Dashboard = {
   bible: Bible[];
@@ -21,13 +21,13 @@ export default function Dashboard() {
   useEffect(() => {
     // ** Improvement: Supabase DB and Fallback public Bible API call
     async function fetchBibleDB() {
-      const response = await getBibleDB();
+      const response = await bibleActions.getBibleDB();
       setDashboard({ ...dashboard, bible: [response.data] });
     }
 
     // ** This will insert the user data from Google OAuth
     async function insertGoogleUser() {
-      if (user?.user_metadata?.provider_id) await insertUser(user);
+      if (user?.user_metadata?.provider_id) await authActions.insertUser(user);
     }
 
     insertGoogleUser();

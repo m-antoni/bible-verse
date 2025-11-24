@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { SignInFormType } from '../types';
-import { authService } from '../lib/services/authService';
+import authActions from '../lib/actions/auth';
 
 type SgnInFormProps = {
   form: SignInFormType;
@@ -71,7 +71,7 @@ export default function SignInForm({ form, handleOnSubmit, handleOnChange }: Sgn
       </div>
       <div className="w-full flex justify-center -mt-3 ">
         <button
-          onClick={() => authService.signInWithGoogleOAuth()}
+          onClick={() => authActions.signInGoogleAuth()}
           className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md
                     py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none 
                     focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 w-full"

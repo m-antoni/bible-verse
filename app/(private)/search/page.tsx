@@ -4,11 +4,11 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { searchQueryType, SearchResponseData } from '@/app/types';
-import { searchKeyword } from '@/app/lib/services/bibleService';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { PuffLoader } from 'react-spinners';
 import { CSSProperties } from 'react';
+import bibleActions from '@/app/lib/actions/bible';
 
 export default function Search() {
   const [searchData, setSearchData] = useState<SearchResponseData>({
@@ -53,7 +53,7 @@ export default function Search() {
       (async () => {
         try {
           setLoading(true);
-          const res = await searchKeyword(search);
+          const res = await bibleActions.searchKeyword(search);
 
           if (res && !res.success) {
             toast.error(`${res.message}`, {

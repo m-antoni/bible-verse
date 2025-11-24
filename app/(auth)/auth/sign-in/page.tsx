@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { CSSProperties } from 'react';
-import { authService } from '@/app/lib/services/authService';
 import { FaTimes } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
 import SignInForm from '@/app/components/SignInForm';
 import { useRouter } from 'next/navigation';
+import authActions from '@/app/lib/actions/auth';
 
 export default function SignIn() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -30,7 +30,7 @@ export default function SignIn() {
 
     setLoading(true);
 
-    const result = await authService.signIn(form);
+    const result = await authActions.signIn(form);
 
     if (result && !result.success) {
       toast(`${result.message}`, {

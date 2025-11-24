@@ -1,14 +1,14 @@
 'use client';
 
 import Script from 'next/script';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useTransition } from 'react';
 import SideNavbar from '@/app/components/Sidebar';
 import TopNavbar from '@/app/components/TopNavbar';
 import { AuthProvider } from '@/app/context/AuthContext';
 import ConfirmModal from '@/app/components/ConfirmModal';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
-import { signOutAction } from '../lib/actions/auth/signOut';
+import authActions from '../lib/actions/auth';
 
 interface DashboardClientLayoutProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
   // confirm modal open and close
   const [signOutModalOpen, setSignOutModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [isPending, startTransition] = useTransition();
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleSidebarTheme = () => setSidebarDark(!sidebarDark);
 
@@ -42,14 +42,16 @@ export default function DashboardClientLayout({ children, user }: DashboardClien
   const handleSignOut = async () => {
     setLoading(true);
     try {
-      await signOutAction();
-      router.push('/auth/sign-in');
-      router.refresh();
+      startTransition(async () => {
+        //** trigger server action and redirect
+        await authActions.signOut();
+      });
     } catch (err) {
       console.error('Sign out failed', err);
     } finally {
       setLoading(false);
       setSignOutModalOpen(false);
+      router.refresh();
     }
   };
 

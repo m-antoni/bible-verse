@@ -18,12 +18,12 @@
 
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/app/lib/actions/auth/getCurrentUser';
+import authActions from '@/app/lib/actions/auth';
 
 type AuthProviderProps = { children: ReactNode };
 
 export default async function AuthProvider({ children }: AuthProviderProps) {
-  const user = await getCurrentUser();
+  const user = await authActions.getCurrentUser();
 
   // ** Redirect logged-in users away from auth pages
   if (user) redirect('/dashboard');

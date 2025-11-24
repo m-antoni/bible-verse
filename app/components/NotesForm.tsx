@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import { ToastContainer, toast } from 'react-toastify/unstyled';
+import { toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import { addNote, getChapterNote } from '../lib/services/noteService';
 import { ParamValue } from 'next/dist/server/request/params';
 import { noteBookChapterFormTypes } from '../types';
+import noteActions from '@/app/lib/actions/note';
 
 type BibleChapterProps = {
   bibleChapter: {
@@ -26,7 +26,7 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
         book_chapter_id: String(bibleChapter.book_chapter_id),
       };
 
-      const response = await getChapterNote(getChapterFormParams);
+      const response = await noteActions.getChapterNote(getChapterFormParams);
 
       // error occured
       if (response && !response.success) {
@@ -62,7 +62,7 @@ export default function NotesForm({ bibleChapter }: BibleChapterProps) {
     };
 
     // call supabase db
-    const response = await addNote(notesForm);
+    const response = await noteActions.addNote(notesForm);
     // console.log(response);
 
     // error occured

@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-import { authService } from '@/app/lib/services/authService';
 import { ToastContainer, toast } from 'react-toastify/unstyled';
 import 'react-toastify/ReactToastify.css';
 import { CSSProperties } from 'react';
 import { PuffLoader } from 'react-spinners';
 import SignUpForm from '@/app/components/SignUpFom';
+import authActions from '@/app/lib/actions/auth';
 
 export default function SignUp() {
   const [form, setForm] = useState({ fullName: '', email: '', password: '' });
@@ -29,7 +29,7 @@ export default function SignUp() {
 
     setLoading(true);
 
-    const result = await authService.signUp(form);
+    const result = await authActions.signUp(form);
 
     if (result && !result.success) {
       toast.error(`${result.message}`, {

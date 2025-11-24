@@ -1,13 +1,13 @@
 'use client';
 
 import { FaBook, FaEye } from 'react-icons/fa';
-import { getBibleBooks, getBibleBooksDB } from '@/app/lib/services/bibleService';
 import { getFromLocalStorage, searchFromLocalStorage } from '@/app/lib/helpers';
 import { useEffect, useRef, useState } from 'react';
 import Spinner from '@/app/components/Spinner';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Book } from '@/app/types';
+import bibleActions from '@/app/lib/actions/bible';
 
 export default function ReadBible() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -43,7 +43,7 @@ export default function ReadBible() {
       // ** Improve Fallback with Supabase -> Public Bible API
       (async () => {
         try {
-          const response = await getBibleBooksDB();
+          const response = await bibleActions.getBibleBooksDB();
           if (response && response.success && response.data) {
             console.log(response.data);
             setAllBooks(response.data);

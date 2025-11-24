@@ -1,11 +1,10 @@
 'use client';
 
-import { getBible } from '@/app/lib/services/bibleService';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/app/context/AuthContext';
 import { Bible } from '@/app/types';
 import Spinner from '@/app/components/Spinner';
+import bibleActions from '@/app/lib/actions/bible';
 
 type Dashboard = {
   bible: Bible[];
@@ -14,7 +13,6 @@ type Dashboard = {
 };
 
 export default function About() {
-  const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +20,7 @@ export default function About() {
   useEffect(() => {
     async function fetchBible() {
       setLoading(true);
-      const response = await getBible();
+      const response = await bibleActions.getBible();
       // console.log(response);
       setDashboard({ ...dashboard, bible: [response.data.data] });
       setLoading(false);

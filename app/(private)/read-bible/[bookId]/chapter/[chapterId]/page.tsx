@@ -13,7 +13,7 @@ import {
   FaHeart,
 } from 'react-icons/fa';
 import Image from 'next/image';
-import { getBookChapter } from '@/app/lib/services/bibleService';
+import bibleActions from '@/app/lib/actions/bible';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import {
   copyrightToHtml,
@@ -78,7 +78,7 @@ export default function BookRead() {
       // Fallback API Call
       (async () => {
         try {
-          const data = await getBookChapter(BOOK_ID, CHAPTER_ID);
+          const data = await bibleActions.getBookChapter(BOOK_ID, CHAPTER_ID);
           setChapter({
             book_chapter_data: [data.data],
             book_chapter_details: data.details,
