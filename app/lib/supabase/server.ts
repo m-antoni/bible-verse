@@ -22,27 +22,53 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cookies as nextCookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+// import { cookies as nextCookies } from 'next/headers';
+// import { createServerClient } from '@supabase/ssr';
+
+// export async function createServerSupabaseClient() {
+//   const cookieStore = await nextCookies();
+
+//   const cookiesAdapter = {
+//     get: (name: string) => cookieStore.get(name)?.value ?? null,
+//     getAll: () => cookieStore.getAll().map((c) => ({ name: c.name, value: c.value })),
+//     set: (name: string, value: string, options?: { path?: string; maxAge?: number }) =>
+//       cookieStore.set({ name, value, ...options }),
+//     remove: (name: string, options?: { path?: string }) =>
+//       cookieStore.set({ name, value: '', ...options, maxAge: 0 }),
+//   };
+
+//   return createServerClient(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+//     {
+//       // cast to any to bypass TypeScript restriction
+//       cookies: cookiesAdapter,
+//     } as any,
+//   );
+// }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { cookies } from 'next/headers';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function createServerSupabaseClient() {
-  const cookieStore = await nextCookies();
-
-  const cookiesAdapter = {
-    get: (name: string) => cookieStore.get(name)?.value ?? null,
-    getAll: () => cookieStore.getAll().map((c) => ({ name: c.name, value: c.value })),
-    set: (name: string, value: string, options?: { path?: string; maxAge?: number }) =>
-      cookieStore.set({ name, value, ...options }),
-    remove: (name: string, options?: { path?: string }) =>
-      cookieStore.set({ name, value: '', ...options, maxAge: 0 }),
-  };
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-      // cast to any to bypass TypeScript restriction
-      cookies: cookiesAdapter,
-    } as any,
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          cookieStore.set(name, value, options); // allowed in server action
+        },
+        remove(name: string, options: CookieOptions) {
+          cookieStore.set(name, '', { ...options, maxAge: 0 });
+        },
+      },
+    },
   );
 }
