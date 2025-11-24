@@ -3,11 +3,10 @@ import { supabase } from '@/app/lib/supabase/client';
 import authActions from '@/app/lib/actions/auth';
 import { noteBookChapterTypes } from '@/app/types';
 
-//*** Global Variables */
-const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
-const user = await authActions.getCurrentUser(); // Get user session data
-
 export async function deleteNote(formDetails: noteBookChapterTypes) {
+  const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
+  const user = await authActions.getCurrentUser();
+
   try {
     const deleteParams = {
       auth_id: user?.id,

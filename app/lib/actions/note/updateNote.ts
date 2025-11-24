@@ -3,12 +3,11 @@ import { supabase } from '@/app/lib/supabase/client';
 import authActions from '@/app/lib/actions/auth';
 import { noteBookChapterFormTypes } from '@/app/types';
 
-//*** Global Variables */
-const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
-const user = await authActions.getCurrentUser(); // Get user session data
-
 //*** Update note */
 export async function updateNote(formDetails: noteBookChapterFormTypes) {
+  const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
+  const user = await authActions.getCurrentUser();
+
   try {
     // update note params
     const updateNoteParams = {

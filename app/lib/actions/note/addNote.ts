@@ -7,12 +7,11 @@ import { deleteNote } from './deleteNote';
 import { updateNote } from './updateNote';
 import { ENV } from '@/app/constants/env';
 
-//*** Global Variables */
-const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
-const user = await authActions.getCurrentUser(); // Get user session data
-
 //*** Add note */
 export async function addNote(formDetails: noteBookChapterFormTypes) {
+  const BIBLE_NOTES_TABLE = TABLES.BIBLE_NOTES;
+  const user = await authActions.getCurrentUser();
+
   try {
     const userBookChapterNoteDetails = {
       book_id: formDetails.book_id,
