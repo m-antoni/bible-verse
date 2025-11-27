@@ -47,7 +47,7 @@ Users can explore books and chapters, search across all verses, and save notes f
 - `/app/(private)` — Route group for protected pages (dashboard, read-bible, search)
 - `/app/components` — Reusable UI components used across the application
 - `/app/constants` — Centralized constants (paths, config values, etc.)
-- `/app/lib/services` — Service layer for business logic and API interactions
+- `/app/lib/actions` — Actions and API interactions
 - `/app/lib/supabase` — Supabase utilities: `server.ts`, `client.ts`, `auth.ts`
 - `/app/lib/helpers` — Utility functions and shared helpers
 - `/app/lib/types` — TypeScript type definitions and interfaces
