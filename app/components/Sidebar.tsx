@@ -114,6 +114,7 @@ export default function SideNavbar({
       <div className="mx-4 mb-4 flex flex-col gap-2">
         <Link
           href="/about"
+          onClick={handleLinkClick}
           className="inline-block w-full px-8 py-2 text-xs font-semibold leading-normal text-center text-white capitalize transition-all ease-in rounded-lg shadow-md bg-purple-800 hover:shadow-xs hover:-translate-y-px"
         >
           About This Project

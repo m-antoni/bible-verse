@@ -28,8 +28,10 @@ export default function TopNavbar({
         return 'Dashboard';
       case '/search':
         return 'Search';
+      case '/about':
+        return 'About';
       default:
-        return 'Favorites';
+        return '';
     }
   };
 

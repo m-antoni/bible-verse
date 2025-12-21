@@ -229,7 +229,7 @@ export default function Search() {
               <div className="flex justify-center items-center w-full mb-4">
                 <img
                   src="/assets/custom/search.gif"
-                  className="w-48 h-48 object-contain mb-20"
+                  className="w-20 h-20 object-contain my-10"
                   alt="Search Animation"
                 />
               </div>
