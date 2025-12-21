@@ -22,11 +22,6 @@ export async function signInWithEmailPassword(email: string, password: string) {
   return supabase.auth.signInWithPassword({ email, password });
 }
 
-// ** Get Session
-export async function getCurrentSession() {
-  return supabase.auth.getSession();
-}
-
 // ** Sign In Google OAuth
 export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({

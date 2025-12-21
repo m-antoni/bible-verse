@@ -25,17 +25,17 @@ export async function GET(request: Request) {
     }
   }
 
+  // Use only getUser() to ensure security
   const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  const user = session?.user;
-
-  if (user && !sessionError) {
+  // If a valid user exists and there's no error, redirect them
+  if (user && !userError) {
     return NextResponse.redirect(`${finalOrigin}${next}`);
   }
 
-  // Fallback
+  // Fallback if the user is not authenticated or there's an error
   return NextResponse.redirect(`${finalOrigin}/auth/auth-code-error`);
 }
