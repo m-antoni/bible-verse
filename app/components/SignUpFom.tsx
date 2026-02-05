@@ -11,9 +11,11 @@ type SignUpFormProps = {
 export default function SignUpForm({ form, handleOnSubmit, handleOnChange }: SignUpFormProps) {
   return (
     <>
-      <h1 className="text-xl md:text-2xl text-center -mb-4">
-        Welcome to <span className="font-semibold">BibleVerse 1.0</span>
-      </h1>
+      <div>
+        <center>
+          <img src="/assets/custom/logo.png" width="200" className="-mb-5 -mt-5" />
+        </center>
+      </div>
       <div className="divide-y divide-gray-200 -mr-1 -ml-1">
         <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
           {/* form is hidden for browsers autofill text */}

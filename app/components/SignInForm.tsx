@@ -12,7 +12,9 @@ export default function SignInForm({ form, handleOnSubmit, handleOnChange }: Sgn
   return (
     <>
       <div>
-        <h1 className="text-2xl font-semibold text-center">BibleVerse 1.0</h1>
+        <center>
+          <img src="/assets/custom/logo.png" width="200" className="-mb-2 -mt-5" />
+        </center>
       </div>
       <div className="divide-y divide-gray-200 -mr-1 -ml-1 text-sm">
         <form
