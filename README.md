@@ -7,7 +7,7 @@ Users can explore books and chapters, search across all verses, and save notes f
 
 **Live Demo:** https://youtu.be/uj23JAGdaKE
 
-![image](docs/bible1.png)
+![image](bible1.png)
 
 ## Technology
 
