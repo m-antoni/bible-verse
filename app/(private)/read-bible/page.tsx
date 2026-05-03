@@ -45,7 +45,7 @@ export default function ReadBible() {
         try {
           const response = await bibleActions.getBibleBooksDB();
           if (response && response.success && response.data) {
-            console.log(response.data);
+            // console.log(response.data);
             setAllBooks(response.data);
             setBooks(response.data.slice(0, 10));
           }
@@ -223,7 +223,8 @@ export default function ReadBible() {
                             {book.namelong}
                           </p>
                           <span className="mt-2 text-xs font-semibold text-slate-700">
-                            {book.chapters} Chapters
+                            {/* - 1 to exclude the intro from total chapters */}
+                            {book.chapters ? book.chapters - 1 : 0} Chapters
                           </span>
                         </div>
                       </div>

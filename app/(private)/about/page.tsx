@@ -29,6 +29,8 @@ export default function About() {
     fetchBible();
   }, []);
 
+  console.log(dashboard);
+
   if (loading) {
     return <Spinner />;
   }

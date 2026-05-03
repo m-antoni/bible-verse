@@ -1,38 +1,59 @@
 'use client';
 
-import { copyrightToHtml, getRandomIntroText } from '@/app/lib/helpers';
+import { copyrightToHtml, getFromLocalStorage, getRandomIntroText } from '@/app/lib/helpers';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { Bible } from '@/app/types';
 import bibleActions from '@/app/lib/actions/bible';
 import authActions from '@/app/lib/actions/auth';
+import Spinner from '@/app/components/Spinner';
 
 type Dashboard = {
   bible: Bible[];
-  // notes: any[];
-  // finished: any[];
 };
 
 export default function Dashboard() {
   const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard>({ bible: [] });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // ** Improvement: Supabase DB and Fallback public Bible API call
-    async function fetchBibleDB() {
-      const response = await bibleActions.getBibleDB();
-      setDashboard({ ...dashboard, bible: [response.data] });
-    }
+    // ** Get the value from localstorage
+    const bible = getFromLocalStorage<Bible>('bible');
 
-    // ** This will insert the user data from Google OAuth
-    async function insertGoogleUser() {
-      if (user?.user_metadata?.provider_id) await authActions.insertUser(user);
-    }
+    if (bible) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDashboard((prev) => ({
+        ...prev,
+        bible: [bible],
+      }));
+    } else {
+      // ** Fallback calling the API
+      (async () => {
+        setLoading(true);
+        const fetchBibleDB = async () => {
+          const response = await bibleActions.getBibleDB();
+          setDashboard((prev) => ({
+            ...prev,
+            bible: [response.data],
+          }));
+        };
+        // ** This will insert the user data from Google OAuth
+        const insertGoogleUser = async () => {
+          if (user?.user_metadata?.provider_id) await authActions.insertUser(user);
+        };
 
-    insertGoogleUser();
-    fetchBibleDB();
-  }, []);
+        await insertGoogleUser();
+        await fetchBibleDB();
+        setLoading(false);
+      })();
+    }
+  }, [user]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
