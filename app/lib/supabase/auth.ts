@@ -9,7 +9,7 @@ export async function signUpWithEmailPassword(fullName: string, email: string, p
     email,
     password,
     options: {
-      emailRedirectTo: `${ENV.SITE_URL}/callback`,
+      emailRedirectTo: `${window.location.origin}/callback`,
       data: {
         full_name: fullName,
       },
@@ -27,7 +27,7 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${ENV.SITE_URL}/callback`,
+      redirectTo: `${window.location.origin}/callback`,
     },
   });
 
