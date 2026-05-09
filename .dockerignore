@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+.env.local
+.env*.local
+README.md
+project_structure.md
+bible1.png
+.prettierignore
+.prettierrc
+.next/**
+.git/**
+node_modules/**
