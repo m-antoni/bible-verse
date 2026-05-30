@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import TrackingPixel from '@/components/TrackingPixel';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         /> */}
       </head>
 
-      <body className="...">{children}</body>
+      <body className="...">
+        {children}
+        <TrackingPixel site="bible-verse-979607262100.asia-southeast1.run.app" />
+      </body>
     </html>
   );
 }
