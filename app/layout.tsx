@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body className="...">
         {children}
-        <TrackingPixel site="bible-verse-979607262100.asia-southeast1.run.app" />
+        <TrackingPixel site="https://m-antoni-bibleverse.vercel.app/auth/sign-in" />
       </body>
     </html>
   );
